@@ -73,40 +73,5 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping(USER_URL + "/payment/{userId}")
-    public ResponseEntity<?> savePayment(
-            @PathVariable(name = "userId") Long userId,
-            @RequestParam(name = "amount") Integer amount
-    ) {
-        service.savePayment(userId, amount);
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping(USER_URL + "/instruct/{userId}")
-    public ResponseEntity<?> instructUser(
-            @PathVariable(name = "userId") Long userId
-    ) {
-        service.instructUser(userId);
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping(USER_URL + "/location")
-    public ResponseEntity<?> saveLocation(
-            @RequestParam(name = "latitude") Double latitude,
-            @RequestParam(name = "longitude") Double longitude
-    ) {
-        service.saveLocation(latitude, longitude);
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping(USER_URL + "/telegram-username")
-    public ResponseEntity<?> saveTelegramUsername(
-            @RequestParam(name = "userId") Long userId,
-            @RequestParam(name = "telegramUsername") String telegramUsername
-    ) {
-        service.saveTelegramUsername(userId, telegramUsername);
-        return ResponseEntity.ok().build();
-    }
-
 }
 

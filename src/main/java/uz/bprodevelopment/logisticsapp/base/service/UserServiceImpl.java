@@ -7,7 +7,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,21 +15,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uz.bprodevelopment.logisticsapp.base.entity.User;
-import uz.bprodevelopment.logisticsapp.base.repo.RoleRepo;
 import uz.bprodevelopment.logisticsapp.base.repo.UserRepo;
 import uz.bprodevelopment.logisticsapp.base.util.BaseAppUtils;
-import uz.bprodevelopment.logisticsapp.dto.PaymentDto;
 import uz.bprodevelopment.logisticsapp.dto.UserDto;
-import uz.bprodevelopment.logisticsapp.entity.Payment;
-import uz.bprodevelopment.logisticsapp.repo.PaymentRepo;
-import uz.bprodevelopment.logisticsapp.spec.BaseSpec;
 import uz.bprodevelopment.logisticsapp.spec.SearchCriteria;
 import uz.bprodevelopment.logisticsapp.spec.UserSpec;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +31,6 @@ import java.util.Objects;
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepo repo;
-    private final PaymentRepo paymentRepo;
     private final PasswordEncoder passwordEncoder;
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")
@@ -128,43 +120,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return repo.findByUsername(username);
     }
 
-    @Override
-    @Transactional
-    public void savePayment(Long userId, Integer amount) {
-
-        User user = repo.getReferenceById(userId);
-
-        Payment payment = new Payment();
-        payment.setUser(user);
-        payment.setAmount(amount);
-        paymentRepo.save(payment);
-
-        Integer debt = user.getDebt();
-        user.setDebt(debt - amount);
-
-    }
-
-    @Override
-    @Transactional
-    public void instructUser(Long userId) {
-        User user = repo.getReferenceById(userId);
-        user.setInstructed(1);
-    }
-
-    @Override
-    @Transactional
-    public void saveLocation(Double latitude, Double longitude) {
-        User user = repo.findByUsername(BaseAppUtils.getCurrentUsername());
-        user.setLatitude(latitude);
-        user.setLongitude(longitude);
-    }
-
-    @Override
-    @Transactional
-    public void saveTelegramUsername(Long userId, String telegramUsername) {
-        User user = repo.getReferenceById(userId);
-        user.setTelegramUsername(telegramUsername);
-    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

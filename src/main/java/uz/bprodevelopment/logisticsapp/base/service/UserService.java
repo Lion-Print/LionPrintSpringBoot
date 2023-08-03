@@ -33,21 +33,4 @@ public interface UserService {
 
     User getOneByUsername(String username);
 
-    void savePayment(
-            Long userId,
-            Integer amount
-    );
-
-    void instructUser(Long userId);
-
-    void saveLocation(
-            Double latitude,
-            Double longitude
-    );
-
-    void saveTelegramUsername(
-            Long userId,
-            String telegramUsername
-    );
-
 }
