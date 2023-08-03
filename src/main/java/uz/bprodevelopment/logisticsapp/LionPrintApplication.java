@@ -41,7 +41,7 @@ public class LionPrintApplication {
 
 
 
-    //@Bean
+    @Bean
     CommandLineRunner run(
             UserService userService,
             RoleService roleService,
