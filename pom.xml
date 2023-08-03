@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>uz.bprodevelopment</groupId>
-	<artifactId>logisticsapp</artifactId>
+	<artifactId>LionPrintApplication</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>logisticsapp</name>
-	<description>Project for Logistics</description>
+	<name>LionPrintApplication</name>
+	<description>Project for Lion Print</description>
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
