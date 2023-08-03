@@ -47,7 +47,6 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
 
         if (request.getServletPath().equals(LOGIN_URL)
-                || request.getServletPath().equals(SIGNUP_URL)
                 || request.getServletPath().startsWith(FILES_URL)) {
             filterChain.doFilter(request, response);
         } else {

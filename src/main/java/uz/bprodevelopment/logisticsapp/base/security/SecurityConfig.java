@@ -50,7 +50,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests().antMatchers(
                 LOGIN_URL,
-                SIGNUP_URL,
                 FILES_URL + "/**"
         ).permitAll();
 

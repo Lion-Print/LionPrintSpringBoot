@@ -14,7 +14,6 @@ import uz.bprodevelopment.logisticsapp.dto.UserDto;
 import javax.transaction.Transactional;
 
 import static uz.bprodevelopment.logisticsapp.base.config.Urls.ACCOUNT_URL;
-import static uz.bprodevelopment.logisticsapp.base.config.Urls.SIGNUP_URL;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,22 +21,6 @@ public class AccountController {
 
     private final UserService userService;
 
-    @PostMapping(SIGNUP_URL)
-    public ResponseEntity<?> signup(@RequestBody UserDto item){
-
-        User user = userService.getOneByUsername(item.getUsername());
-        if (user != null) {
-            item.setId(user.getId());
-            userService.save(item);
-            User newUser = userService.getOneByUsername(item.getUsername());
-            return ResponseEntity.ok().body(newUser);
-        }else {
-            userService.save(item);
-            User newUser = userService.getOneByUsername(item.getUsername());
-            return ResponseEntity.ok().body(newUser);
-        }
-
-    }
 
     @GetMapping(ACCOUNT_URL)
     public ResponseEntity<?> userExist(
