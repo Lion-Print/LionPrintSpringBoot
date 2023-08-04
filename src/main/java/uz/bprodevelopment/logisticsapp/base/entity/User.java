@@ -30,22 +30,4 @@ public class User extends BaseAuditEntity {
 
     @OneToOne(fetch = FetchType.EAGER)
     private Role role;
-
-    @OneToOne
-    private UserType userType;
-    private Long carrierTypeId; // 1 - Driver, 2 - Truck Owner, 3 - Dispatcher
-    private Integer instructed = 0;
-
-    private Integer debt = 0;
-    private Integer cancelledOfferCnt = 0;
-
-    private Double rating;
-    private Integer ratingCount;
-
-    private Double latitude;
-    private Double longitude;
-
-    private String telegramUsername;
-    private String lang = "uz";
-
 }

@@ -13,7 +13,4 @@ public interface UserRepo extends JpaRepository<User, Long>,
 
     User findByUsername(String username);
 
-    @Query(value = "SELECT u.fcmToken FROM User u LEFT JOIN u.userType ut WHERE u.fcmToken IS NOT NULL and ut.id = ?1")
-    List<String> findByUserUserType(Long id);
-
 }

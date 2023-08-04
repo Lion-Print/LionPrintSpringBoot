@@ -9,7 +9,6 @@ import uz.bprodevelopment.logisticsapp.base.entity.ErrorResponse;
 import uz.bprodevelopment.logisticsapp.base.entity.User;
 import uz.bprodevelopment.logisticsapp.base.service.UserService;
 import uz.bprodevelopment.logisticsapp.base.util.BaseAppUtils;
-import uz.bprodevelopment.logisticsapp.dto.UserDto;
 
 import javax.transaction.Transactional;
 
@@ -49,10 +48,5 @@ public class AccountController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping(ACCOUNT_URL + "/my-debt")
-    public ResponseEntity<Integer> myDebt(){
-        User user = userService.getOneByUsername(BaseAppUtils.getCurrentUsername());
-        return ResponseEntity.ok().body(user.getDebt() != null ? user.getDebt() : 0);
-    }
 }
 

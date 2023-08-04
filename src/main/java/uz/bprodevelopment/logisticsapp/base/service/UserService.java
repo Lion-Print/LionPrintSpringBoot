@@ -14,7 +14,6 @@ public interface UserService {
     List<User> getListAll(
             String username,
             String fullName,
-            Long userTypeId,
             String sort
     );
 
@@ -23,13 +22,14 @@ public interface UserService {
             Integer size,
             String username,
             String fullName,
-            Long userTypeId,
             String sort
     );
 
     void save(UserDto item);
 
     void update(UserDto item);
+
+    void delete(Long id);
 
     User getOneByUsername(String username);
 

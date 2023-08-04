@@ -43,7 +43,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public List<User> getListAll(
             String username,
             String fullName,
-            Long userTypeId,
             String sort
     ) {
         UserSpec spec1 = new UserSpec(new SearchCriteria("id", ">", 0));
@@ -58,9 +57,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         else if (username != null)
             spec = spec.and(new UserSpec(new SearchCriteria("username", ":", username)));
 
-        if (userTypeId != null)
-            spec = spec.and(new UserSpec(new SearchCriteria("userTypeId", "=", userTypeId)));
-
         return repo.findAll(spec, Sort.by(sort).descending());
     }
 
@@ -70,7 +66,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             Integer size,
             String username,
             String fullName,
-            Long userTypeId,
             String sort
     ) {
         UserSpec spec1 = new UserSpec(new SearchCriteria("id", ">", 0));
@@ -84,10 +79,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             spec = spec.and(new UserSpec(new SearchCriteria("fullName", ":", fullName)));
         else if (username != null)
             spec = spec.and(new UserSpec(new SearchCriteria("username", ":", username)));
-
-        if (userTypeId != null)
-            spec = spec.and(new UserSpec(new SearchCriteria("userTypeId", "=", userTypeId)));
-
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
 
@@ -113,6 +104,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.setFullName(item.getFullName());
         user.setUsername(item.getUsername());
         user.setPassword(passwordEncoder.encode(item.getPassword()));
+    }
+
+    @Override
+    public void delete(Long id) {
+        repo.deleteById(id);
     }
 
     @Override

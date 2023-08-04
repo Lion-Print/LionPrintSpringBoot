@@ -14,10 +14,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.FileCopyUtils;
 import uz.bprodevelopment.logisticsapp.base.entity.Role;
-import uz.bprodevelopment.logisticsapp.base.entity.UserType;
 import uz.bprodevelopment.logisticsapp.base.service.RoleService;
 import uz.bprodevelopment.logisticsapp.base.service.UserService;
-import uz.bprodevelopment.logisticsapp.base.service.UserTypeService;
 import uz.bprodevelopment.logisticsapp.dto.UserDto;
 
 import java.io.IOException;
@@ -44,22 +42,13 @@ public class LionPrintApplication {
     @Bean
     CommandLineRunner run(
             UserService userService,
-            RoleService roleService,
-            UserTypeService userTypeService
+            RoleService roleService
     ) {
         return args -> {
 
             Role roleAdmin = roleService.getRole(ROLE_ADMIN);
             if (roleAdmin == null) {
                 roleAdmin = roleService.saveRole(new Role(null, ROLE_ADMIN));
-            }
-            UserType userTypeAdmin = userTypeService.getOneByNameUz("Admin");
-            if (userTypeAdmin == null) {
-                userTypeAdmin = userTypeService.save(
-                        new UserType(null,
-                                "Admin",
-                                "Администратор",
-                                "Админ"));
             }
             if (userService.getOneByUsername("+100") == null) {
                 userService.save(
@@ -68,9 +57,7 @@ public class LionPrintApplication {
                                 "Aliyev valijon",
                                 "+100",
                                 "123",
-                                roleAdmin.getId(),
-                                userTypeAdmin.getId(),
-                                null
+                                roleAdmin.getId()
                         ));
             }
 
@@ -79,14 +66,6 @@ public class LionPrintApplication {
             if (roleManager == null) {
                 roleManager = roleService.saveRole(new Role(null, ROLE_MANAGER));
             }
-            UserType userTypeManager = userTypeService.getOneByNameUz("Menejer");
-            if (userTypeManager == null) {
-                userTypeManager = userTypeService.save(
-                        new UserType(null,
-                                "Menejer",
-                                "Менеджер",
-                                "Менежер"));
-            }
             if (userService.getOneByUsername("+101") == null) {
                 userService.save(
                         new UserDto(
@@ -94,9 +73,7 @@ public class LionPrintApplication {
                                 "Soliyev Alijon(Manager)",
                                 "+101",
                                 "123",
-                                roleManager.getId(),
-                                userTypeManager.getId(),
-                                null
+                                roleManager.getId()
                         ));
             }
 
@@ -105,17 +82,6 @@ public class LionPrintApplication {
             if (roleService.getRole(ROLE_USER) == null) {
                 roleUser = roleService.saveRole(new Role(null, ROLE_USER));
             }
-
-
-            // id = 3
-            UserType userTypeTrucker = userTypeService.getOneByNameUz("Yuk tashuvchi");
-            if (userTypeTrucker == null) {
-                userTypeTrucker = userTypeService.save(
-                        new UserType(null,
-                                "Yuk tashuvchi",
-                                "Перевозчик",
-                                "Юк ташувчи"));
-            }
             if (userService.getOneByUsername("+102") == null) {
                 userService.save(
                         new UserDto(
@@ -123,21 +89,10 @@ public class LionPrintApplication {
                                 "Bunyod Xursanaliyev (Trucker)",
                                 "+102",
                                 "123",
-                                roleUser.getId(),
-                                userTypeTrucker.getId(),
-                                null
+                                roleUser.getId()
                         ));
             }
 
-            // id = 4
-            UserType userTypeClient = userTypeService.getOneByNameUz("Yuk beruvchi");
-            if (userTypeClient == null) {
-                userTypeClient = userTypeService.save(
-                        new UserType(null,
-                                "Yuk beruvchi",
-                                "Грузоотправитель",
-                                "Юк берувчи"));
-            }
             if (userService.getOneByUsername("+103") == null) {
                 userService.save(
                         new UserDto(
@@ -145,9 +100,7 @@ public class LionPrintApplication {
                                 "Bunyod Xursanaliyev (Client)",
                                 "+103",
                                 "123",
-                                roleUser.getId(),
-                                userTypeClient.getId(),
-                                null
+                                roleUser.getId()
                         ));
             }
 

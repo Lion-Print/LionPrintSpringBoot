@@ -32,12 +32,11 @@ public class UserController {
             @RequestParam(name = "size") Integer size,
             @RequestParam(name = "username", required = false) String username,
             @RequestParam(name = "fullName", required = false) String fullName,
-            @RequestParam(name = "userTypeId", required = false) Long userTypeId,
             @RequestParam(name = "sort", required = false, defaultValue = "id") String sort
     ) {
         return ResponseEntity.ok().body(
                 service.getList(
-                        page, size, username, fullName, userTypeId, sort
+                        page, size, username, fullName, sort
                 )
         );
     }
@@ -46,12 +45,11 @@ public class UserController {
     public ResponseEntity<?> getListAll(
             @RequestParam(name = "username", required = false) String username,
             @RequestParam(name = "fullName", required = false) String fullName,
-            @RequestParam(name = "userTypeId", required = false) Long userTypeId,
             @RequestParam(name = "sort", required = false, defaultValue = "id") String sort
     ) {
         return ResponseEntity.ok().body(
                 service.getListAll(
-                        username, fullName, userTypeId, sort
+                        username, fullName, sort
                 )
         );
     }
@@ -70,6 +68,14 @@ public class UserController {
             @RequestBody UserDto item
     ) {
         service.update(item);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping(USER_URL + "/{id}")
+    public ResponseEntity<?> delete(
+            @PathVariable(name = "id") Long id
+    ) {
+        service.delete(id);
         return ResponseEntity.ok().build();
     }
 
