@@ -3,6 +3,7 @@ package uz.bprodevelopment.logisticsapp.base.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import uz.bprodevelopment.logisticsapp.entity.Company;
 
 import javax.persistence.*;
 
@@ -30,4 +31,7 @@ public class User extends BaseAuditEntity {
 
     @OneToOne(fetch = FetchType.EAGER)
     private Role role;
+
+    @OneToOne
+    private Company company;
 }

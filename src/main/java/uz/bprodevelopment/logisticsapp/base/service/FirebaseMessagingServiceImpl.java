@@ -1,4 +1,4 @@
-package uz.bprodevelopment.logisticsapp.service;
+package uz.bprodevelopment.logisticsapp.base.service;
 
 import com.google.firebase.messaging.*;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +8,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class FirebaseMessagingServiceImpl implements FirebaseMessagingService{
+public class FirebaseMessagingServiceImpl implements FirebaseMessagingService {
 
     private final FirebaseMessaging firebaseMessaging;
 

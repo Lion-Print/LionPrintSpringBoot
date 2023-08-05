@@ -12,5 +12,6 @@ public class Urls {
     public static final String USER_URL = BASE_URL + "user";
 
     public static final String COMPANY_URL = BASE_URL + "company";
+    public static final String SUPPLIER_URL = BASE_URL + "supplier";
 
 }

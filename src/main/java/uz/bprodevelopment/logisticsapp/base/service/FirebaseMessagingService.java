@@ -1,4 +1,4 @@
-package uz.bprodevelopment.logisticsapp.service;
+package uz.bprodevelopment.logisticsapp.base.service;
 
 import com.google.firebase.messaging.FirebaseMessagingException;
 
