@@ -7,4 +7,5 @@ import uz.bprodevelopment.logisticsapp.entity.Supplier;
 
 public interface SupplierRepo extends JpaRepository<Supplier, Long>,
         JpaSpecificationExecutor<Supplier> {
+
 }

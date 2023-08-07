@@ -11,7 +11,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 @Data
 @Entity
-@Table(name = "companies")
+@Table(name = "suppliers")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Supplier extends BaseAuditEntity {

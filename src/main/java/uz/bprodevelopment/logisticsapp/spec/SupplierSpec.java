@@ -4,10 +4,7 @@ package uz.bprodevelopment.logisticsapp.spec;
 import uz.bprodevelopment.logisticsapp.entity.Company;
 import uz.bprodevelopment.logisticsapp.entity.Supplier;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 
 public class SupplierSpec extends BaseSpec<Supplier> {
 
@@ -21,7 +18,11 @@ public class SupplierSpec extends BaseSpec<Supplier> {
     @Override
     public Predicate toPredicate
             (Root<Supplier> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
-
-        return super.toPredicate(root, query, builder);
+        if (criteria.getKey().equals("companyId")) {
+            Join<Company, Supplier> company = root.join("company");
+            return builder.equal(company.get("id"), criteria.getValue());
+        } else {
+            return super.toPredicate(root, query, builder);
+        }
     }
 }

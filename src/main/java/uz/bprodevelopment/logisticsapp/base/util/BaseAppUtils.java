@@ -8,6 +8,7 @@ public final class BaseAppUtils {
     public static String getCurrentUsername(){
 
         return (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
     }
 
 }

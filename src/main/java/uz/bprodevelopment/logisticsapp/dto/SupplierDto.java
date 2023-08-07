@@ -16,6 +16,10 @@ public class SupplierDto {
     private String director;
     private String phone;
 
+    private String fullName;
+    private String username;
+    private String password;
+
     public Supplier toEntity(){
 
         Supplier supplier = new Supplier();

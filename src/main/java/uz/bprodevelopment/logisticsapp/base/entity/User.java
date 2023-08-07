@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uz.bprodevelopment.logisticsapp.entity.Company;
+import uz.bprodevelopment.logisticsapp.entity.Supplier;
 
 import javax.persistence.*;
 
@@ -34,4 +35,7 @@ public class User extends BaseAuditEntity {
 
     @OneToOne
     private Company company;
+
+    @OneToOne
+    private Supplier supplier;
 }
