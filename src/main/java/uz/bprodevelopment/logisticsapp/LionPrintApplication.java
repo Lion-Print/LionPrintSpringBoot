@@ -90,25 +90,4 @@ public class LionPrintApplication {
         };
     }
 
-
-    private String getRussianJson() throws IOException {
-        Resource resource = new ClassPathResource("russian_regions.txt");
-        InputStream inputStream = resource.getInputStream();
-        byte[] bData = FileCopyUtils.copyToByteArray(inputStream);
-        return new String(bData, StandardCharsets.UTF_8);
-    }
-
-    @Bean
-    FirebaseMessaging firebaseMessaging() throws IOException {
-        GoogleCredentials googleCredentials = GoogleCredentials
-                .fromStream(new ClassPathResource("fcm_service.json").getInputStream());
-        FirebaseOptions firebaseOptions = FirebaseOptions
-                .builder()
-                .setCredentials(googleCredentials)
-                .build();
-        FirebaseApp app = FirebaseApp.initializeApp(firebaseOptions, "YOUR APP NAME");
-        return FirebaseMessaging.getInstance(app);
-    }
-
-
 }
