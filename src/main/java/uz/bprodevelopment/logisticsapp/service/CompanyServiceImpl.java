@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uz.bprodevelopment.logisticsapp.base.entity.Role;
 import uz.bprodevelopment.logisticsapp.base.entity.User;
+import uz.bprodevelopment.logisticsapp.base.repo.RoleRepo;
 import uz.bprodevelopment.logisticsapp.base.repo.UserRepo;
 import uz.bprodevelopment.logisticsapp.base.util.BaseAppUtils;
 import uz.bprodevelopment.logisticsapp.dto.CompanyDto;
@@ -23,6 +24,8 @@ import uz.bprodevelopment.logisticsapp.spec.SearchCriteria;
 
 import java.util.List;
 
+import static uz.bprodevelopment.logisticsapp.base.config.Constants.ROLE_COMPANY_ADMIN;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -30,6 +33,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     private final CompanyRepo repo;
     private final UserRepo userRepo;
+    private final RoleRepo roleRepo;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -104,6 +108,11 @@ public class CompanyServiceImpl implements CompanyService {
             throw new RuntimeException("Kompaniya foydalanuvchisi uchun parol kiriting");
         }
 
+        Role role = roleRepo.findByName(ROLE_COMPANY_ADMIN);
+        if(role == null) {
+            throw new RuntimeException("ROLE_COMPANY_ADMIN mavjud emas");
+        }
+
         Company dbCompany = repo.findByName(item.getName());
         if (dbCompany != null) {
             throw new RuntimeException("Bunday nom bilan kompaniya yaratilgan");
@@ -111,9 +120,6 @@ public class CompanyServiceImpl implements CompanyService {
 
         Company company = item.toEntity();
         repo.save(company);
-
-        Role role = new Role();
-        role.setId(1L);
 
         User user = new User();
         user.setFullName(item.getFullName());

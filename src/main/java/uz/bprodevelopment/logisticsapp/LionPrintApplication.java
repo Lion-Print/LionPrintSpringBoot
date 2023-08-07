@@ -64,44 +64,27 @@ public class LionPrintApplication {
 
             Role roleManager = roleService.getRole(ROLE_MANAGER);
             if (roleManager == null) {
-                roleManager = roleService.saveRole(new Role(null, ROLE_MANAGER));
-            }
-            if (userService.getOneByUsername("+101") == null) {
-                userService.save(
-                        new UserDto(
-                                null,
-                                "Soliyev Alijon(Manager)",
-                                "+101",
-                                "123",
-                                roleManager.getId()
-                        ));
+                roleService.saveRole(new Role(null, ROLE_MANAGER));
             }
 
-
-            Role roleUser = roleService.getRole(ROLE_USER);
-            if (roleService.getRole(ROLE_USER) == null) {
-                roleUser = roleService.saveRole(new Role(null, ROLE_USER));
-            }
-            if (userService.getOneByUsername("+102") == null) {
-                userService.save(
-                        new UserDto(
-                                null,
-                                "Bunyod Xursanaliyev (Trucker)",
-                                "+102",
-                                "123",
-                                roleUser.getId()
-                        ));
+            Role roleCompanyAdmin = roleService.getRole(ROLE_COMPANY_ADMIN);
+            if (roleCompanyAdmin == null) {
+                roleService.saveRole(new Role(null, ROLE_COMPANY_ADMIN));
             }
 
-            if (userService.getOneByUsername("+103") == null) {
-                userService.save(
-                        new UserDto(
-                                null,
-                                "Bunyod Xursanaliyev (Client)",
-                                "+103",
-                                "123",
-                                roleUser.getId()
-                        ));
+            Role roleCompanyManager = roleService.getRole(ROLE_COMPANY_MANAGER);
+            if (roleCompanyManager == null) {
+                roleService.saveRole(new Role(null, ROLE_COMPANY_MANAGER));
+            }
+
+            Role roleSupplierAdmin = roleService.getRole(ROLE_SUPPLIER_ADMIN);
+            if (roleSupplierAdmin == null) {
+                roleService.saveRole(new Role(null, ROLE_SUPPLIER_ADMIN));
+            }
+
+            Role roleSupplierManager = roleService.getRole(ROLE_SUPPLIER_MANAGER);
+            if (roleSupplierManager == null) {
+                roleService.saveRole(new Role(null, ROLE_SUPPLIER_MANAGER));
             }
 
         };
