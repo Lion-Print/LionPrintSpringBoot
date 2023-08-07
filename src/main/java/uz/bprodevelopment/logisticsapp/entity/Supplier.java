@@ -7,6 +7,7 @@ import uz.bprodevelopment.logisticsapp.base.entity.BaseAuditEntity;
 
 import javax.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -30,6 +31,6 @@ public class Supplier extends BaseAuditEntity {
     private String phone;
 
     @ManyToMany
-    private List<Company> companies;
+    private List<Company> companies = new ArrayList<>();
 
 }
