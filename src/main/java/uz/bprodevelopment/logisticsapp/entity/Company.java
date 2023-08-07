@@ -8,6 +8,8 @@ import uz.bprodevelopment.logisticsapp.base.entity.Role;
 
 import javax.persistence.*;
 
+import java.util.List;
+
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Data
@@ -28,4 +30,6 @@ public class Company extends BaseAuditEntity {
 
     private String phone;
 
+    @ManyToMany
+    private List<Supplier> suppliers;
 }

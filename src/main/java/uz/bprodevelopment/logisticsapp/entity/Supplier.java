@@ -7,6 +7,8 @@ import uz.bprodevelopment.logisticsapp.base.entity.BaseAuditEntity;
 
 import javax.persistence.*;
 
+import java.util.List;
+
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Data
@@ -27,7 +29,7 @@ public class Supplier extends BaseAuditEntity {
 
     private String phone;
 
-    @ManyToOne
-    private Company company;
+    @ManyToMany
+    private List<Company> companies;
 
 }

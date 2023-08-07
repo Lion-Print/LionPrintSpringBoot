@@ -118,6 +118,7 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
+    @Transactional
     public void save(SupplierDto item) {
 
         if (item.getName() == null) {
@@ -154,7 +155,7 @@ public class SupplierServiceImpl implements SupplierService {
         }
 
         Supplier supplier = item.toEntity();
-        supplier.setCompany(currentUser.getCompany());
+        supplier.getCompanies().add(currentUser.getCompany());
 
         repo.save(supplier);
 
