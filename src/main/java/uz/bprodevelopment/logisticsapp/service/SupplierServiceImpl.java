@@ -142,6 +142,9 @@ public class SupplierServiceImpl implements SupplierService {
             throw new RuntimeException("ROLE_SUPPLIER_ADMIN mavjud emas");
         }
 
+        if (userRepo.findByUsername(item.getUsername()) != null) {
+            throw new RuntimeException("Bunday username mavjud");
+        }
 
         User currentUser = userRepo.findByUsername(BaseAppUtils.getCurrentUsername());
         if (currentUser.getCompany() == null) {

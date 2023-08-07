@@ -118,6 +118,10 @@ public class CompanyServiceImpl implements CompanyService {
             throw new RuntimeException("Bunday nom bilan kompaniya yaratilgan");
         }
 
+        if (userRepo.findByUsername(item.getUsername()) != null) {
+            throw new RuntimeException("Bunday username mavjud");
+        }
+
         Company company = item.toEntity();
         repo.save(company);
 
