@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uz.bprodevelopment.logisticsapp.base.entity.Role;
@@ -34,6 +35,7 @@ public class SupplierServiceImpl implements SupplierService {
     private final SupplierRepo repo;
     private final UserRepo userRepo;
     private final RoleRepo roleRepo;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public Supplier getOne(Long id) {
@@ -155,6 +157,16 @@ public class SupplierServiceImpl implements SupplierService {
         supplier.setCompany(currentUser.getCompany());
 
         repo.save(supplier);
+
+        User user = new User();
+        user.setFullName(item.getFullName());
+        user.setUsername(item.getUsername());
+        user.setPassword(passwordEncoder.encode(item.getPassword()));
+
+        user.setSupplier(supplier);
+        user.setRole(role);
+
+        userRepo.save(user);
     }
 
     @Override
