@@ -5,21 +5,22 @@ import org.springframework.data.domain.Page;
 import uz.bprodevelopment.logisticsapp.dto.CompanyDto;
 import uz.bprodevelopment.logisticsapp.dto.UserDto;
 import uz.bprodevelopment.logisticsapp.entity.Company;
+import uz.bprodevelopment.logisticsapp.utils.CustomPage;
 
 import java.util.List;
 
 public interface CompanyService {
 
-    Company getOne(Long id);
+    CompanyDto getOne(Long id);
 
-    List<Company> getListAll(
+    List<CompanyDto> getListAll(
             String name,
             String director,
             String phone,
             String sort
     );
 
-    Page<Company> getList(
+    CustomPage<CompanyDto> getList(
             Integer page,
             Integer size,
             String name,

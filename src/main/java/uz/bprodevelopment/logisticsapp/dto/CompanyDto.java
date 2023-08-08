@@ -22,8 +22,9 @@ public class CompanyDto {
     private String name;
     private String director;
     private String phone;
+    private Boolean isBlocked = false;
 
-    private String fullName;
+    private String userFullName;
     private String username;
     private String password;
 
@@ -34,6 +35,9 @@ public class CompanyDto {
         company.setName(this.name);
         company.setDirector(this.director);
         company.setPhone(this.phone);
+        company.setIsBlocked(this.isBlocked);
+        company.setUserFullName(this.userFullName);
+        company.setUsername(this.username);
 
         return company;
     }

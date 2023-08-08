@@ -1,9 +1,12 @@
 package uz.bprodevelopment.logisticsapp.entity;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uz.bprodevelopment.logisticsapp.base.entity.BaseAuditEntity;
+import uz.bprodevelopment.logisticsapp.dto.CompanyDto;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,10 +31,29 @@ public class Company extends BaseAuditEntity {
 
     private String phone;
 
-    @ManyToMany
-    private List<Supplier> suppliers = new ArrayList<>();
+    private Boolean isBlocked = false;
 
+    private String userFullName;
+
+    @Column(unique = true, nullable = false)
+    private String username;
     public Company(Long id) {
         this.id = id;
     }
+
+    public CompanyDto toDto(){
+
+        CompanyDto companyDto = new CompanyDto();
+        companyDto.setId(id);
+        companyDto.setName(name);
+        companyDto.setDirector(director);
+        companyDto.setPhone(phone);
+        companyDto.setIsBlocked(isBlocked);
+        companyDto.setUserFullName(userFullName);
+        companyDto.setUsername(username);
+
+        return companyDto;
+
+    }
+
 }

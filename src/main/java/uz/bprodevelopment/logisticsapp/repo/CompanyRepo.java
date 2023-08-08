@@ -7,7 +7,5 @@ import uz.bprodevelopment.logisticsapp.entity.Company;
 
 public interface CompanyRepo extends JpaRepository<Company, Long>,
         JpaSpecificationExecutor<Company> {
-
-    Company findByName(String name);
-
+    boolean existsByName(String name);
 }

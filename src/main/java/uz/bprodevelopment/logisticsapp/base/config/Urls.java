@@ -17,5 +17,8 @@ public class Urls {
     public static final String CATEGORY_URL = BASE_URL + "category";
     public static final String CATEGORY_DETAIL_URL = BASE_URL + "category-detail";
 
+    public static final String PRODUCT_URL = BASE_URL + "product";
+    public static final String PRODUCT_DETAIL_URL = BASE_URL + "product-detail";
+
 
 }

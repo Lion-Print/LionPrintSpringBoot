@@ -23,7 +23,7 @@ public class CompanyController {
     public ResponseEntity<?> getOne(
             @PathVariable(name = "id") Long id
     ) {
-        Company company = service.getOne(id);
+        CompanyDto company = service.getOne(id);
         return ResponseEntity.ok().body(company);
     }
 

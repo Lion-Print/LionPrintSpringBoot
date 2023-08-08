@@ -34,4 +34,7 @@ public class Supplier extends BaseAuditEntity {
     private List<Company> companies = new ArrayList<>();
 
 
+    public Supplier(Long id) {
+        this.id = id;
+    }
 }

@@ -12,5 +12,5 @@ public interface UserRepo extends JpaRepository<User, Long>,
         JpaSpecificationExecutor<User> {
 
     User findByUsername(String username);
-
+    boolean existsByUsername(String username);
 }

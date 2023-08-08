@@ -25,4 +25,7 @@ public class CategoryDetail extends BaseAuditEntity {
     @JoinColumn(name="category_id", nullable=false)
     private Category category;
 
+    public CategoryDetail(Long id) {
+        this.id = id;
+    }
 }
