@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import uz.bprodevelopment.logisticsapp.dto.CategoryDto;
 import uz.bprodevelopment.logisticsapp.entity.Category;
 import uz.bprodevelopment.logisticsapp.repo.CategoryRepo;

@@ -10,11 +10,8 @@ import javax.persistence.criteria.Root;
 
 public class CategorySpec extends BaseSpec<Category> {
 
-    private final SearchCriteria criteria;
-
     public CategorySpec(SearchCriteria criteria) {
         super(criteria);
-        this.criteria = criteria;
     }
 
     @Override

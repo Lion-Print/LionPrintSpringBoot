@@ -12,7 +12,6 @@ import uz.bprodevelopment.logisticsapp.dto.CategoryDetailDto;
 import uz.bprodevelopment.logisticsapp.entity.CategoryDetail;
 import uz.bprodevelopment.logisticsapp.repo.CategoryDetailRepo;
 import uz.bprodevelopment.logisticsapp.spec.CategoryDetailSpec;
-import uz.bprodevelopment.logisticsapp.spec.CategorySpec;
 import uz.bprodevelopment.logisticsapp.spec.SearchCriteria;
 
 import java.util.List;

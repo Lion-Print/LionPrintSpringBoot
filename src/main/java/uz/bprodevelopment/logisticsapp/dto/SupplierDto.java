@@ -3,7 +3,6 @@ package uz.bprodevelopment.logisticsapp.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import uz.bprodevelopment.logisticsapp.entity.Company;
 import uz.bprodevelopment.logisticsapp.entity.Supplier;
 
 @Data

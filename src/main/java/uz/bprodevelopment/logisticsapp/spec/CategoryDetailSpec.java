@@ -3,9 +3,6 @@ package uz.bprodevelopment.logisticsapp.spec;
 
 import uz.bprodevelopment.logisticsapp.entity.Category;
 import uz.bprodevelopment.logisticsapp.entity.CategoryDetail;
-import uz.bprodevelopment.logisticsapp.entity.Company;
-import uz.bprodevelopment.logisticsapp.entity.Supplier;
-
 import javax.persistence.criteria.*;
 
 public class CategoryDetailSpec extends BaseSpec<CategoryDetail> {

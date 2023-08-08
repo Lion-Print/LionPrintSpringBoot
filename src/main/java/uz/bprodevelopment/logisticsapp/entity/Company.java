@@ -4,10 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uz.bprodevelopment.logisticsapp.base.entity.BaseAuditEntity;
-import uz.bprodevelopment.logisticsapp.base.entity.Role;
-
 import javax.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
 

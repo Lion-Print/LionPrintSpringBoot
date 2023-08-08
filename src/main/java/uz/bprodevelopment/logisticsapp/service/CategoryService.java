@@ -3,7 +3,6 @@ package uz.bprodevelopment.logisticsapp.service;
 
 import org.springframework.data.domain.Page;
 import uz.bprodevelopment.logisticsapp.dto.CategoryDto;
-import uz.bprodevelopment.logisticsapp.dto.UserDto;
 import uz.bprodevelopment.logisticsapp.entity.Category;
 
 import java.util.List;
