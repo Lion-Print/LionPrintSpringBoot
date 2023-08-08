@@ -31,7 +31,7 @@ public class CategoryDetailController {
             @RequestParam(name = "page") Integer page,
             @RequestParam(name = "size") Integer size,
             @RequestParam(name = "name", required = false) String name,
-            @RequestParam(name = "name", required = false) Long categoryId,
+            @RequestParam(name = "categoryId", required = false) Long categoryId,
             @RequestParam(name = "sort", required = false, defaultValue = "id") String sort
     ) {
         return ResponseEntity.ok().body(
@@ -44,7 +44,7 @@ public class CategoryDetailController {
     @GetMapping(CATEGORY_DETAIL_URL + "/all")
     public ResponseEntity<?> getListAll(
             @RequestParam(name = "name", required = false) String name,
-            @RequestParam(name = "name", required = false) Long categoryId,
+            @RequestParam(name = "categoryId", required = false) Long categoryId,
             @RequestParam(name = "sort", required = false, defaultValue = "id") String sort
     ) {
         return ResponseEntity.ok().body(

@@ -88,6 +88,9 @@ public class CategoryServiceImpl implements CategoryService {
         if(item.getNameRu() == null) {
             throw new RuntimeException("Ruscha nomini kiriting");
         }
+        if (item.getId() == null) {
+            throw new RuntimeException("ID kiritilmagan");
+        }
         Category category = item.toEntity();
         repo.save(category);
     }

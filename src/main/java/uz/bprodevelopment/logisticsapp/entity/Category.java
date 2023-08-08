@@ -5,8 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import uz.bprodevelopment.logisticsapp.base.entity.BaseAuditEntity;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -23,10 +25,6 @@ public class Category extends BaseAuditEntity {
 
     private String nameUz;
     private String nameRu;
-
-    @OneToMany(mappedBy = "category", fetch = FetchType.EAGER)
-    private List<CategoryDetail> categoryDetails;
-
     public Category(Long id) {
         this.id = id;
     }

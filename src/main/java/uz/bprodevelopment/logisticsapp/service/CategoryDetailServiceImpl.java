@@ -42,9 +42,8 @@ public class CategoryDetailServiceImpl implements CategoryDetailService {
             spec2 = spec2.or(new CategoryDetailSpec(new SearchCriteria("nameRu", ":", name)));
             spec = spec.and(spec2);
         }
-        if (categoryId != null) {
-            spec = spec.and(new CategoryDetailSpec(new SearchCriteria("categoryId", ":", categoryId)));
-        }
+        if (categoryId != null) spec = spec.and(new CategoryDetailSpec(new SearchCriteria("categoryId", ":", categoryId)));
+
 
         return repo.findAll(spec, Sort.by(sort).descending());
     }
@@ -67,9 +66,7 @@ public class CategoryDetailServiceImpl implements CategoryDetailService {
             spec = spec.and(spec2);
         }
 
-        if (categoryId != null) {
-            spec = spec.and(new CategoryDetailSpec(new SearchCriteria("categoryId", ":", categoryId)));
-        }
+        if (categoryId != null) spec = spec.and(new CategoryDetailSpec(new SearchCriteria("categoryId", ":", categoryId)));
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
 
@@ -78,12 +75,9 @@ public class CategoryDetailServiceImpl implements CategoryDetailService {
 
     @Override
     public void save(CategoryDetailDto item) {
-        if(item.getNameUz() == null) {
-            throw new RuntimeException("Uzbekcha nomini kiriting");
-        }
-        if(item.getNameRu() == null) {
-            throw new RuntimeException("Ruscha nomini kiriting");
-        }
+        if (item.getNameUz() == null) throw new RuntimeException("Uzbekcha nomini kiriting");
+        if (item.getNameRu() == null) throw new RuntimeException("Ruscha nomini kiriting");
+        if (item.getCategoryId() == null) throw new RuntimeException("Kategoriya kiritilmagan");
 
         CategoryDetail category = item.toEntity();
         repo.save(category);
@@ -91,14 +85,14 @@ public class CategoryDetailServiceImpl implements CategoryDetailService {
 
     @Override
     public void update(CategoryDetailDto item) {
-        if(item.getNameUz() == null) {
-            throw new RuntimeException("Uzbekcha nomini kiriting");
-        }
-        if(item.getNameRu() == null) {
-            throw new RuntimeException("Ruscha nomini kiriting");
-        }
-        CategoryDetail category = item.toEntity();
-        repo.save(category);
+        if (item.getNameUz() == null) throw new RuntimeException("Uzbekcha nomini kiriting");
+        if (item.getNameRu() == null) throw new RuntimeException("Ruscha nomini kiriting");
+
+        if (item.getCategoryId() == null) throw new RuntimeException("Kategoriya kiritilmagan");
+        if (item.getId() == null) throw new RuntimeException("ID kiritilmagan");
+
+        CategoryDetail categoryDetail = item.toEntity();
+        repo.save(categoryDetail);
     }
 
     @Override
