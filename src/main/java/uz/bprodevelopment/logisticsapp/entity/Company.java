@@ -53,7 +53,5 @@ public class Company extends BaseAuditEntity {
         companyDto.setUsername(username);
 
         return companyDto;
-
     }
-
 }
