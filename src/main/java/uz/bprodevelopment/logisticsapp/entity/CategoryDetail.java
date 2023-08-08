@@ -9,7 +9,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 @Data
 @Entity
-@Table(name = "categories")
+@Table(name = "category_details")
 @NoArgsConstructor
 @AllArgsConstructor
 public class CategoryDetail extends BaseAuditEntity {
