@@ -1,26 +1,15 @@
 package uz.bprodevelopment.logisticsapp;
 
-import com.google.auth.oauth2.GoogleCredentials;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
-import com.google.firebase.messaging.FirebaseMessaging;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.util.FileCopyUtils;
+import uz.bprodevelopment.logisticsapp.base.dto.UserDto;
 import uz.bprodevelopment.logisticsapp.base.entity.Role;
 import uz.bprodevelopment.logisticsapp.base.service.RoleService;
 import uz.bprodevelopment.logisticsapp.base.service.UserService;
-import uz.bprodevelopment.logisticsapp.dto.UserDto;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 
 import static uz.bprodevelopment.logisticsapp.base.config.Constants.*;
 
@@ -57,7 +46,11 @@ public class LionPrintApplication {
                                 "Aliyev valijon",
                                 "+100",
                                 "123",
-                                roleAdmin.getId()
+                                null,
+                                roleAdmin.getId(),
+                                null,
+                                null,
+                                null
                         ));
             }
 

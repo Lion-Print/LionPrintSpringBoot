@@ -20,6 +20,7 @@ public class CategoryDetailDto {
     public CategoryDetail toEntity(){
 
         CategoryDetail categoryDetail = new CategoryDetail();
+
         categoryDetail.setId(this.id);
         categoryDetail.setNameUz(this.nameUz);
         categoryDetail.setNameRu(this.nameRu);

@@ -16,13 +16,7 @@ public class CategoryDto {
     private String nameRu;
 
     public Category toEntity(){
-
-        Category category = new Category();
-        category.setId(this.id);
-        category.setNameUz(this.nameUz);
-        category.setNameRu(this.nameRu);
-
-        return category;
+        return new Category(this.id, this.nameUz, this.nameRu);
     }
 
 }

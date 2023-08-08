@@ -13,7 +13,9 @@ import uz.bprodevelopment.logisticsapp.entity.Category;
 import uz.bprodevelopment.logisticsapp.repo.CategoryRepo;
 import uz.bprodevelopment.logisticsapp.spec.CategorySpec;
 import uz.bprodevelopment.logisticsapp.spec.SearchCriteria;
+import uz.bprodevelopment.logisticsapp.utils.CustomPage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,12 +26,13 @@ public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepo repo;
 
     @Override
-    public Category getOne(Long id) {
-        return repo.findById(id).get();
+    public CategoryDto getOne(Long id) {
+        Category category = repo.findById(id).get();
+        return category.toDto();
     }
 
     @Override
-    public List<Category> getListAll(
+    public List<CategoryDto> getListAll(
             String name,
             String sort
     ) {
@@ -42,11 +45,15 @@ public class CategoryServiceImpl implements CategoryService {
             spec = spec.and(spec2);
         }
 
-        return repo.findAll(spec, Sort.by(sort).descending());
+        List<Category> categories = repo.findAll(spec, Sort.by(sort).descending());
+        List<CategoryDto> categoryDtos = new ArrayList<>();
+        categories.forEach(category -> categoryDtos.add(category.toDto()));
+
+        return categoryDtos;
     }
 
     @Override
-    public Page<Category> getList(
+    public CustomPage<CategoryDto> getList(
             Integer page,
             Integer size,
             String name,
@@ -63,8 +70,19 @@ public class CategoryServiceImpl implements CategoryService {
         }
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
+        Page<Category> responsePage = repo.findAll(spec, pageable);
+        List<CategoryDto> dtos = new ArrayList<>();
+        responsePage.getContent().forEach(category -> dtos.add(category.toDto()));
 
-        return repo.findAll(spec, pageable);
+
+        return new CustomPage<>(
+                dtos,
+                responsePage.isFirst(),
+                responsePage.isLast(),
+                responsePage.getNumber(),
+                responsePage.getTotalPages(),
+                responsePage.getTotalElements()
+        );
     }
 
     @Override

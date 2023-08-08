@@ -2,8 +2,8 @@ package uz.bprodevelopment.logisticsapp.service;
 
 
 import org.springframework.data.domain.Page;
+import uz.bprodevelopment.logisticsapp.base.dto.UserDto;
 import uz.bprodevelopment.logisticsapp.dto.SupplierDto;
-import uz.bprodevelopment.logisticsapp.dto.UserDto;
 import uz.bprodevelopment.logisticsapp.entity.Supplier;
 
 import java.util.List;

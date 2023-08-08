@@ -4,13 +4,11 @@ package uz.bprodevelopment.logisticsapp.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import uz.bprodevelopment.logisticsapp.base.dto.UserDto;
 import uz.bprodevelopment.logisticsapp.dto.CompanyDto;
-import uz.bprodevelopment.logisticsapp.dto.UserDto;
-import uz.bprodevelopment.logisticsapp.entity.Company;
 import uz.bprodevelopment.logisticsapp.service.CompanyService;
 
 import static uz.bprodevelopment.logisticsapp.base.config.Urls.COMPANY_URL;
-import static uz.bprodevelopment.logisticsapp.base.config.Urls.USER_URL;
 
 
 @RestController

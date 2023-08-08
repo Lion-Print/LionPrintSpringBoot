@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uz.bprodevelopment.logisticsapp.base.entity.BaseAuditEntity;
+import uz.bprodevelopment.logisticsapp.dto.CategoryDetailDto;
+
 import javax.persistence.*;
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -27,5 +29,17 @@ public class CategoryDetail extends BaseAuditEntity {
 
     public CategoryDetail(Long id) {
         this.id = id;
+    }
+
+    public CategoryDetailDto toDto(){
+
+        CategoryDetailDto categoryDetailDto = new CategoryDetailDto();
+
+        categoryDetailDto.setId(id);
+        categoryDetailDto.setNameUz(nameUz);
+        categoryDetailDto.setNameRu(nameRu);
+        categoryDetailDto.setCategoryId(category.getId());
+
+        return categoryDetailDto;
     }
 }

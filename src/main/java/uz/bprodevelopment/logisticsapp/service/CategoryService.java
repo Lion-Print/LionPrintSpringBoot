@@ -4,19 +4,20 @@ package uz.bprodevelopment.logisticsapp.service;
 import org.springframework.data.domain.Page;
 import uz.bprodevelopment.logisticsapp.dto.CategoryDto;
 import uz.bprodevelopment.logisticsapp.entity.Category;
+import uz.bprodevelopment.logisticsapp.utils.CustomPage;
 
 import java.util.List;
 
 public interface CategoryService {
 
-    Category getOne(Long id);
+    CategoryDto getOne(Long id);
 
-    List<Category> getListAll(
+    List<CategoryDto> getListAll(
             String name,
             String sort
     );
 
-    Page<Category> getList(
+    CustomPage<CategoryDto> getList(
             Integer page,
             Integer size,
             String name,

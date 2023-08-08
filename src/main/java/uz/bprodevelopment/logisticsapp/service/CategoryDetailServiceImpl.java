@@ -13,7 +13,9 @@ import uz.bprodevelopment.logisticsapp.entity.CategoryDetail;
 import uz.bprodevelopment.logisticsapp.repo.CategoryDetailRepo;
 import uz.bprodevelopment.logisticsapp.spec.CategoryDetailSpec;
 import uz.bprodevelopment.logisticsapp.spec.SearchCriteria;
+import uz.bprodevelopment.logisticsapp.utils.CustomPage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,12 +26,13 @@ public class CategoryDetailServiceImpl implements CategoryDetailService {
     private final CategoryDetailRepo repo;
 
     @Override
-    public CategoryDetail getOne(Long id) {
-        return repo.findById(id).get();
+    public CategoryDetailDto getOne(Long id) {
+        CategoryDetail item = repo.getReferenceById(id);
+        return item.toDto();
     }
 
     @Override
-    public List<CategoryDetail> getListAll(
+    public List<CategoryDetailDto> getListAll(
             String name,
             Long categoryId,
             String sort
@@ -44,12 +47,15 @@ public class CategoryDetailServiceImpl implements CategoryDetailService {
         }
         if (categoryId != null) spec = spec.and(new CategoryDetailSpec(new SearchCriteria("categoryId", ":", categoryId)));
 
+        List<CategoryDetail> items = repo.findAll(spec, Sort.by(sort).descending());
+        List<CategoryDetailDto> dtos = new ArrayList<>();
+        items.forEach(item -> dtos.add(item.toDto()));
 
-        return repo.findAll(spec, Sort.by(sort).descending());
+        return dtos;
     }
 
     @Override
-    public Page<CategoryDetail> getList(
+    public CustomPage<CategoryDetailDto> getList(
             Integer page,
             Integer size,
             String name,
@@ -70,7 +76,18 @@ public class CategoryDetailServiceImpl implements CategoryDetailService {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
 
-        return repo.findAll(spec, pageable);
+        Page<CategoryDetail> responsePage = repo.findAll(spec, pageable);
+        List<CategoryDetailDto> dtos = new ArrayList<>();
+        responsePage.getContent().forEach(item -> dtos.add(item.toDto()));
+
+        return new CustomPage<>(
+                dtos,
+                responsePage.isFirst(),
+                responsePage.isLast(),
+                responsePage.getNumber(),
+                responsePage.getTotalPages(),
+                responsePage.getTotalElements()
+        );
     }
 
     @Override

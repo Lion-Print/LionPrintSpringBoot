@@ -3,6 +3,7 @@ package uz.bprodevelopment.logisticsapp.base.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import uz.bprodevelopment.logisticsapp.base.dto.UserDto;
 import uz.bprodevelopment.logisticsapp.entity.Company;
 import uz.bprodevelopment.logisticsapp.entity.Supplier;
 
@@ -38,4 +39,16 @@ public class User extends BaseAuditEntity {
 
     @OneToOne
     private Supplier supplier;
+
+    public UserDto toDto(){
+
+        UserDto userDto = new UserDto();
+        userDto.setId(this.id);
+        userDto.setFullName(this.fullName);
+        userDto.setUsername(this.username);
+        userDto.setRoleId(this.role.getId());
+        userDto.setRoleName(this.role.getName());
+
+        return userDto;
+    }
 }

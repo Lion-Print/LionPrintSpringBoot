@@ -21,8 +21,8 @@ public class CategoryController {
     public ResponseEntity<?> getOne(
             @PathVariable(name = "id") Long id
     ) {
-        Category company = service.getOne(id);
-        return ResponseEntity.ok().body(company);
+        CategoryDto category = service.getOne(id);
+        return ResponseEntity.ok().body(category);
     }
 
 

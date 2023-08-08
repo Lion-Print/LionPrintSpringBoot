@@ -4,8 +4,8 @@ package uz.bprodevelopment.logisticsapp.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import uz.bprodevelopment.logisticsapp.base.dto.UserDto;
 import uz.bprodevelopment.logisticsapp.dto.SupplierDto;
-import uz.bprodevelopment.logisticsapp.dto.UserDto;
 import uz.bprodevelopment.logisticsapp.entity.Supplier;
 import uz.bprodevelopment.logisticsapp.service.SupplierService;
 

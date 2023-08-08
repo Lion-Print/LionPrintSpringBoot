@@ -10,13 +10,13 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import uz.bprodevelopment.logisticsapp.base.dto.UserDto;
 import uz.bprodevelopment.logisticsapp.base.entity.Role;
 import uz.bprodevelopment.logisticsapp.base.entity.User;
 import uz.bprodevelopment.logisticsapp.base.repo.RoleRepo;
 import uz.bprodevelopment.logisticsapp.base.repo.UserRepo;
 import uz.bprodevelopment.logisticsapp.base.util.BaseAppUtils;
 import uz.bprodevelopment.logisticsapp.dto.CompanyDto;
-import uz.bprodevelopment.logisticsapp.dto.UserDto;
 import uz.bprodevelopment.logisticsapp.entity.Company;
 import uz.bprodevelopment.logisticsapp.repo.CompanyRepo;
 import uz.bprodevelopment.logisticsapp.spec.CompanySpec;
@@ -40,8 +40,8 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public CompanyDto getOne(Long id) {
-        Company company = repo.getReferenceById(id);
-        return company.toDto();
+        Company item = repo.getReferenceById(id);
+        return item.toDto();
     }
 
     @Override
@@ -89,17 +89,17 @@ public class CompanyServiceImpl implements CompanyService {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
 
-        Page<Company> pageCompanies = repo.findAll(spec, pageable);
-        List<CompanyDto> companyDtos = new ArrayList<>();
-        pageCompanies.getContent().forEach(company -> companyDtos.add(company.toDto()));
+        Page<Company> responsePage = repo.findAll(spec, pageable);
+        List<CompanyDto> dtos = new ArrayList<>();
+        responsePage.getContent().forEach(company -> dtos.add(company.toDto()));
 
         return new CustomPage<>(
-                companyDtos,
-                pageCompanies.isFirst(),
-                pageCompanies.isLast(),
-                pageCompanies.getNumber(),
-                pageCompanies.getTotalPages(),
-                pageCompanies.getTotalElements()
+                dtos,
+                responsePage.isFirst(),
+                responsePage.isLast(),
+                responsePage.getNumber(),
+                responsePage.getTotalPages(),
+                responsePage.getTotalElements()
         );
     }
 

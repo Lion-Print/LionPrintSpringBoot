@@ -14,12 +14,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import uz.bprodevelopment.logisticsapp.base.dto.UserDto;
 import uz.bprodevelopment.logisticsapp.base.entity.User;
 import uz.bprodevelopment.logisticsapp.base.repo.UserRepo;
-import uz.bprodevelopment.logisticsapp.base.util.BaseAppUtils;
-import uz.bprodevelopment.logisticsapp.dto.UserDto;
 import uz.bprodevelopment.logisticsapp.spec.SearchCriteria;
 import uz.bprodevelopment.logisticsapp.spec.UserSpec;
+import uz.bprodevelopment.logisticsapp.utils.CustomPage;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -33,14 +33,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepo repo;
     private final PasswordEncoder passwordEncoder;
 
-    @SuppressWarnings("OptionalGetWithoutIsPresent")
     @Override
-    public User getOne(Long id) {
-        return repo.findById(id).get();
+    public UserDto getOne(Long id) {
+        User item = repo.getReferenceById(id);
+        return item.toDto();
     }
 
     @Override
-    public List<User> getListAll(
+    public List<UserDto> getListAll(
             String username,
             String fullName,
             String sort
@@ -48,20 +48,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         UserSpec spec1 = new UserSpec(new SearchCriteria("id", ">", 0));
         Specification<User> spec = Specification.where(spec1);
 
-        if (username != null && fullName != null) {
-            UserSpec usernameSpec = new UserSpec(new SearchCriteria("username", ":", username));
-            UserSpec fullNameSpec = new UserSpec(new SearchCriteria("fullName", ":", fullName));
-            spec.and(Specification.where(usernameSpec.or(fullNameSpec)));
-        } else if (fullName != null)
+        if (fullName != null)
             spec = spec.and(new UserSpec(new SearchCriteria("fullName", ":", fullName)));
-        else if (username != null)
+        if (username != null)
             spec = spec.and(new UserSpec(new SearchCriteria("username", ":", username)));
 
-        return repo.findAll(spec, Sort.by(sort).descending());
+        List<User> users = repo.findAll(spec, Sort.by(sort).descending());
+        List<UserDto> userDtos = new ArrayList<>();
+        users.forEach(user -> userDtos.add(user.toDto()));
+
+        return userDtos;
     }
 
     @Override
-    public Page<User> getList(
+    public CustomPage<UserDto> getList(
             Integer page,
             Integer size,
             String username,
@@ -71,18 +71,25 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         UserSpec spec1 = new UserSpec(new SearchCriteria("id", ">", 0));
         Specification<User> spec = Specification.where(spec1);
 
-        if (username != null && fullName != null) {
-            UserSpec usernameSpec = new UserSpec(new SearchCriteria("username", ":", username));
-            UserSpec fullNameSpec = new UserSpec(new SearchCriteria("fullName", ":", fullName));
-            spec = spec.and(Specification.where(usernameSpec.or(fullNameSpec)));
-        } else if (fullName != null)
+        if (fullName != null)
             spec = spec.and(new UserSpec(new SearchCriteria("fullName", ":", fullName)));
-        else if (username != null)
+        if (username != null)
             spec = spec.and(new UserSpec(new SearchCriteria("username", ":", username)));
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
+        Page<User> responsePage = repo.findAll(spec, pageable);
+        List<UserDto> dtos = new ArrayList<>();
 
-        return repo.findAll(spec, pageable);
+        responsePage.getContent().forEach(user -> dtos.add(user.toDto()));
+
+        return new CustomPage<>(
+                dtos,
+                responsePage.isFirst(),
+                responsePage.isLast(),
+                responsePage.getNumber(),
+                responsePage.getTotalPages(),
+                responsePage.getTotalElements()
+        );
     }
 
     @Override

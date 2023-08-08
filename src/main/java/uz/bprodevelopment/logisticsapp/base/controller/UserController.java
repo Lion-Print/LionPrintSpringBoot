@@ -4,9 +4,9 @@ package uz.bprodevelopment.logisticsapp.base.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import uz.bprodevelopment.logisticsapp.base.dto.UserDto;
 import uz.bprodevelopment.logisticsapp.base.entity.User;
 import uz.bprodevelopment.logisticsapp.base.service.UserService;
-import uz.bprodevelopment.logisticsapp.dto.UserDto;
 
 import static uz.bprodevelopment.logisticsapp.base.config.Urls.USER_URL;
 
@@ -21,8 +21,8 @@ public class UserController {
     public ResponseEntity<?> getOne(
             @PathVariable(name = "id") Long id
     ) {
-        User users = service.getOne(id);
-        return ResponseEntity.ok().body(users);
+        UserDto user = service.getOne(id);
+        return ResponseEntity.ok().body(user);
     }
 
 
