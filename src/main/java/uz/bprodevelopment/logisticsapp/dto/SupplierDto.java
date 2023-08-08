@@ -15,6 +15,7 @@ public class SupplierDto {
     private String name;
     private String director;
     private String phone;
+    private Long companyId;
 
     private String fullName;
     private String username;

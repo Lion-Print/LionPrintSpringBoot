@@ -12,9 +12,10 @@ public class Urls {
     public static final String USER_URL = BASE_URL + "user";
 
     public static final String COMPANY_URL = BASE_URL + "company";
-
-    public static final String COMPANY_PRODUCT_URL = BASE_URL + "company-product";
     public static final String SUPPLIER_URL = BASE_URL + "supplier";
-    public static final String SUPPLIER_PRODUCT_URL = BASE_URL + "supplier-product";
+
+    public static final String CATEGORY_URL = BASE_URL + "category";
+    public static final String CATEGORY_DETAIL_URL = BASE_URL + "category-detail";
+
 
 }

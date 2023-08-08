@@ -149,13 +149,8 @@ public class SupplierServiceImpl implements SupplierService {
             throw new RuntimeException("Bunday username mavjud");
         }
 
-        User currentUser = userRepo.findByUsername(BaseAppUtils.getCurrentUsername());
-        if (currentUser.getCompany() == null) {
-            throw new RuntimeException("Bu foydalanuvchiga kompaniya qo'shish mumkin emas");
-        }
-
         Supplier supplier = item.toEntity();
-        supplier.getCompanies().add(currentUser.getCompany());
+        supplier.getCompanies().add(new Company(item.getCompanyId()));
 
         repo.save(supplier);
 

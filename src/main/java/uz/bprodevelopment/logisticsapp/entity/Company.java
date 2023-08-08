@@ -33,4 +33,8 @@ public class Company extends BaseAuditEntity {
 
     @ManyToMany
     private List<Supplier> suppliers = new ArrayList<>();
+
+    public Company(Long id) {
+        this.id = id;
+    }
 }

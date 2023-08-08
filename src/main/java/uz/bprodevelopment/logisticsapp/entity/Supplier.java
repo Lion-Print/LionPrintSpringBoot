@@ -32,6 +32,6 @@ public class Supplier extends BaseAuditEntity {
 
     @ManyToMany
     private List<Company> companies = new ArrayList<>();
-    
+
 
 }

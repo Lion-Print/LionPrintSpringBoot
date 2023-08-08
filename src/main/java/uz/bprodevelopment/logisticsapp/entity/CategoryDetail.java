@@ -6,24 +6,26 @@ import lombok.NoArgsConstructor;
 import uz.bprodevelopment.logisticsapp.base.entity.BaseAuditEntity;
 
 import javax.persistence.*;
+import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Data
 @Entity
-@Table(name = "supplier_products")
+@Table(name = "categories")
 @NoArgsConstructor
 @AllArgsConstructor
-public class SupplierProduct extends BaseAuditEntity {
+public class CategoryDetail extends BaseAuditEntity {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
+    private String nameUz;
+    private String nameRu;
+
     @ManyToOne
-    private CompanyProduct companyProduct;
-
-
-    private String description;
+    @JoinColumn(name="category_id", nullable=false)
+    private Category category;
 
 }

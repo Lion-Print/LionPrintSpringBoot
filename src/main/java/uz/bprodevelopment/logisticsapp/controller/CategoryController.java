@@ -4,29 +4,29 @@ package uz.bprodevelopment.logisticsapp.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import uz.bprodevelopment.logisticsapp.dto.UserDto;
-import uz.bprodevelopment.logisticsapp.entity.CompanyProduct;
-import uz.bprodevelopment.logisticsapp.service.CompanyProductService;
+import uz.bprodevelopment.logisticsapp.dto.CategoryDto;
+import uz.bprodevelopment.logisticsapp.entity.Category;
+import uz.bprodevelopment.logisticsapp.service.CategoryService;
 
-import static uz.bprodevelopment.logisticsapp.base.config.Urls.COMPANY_PRODUCT_URL;
+import static uz.bprodevelopment.logisticsapp.base.config.Urls.CATEGORY_URL;
 
 
 @RestController
 @RequiredArgsConstructor
-public class CompanyProductController {
+public class CategoryController {
 
-    private final CompanyProductService service;
+    private final CategoryService service;
 
-    @GetMapping(COMPANY_PRODUCT_URL + "/{id}")
+    @GetMapping(CATEGORY_URL + "/{id}")
     public ResponseEntity<?> getOne(
             @PathVariable(name = "id") Long id
     ) {
-        CompanyProduct company = service.getOne(id);
+        Category company = service.getOne(id);
         return ResponseEntity.ok().body(company);
     }
 
 
-    @GetMapping(COMPANY_PRODUCT_URL)
+    @GetMapping(CATEGORY_URL)
     public ResponseEntity<?> getList(
             @RequestParam(name = "page") Integer page,
             @RequestParam(name = "size") Integer size,
@@ -40,7 +40,7 @@ public class CompanyProductController {
         );
     }
 
-    @GetMapping(COMPANY_PRODUCT_URL + "/all")
+    @GetMapping(CATEGORY_URL + "/all")
     public ResponseEntity<?> getListAll(
             @RequestParam(name = "name", required = false) String name,
             @RequestParam(name = "sort", required = false, defaultValue = "id") String sort
@@ -53,23 +53,23 @@ public class CompanyProductController {
     }
 
 
-    @PostMapping(COMPANY_PRODUCT_URL)
+    @PostMapping(CATEGORY_URL)
     public ResponseEntity<?> save(
-            @RequestBody CompanyProduct item
+            @RequestBody CategoryDto item
     ) {
         service.save(item);
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping(COMPANY_PRODUCT_URL)
+    @PutMapping(CATEGORY_URL)
     public ResponseEntity<?> update(
-            @RequestBody CompanyProduct item
+            @RequestBody CategoryDto item
     ) {
         service.update(item);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping(COMPANY_PRODUCT_URL + "/{id}")
+    @DeleteMapping(CATEGORY_URL + "/{id}")
     public ResponseEntity<?> delete(
             @PathVariable(name = "id") Long id
     ) {
