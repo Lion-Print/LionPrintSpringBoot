@@ -24,6 +24,7 @@ public interface CompanyService {
             String name,
             String director,
             String phone,
+            Boolean isBlocked,
             String sort
     );
 

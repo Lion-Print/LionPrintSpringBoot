@@ -14,6 +14,8 @@ public class Urls {
     public static final String COMPANY_URL = BASE_URL + "company";
     public static final String SUPPLIER_URL = BASE_URL + "supplier";
 
+    public static final String CURRENCY_TYPE_URL = BASE_URL + "currency-type";
+    public static final String CURRENCY_URL = BASE_URL + "currency";
     public static final String CATEGORY_URL = BASE_URL + "category";
     public static final String CATEGORY_DETAIL_URL = BASE_URL + "category-detail";
 

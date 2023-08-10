@@ -74,18 +74,16 @@ public class CompanyServiceImpl implements CompanyService {
             String name,
             String director,
             String phone,
+            Boolean isBlocked,
             String sort
     ) {
 
         CompanySpec spec1 = new CompanySpec(new SearchCriteria("id", ">", 0));
         Specification<Company> spec = Specification.where(spec1);
 
-        if (name != null) {
-            spec = spec.and(new CompanySpec(new SearchCriteria("name", ":", name)));
-        } else if (director != null)
-            spec = spec.and(new CompanySpec(new SearchCriteria("director", ":", director)));
-        else if (phone != null)
-            spec = spec.and(new CompanySpec(new SearchCriteria("phone", ":", phone)));
+        if (name != null) spec = spec.and(new CompanySpec(new SearchCriteria("name", ":", name)));
+        if (director != null) spec = spec.and(new CompanySpec(new SearchCriteria("director", ":", director)));
+        if (phone != null) spec = spec.and(new CompanySpec(new SearchCriteria("phone", ":", phone)));
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
 
@@ -101,6 +99,7 @@ public class CompanyServiceImpl implements CompanyService {
                 responsePage.getTotalPages(),
                 responsePage.getTotalElements()
         );
+
     }
 
     @Override
