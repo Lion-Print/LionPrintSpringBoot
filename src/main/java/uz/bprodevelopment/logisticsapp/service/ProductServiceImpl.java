@@ -140,7 +140,9 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public void save(ProductDto item) {
         if(item.getPrice() == null) {
-            String message = messageSource.getMessage("enter_price", null, new Locale(BaseAppUtils.getCurrentLanguage()));
+            String lang = BaseAppUtils.getCurrentLanguage();
+            Locale locale = new Locale(lang);
+            String message = messageSource.getMessage("enter_price", null, locale);
             throw new RuntimeException(message);
         }
         if(item.getCategoryId() == null) {
