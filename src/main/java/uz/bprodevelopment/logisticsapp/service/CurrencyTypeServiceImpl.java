@@ -93,6 +93,9 @@ public class CurrencyTypeServiceImpl implements CurrencyTypeService {
         if(item.getNameRu() == null) {
             throw new RuntimeException("Ruscha nomini kiriting");
         }
+        if(item.getSymbol() == null) {
+            throw new RuntimeException("Simvol kiriting");
+        }
         if (item.getId() != null) {
             throw new RuntimeException("ID yuborish mumkin emas");
         }
@@ -112,8 +115,8 @@ public class CurrencyTypeServiceImpl implements CurrencyTypeService {
         if (item.getId() == null) {
             throw new RuntimeException("ID kiritilmagan");
         }
-        CurrencyType category = item.toEntity();
-        repo.save(category);
+        CurrencyType currencyType = item.toEntity();
+        repo.save(currencyType);
     }
 
     @Override
