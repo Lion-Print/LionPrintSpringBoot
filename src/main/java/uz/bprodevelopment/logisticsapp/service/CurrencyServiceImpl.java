@@ -40,6 +40,8 @@ public class CurrencyServiceImpl implements CurrencyService {
         CurrencySpec spec1 = new CurrencySpec(new SearchCriteria("id", ">", 0));
         Specification<Currency> spec = Specification.where(spec1);
 
+        if (companyId != null) spec = spec.and(new CurrencySpec(new SearchCriteria("companyId", ":", companyId)));
+
         List<Currency> items = repo.findAll(spec, Sort.by(sort).descending());
         List<CurrencyDto> itemDtos = new ArrayList<>();
         items.forEach(category -> itemDtos.add(category.toDto()));
