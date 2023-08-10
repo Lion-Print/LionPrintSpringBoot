@@ -112,6 +112,9 @@ public class CurrencyTypeServiceImpl implements CurrencyTypeService {
         if(item.getNameRu() == null) {
             throw new RuntimeException("Ruscha nomini kiriting");
         }
+        if(item.getSymbol() == null) {
+            throw new RuntimeException("Simvol kiriting");
+        }
         if (item.getId() == null) {
             throw new RuntimeException("ID kiritilmagan");
         }
