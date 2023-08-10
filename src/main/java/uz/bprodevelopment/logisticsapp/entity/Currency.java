@@ -38,6 +38,9 @@ public class Currency extends BaseAuditEntity {
         currencyDto.setSymbol(currencyType.getSymbol());
         currencyDto.setCurrencyValueInUzs(currencyValueInUzs);
 
+        currencyDto.setCurrencyTypeId(currencyType.getId());
+        currencyDto.setCompanyId(company.getId());
+
         return currencyDto;
     }
 
