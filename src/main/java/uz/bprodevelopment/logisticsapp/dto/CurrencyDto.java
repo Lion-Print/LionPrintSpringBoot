@@ -28,6 +28,7 @@ public class CurrencyDto {
 
     private Long currencyTypeId;
     private Long companyId;
+    private String companyName;
 
     private Timestamp modifiedDate;
     public Currency toEntity() {

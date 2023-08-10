@@ -40,6 +40,7 @@ public class Currency extends BaseAuditEntity {
 
         currencyDto.setCurrencyTypeId(currencyType.getId());
         currencyDto.setCompanyId(company.getId());
+        currencyDto.setCompanyName(company.getName());
 
         currencyDto.setModifiedDate(getModifiedDate());
 
