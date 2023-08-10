@@ -10,6 +10,8 @@ import uz.bprodevelopment.logisticsapp.entity.CurrencyType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import java.sql.Timestamp;
+
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Data
@@ -26,6 +28,8 @@ public class CurrencyDto {
 
     private Long currencyTypeId;
     private Long companyId;
+
+    private Timestamp modifiedDate;
     public Currency toEntity() {
 
         Currency currency = new Currency();
