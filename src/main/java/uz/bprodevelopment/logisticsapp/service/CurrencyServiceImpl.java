@@ -83,6 +83,9 @@ public class CurrencyServiceImpl implements CurrencyService {
         if(item.getCompanyId() == null) {
             throw new RuntimeException("Kompaniya ID si kiritilmagan");
         }
+        if(item.getCurrencyTypeId() == null) {
+            throw new RuntimeException("Valyuta turi ID si kiritilmagan");
+        }
         if (item.getId() != null) {
             throw new RuntimeException("ID yuborish mumkin emas");
         }
