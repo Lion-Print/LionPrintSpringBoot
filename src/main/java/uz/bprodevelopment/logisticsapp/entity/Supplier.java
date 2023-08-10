@@ -4,11 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uz.bprodevelopment.logisticsapp.base.entity.BaseAuditEntity;
+import uz.bprodevelopment.logisticsapp.dto.SupplierDto;
 
 import javax.persistence.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -30,11 +28,27 @@ public class Supplier extends BaseAuditEntity {
 
     private String phone;
 
-    @ManyToMany
-    private List<Company> companies = new ArrayList<>();
+    private Boolean isBlocked = false;
 
+    private String userFullName;
 
+    @Column(unique = true, nullable = false)
+    private String username;
     public Supplier(Long id) {
         this.id = id;
+    }
+
+    public SupplierDto toDto(){
+
+        SupplierDto supplierDto = new SupplierDto();
+        supplierDto.setId(id);
+        supplierDto.setName(name);
+        supplierDto.setDirector(director);
+        supplierDto.setPhone(phone);
+        supplierDto.setIsBlocked(isBlocked);
+        supplierDto.setUserFullName(userFullName);
+        supplierDto.setUsername(username);
+
+        return supplierDto;
     }
 }

@@ -6,9 +6,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.bprodevelopment.logisticsapp.base.dto.UserDto;
 import uz.bprodevelopment.logisticsapp.dto.SupplierDto;
+import uz.bprodevelopment.logisticsapp.dto.SupplierDto;
 import uz.bprodevelopment.logisticsapp.entity.Supplier;
 import uz.bprodevelopment.logisticsapp.service.SupplierService;
+import uz.bprodevelopment.logisticsapp.service.SupplierService;
 
+import static uz.bprodevelopment.logisticsapp.base.config.Urls.SUPPLIER_URL;
 import static uz.bprodevelopment.logisticsapp.base.config.Urls.SUPPLIER_URL;
 
 
@@ -22,7 +25,7 @@ public class SupplierController {
     public ResponseEntity<?> getOne(
             @PathVariable(name = "id") Long id
     ) {
-        Supplier company = service.getOne(id);
+        SupplierDto company = service.getOne(id);
         return ResponseEntity.ok().body(company);
     }
 
@@ -34,11 +37,12 @@ public class SupplierController {
             @RequestParam(name = "name", required = false) String name,
             @RequestParam(name = "director", required = false) String director,
             @RequestParam(name = "phone", required = false) String phone,
+            @RequestParam(name = "isBlocked", required = false) Boolean isBlocked,
             @RequestParam(name = "sort", required = false, defaultValue = "id") String sort
     ) {
         return ResponseEntity.ok().body(
                 service.getList(
-                        page, size, name, director, phone, sort
+                        page, size, name, director, phone, isBlocked, sort
                 )
         );
     }

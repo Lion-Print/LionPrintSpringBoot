@@ -14,9 +14,9 @@ public class SupplierDto {
     private String name;
     private String director;
     private String phone;
-    private Long companyId;
+    private Boolean isBlocked = false;
 
-    private String fullName;
+    private String userFullName;
     private String username;
     private String password;
 
@@ -27,6 +27,9 @@ public class SupplierDto {
         supplier.setName(this.name);
         supplier.setDirector(this.director);
         supplier.setPhone(this.phone);
+        supplier.setIsBlocked(this.isBlocked);
+        supplier.setUserFullName(this.userFullName);
+        supplier.setUsername(this.username);
 
         return supplier;
     }

@@ -17,12 +17,17 @@ import uz.bprodevelopment.logisticsapp.base.repo.RoleRepo;
 import uz.bprodevelopment.logisticsapp.base.repo.UserRepo;
 import uz.bprodevelopment.logisticsapp.base.util.BaseAppUtils;
 import uz.bprodevelopment.logisticsapp.dto.SupplierDto;
-import uz.bprodevelopment.logisticsapp.entity.Company;
+import uz.bprodevelopment.logisticsapp.dto.SupplierDto;
+import uz.bprodevelopment.logisticsapp.entity.Supplier;
 import uz.bprodevelopment.logisticsapp.entity.Supplier;
 import uz.bprodevelopment.logisticsapp.repo.SupplierRepo;
+import uz.bprodevelopment.logisticsapp.repo.SupplierRepo;
+import uz.bprodevelopment.logisticsapp.spec.SupplierSpec;
 import uz.bprodevelopment.logisticsapp.spec.SupplierSpec;
 import uz.bprodevelopment.logisticsapp.spec.SearchCriteria;
+import uz.bprodevelopment.logisticsapp.utils.CustomPage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static uz.bprodevelopment.logisticsapp.base.config.Constants.*;
@@ -38,12 +43,13 @@ public class SupplierServiceImpl implements SupplierService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public Supplier getOne(Long id) {
-        return repo.findById(id).get();
+    public SupplierDto getOne(Long id) {
+        Supplier item = repo.getReferenceById(id);
+        return item.toDto();
     }
 
     @Override
-    public List<Supplier> getListAll(
+    public List<SupplierDto> getListAll(
             String name,
             String director,
             String phone,
@@ -52,114 +58,85 @@ public class SupplierServiceImpl implements SupplierService {
         SupplierSpec spec1 = new SupplierSpec(new SearchCriteria("id", ">", 0));
         Specification<Supplier> spec = Specification.where(spec1);
 
-        if (name != null)
-            spec = spec.and(new SupplierSpec(new SearchCriteria("name", ":", name)));
-        if (director != null)
-            spec = spec.and(new SupplierSpec(new SearchCriteria("director", ":", director)));
-        if (phone != null)
-            spec = spec.and(new SupplierSpec(new SearchCriteria("phone", ":", phone)));
+        if (name != null) spec = spec.and(new SupplierSpec(new SearchCriteria("name", ":", name)));
 
-        User user = userRepo.findByUsername(BaseAppUtils.getCurrentUsername());
-        if (user.getRole() == null) {
-            throw new RuntimeException("User role mavjud emas");
-        }
+        if (director != null) spec = spec.and(new SupplierSpec(new SearchCriteria("director", ":", director)));
 
-        String roleName = user.getRole().getName();
-        if (!roleName.equals(ROLE_ADMIN) && !roleName.equals(ROLE_MANAGER)) {
-            Company company = user.getCompany();
-            if (company == null) {
-                throw new RuntimeException("User kompaniyasi mavjud emas");
-            }
-            Long companyId = company.getId();
-            spec = spec.and(new SupplierSpec(new SearchCriteria("companyId", ":", companyId)));
-        }
+        if (phone != null) spec = spec.and(new SupplierSpec(new SearchCriteria("phone", ":", phone)));
 
-        return repo.findAll(spec, Sort.by(sort).descending());
+        List<Supplier> companies = repo.findAll(spec, Sort.by(sort).descending());
+        List<SupplierDto> companyDtos = new ArrayList<>();
+        companies.forEach(company -> companyDtos.add(company.toDto()));
+
+        return companyDtos;
     }
 
     @Override
-    public Page<Supplier> getList(
+    public CustomPage<SupplierDto> getList(
             Integer page,
             Integer size,
             String name,
             String director,
             String phone,
+            Boolean isBlocked,
             String sort
     ) {
 
         SupplierSpec spec1 = new SupplierSpec(new SearchCriteria("id", ">", 0));
         Specification<Supplier> spec = Specification.where(spec1);
 
-        if (name != null)
-            spec = spec.and(new SupplierSpec(new SearchCriteria("name", ":", name)));
-        if (director != null)
-            spec = spec.and(new SupplierSpec(new SearchCriteria("director", ":", director)));
-        if (phone != null)
-            spec = spec.and(new SupplierSpec(new SearchCriteria("phone", ":", phone)));
-
-        User user = userRepo.findByUsername(BaseAppUtils.getCurrentUsername());
-        if (user.getRole() == null) {
-            throw new RuntimeException("User role mavjud emas");
-        }
-
-        String roleName = user.getRole().getName();
-        if (!roleName.equals(ROLE_ADMIN) && !roleName.equals(ROLE_MANAGER)) {
-            Company company = user.getCompany();
-            if (company == null) {
-                throw new RuntimeException("User kompaniyasi mavjud emas");
-            }
-            Long companyId = company.getId();
-            spec = spec.and(new SupplierSpec(new SearchCriteria("companyId", ":", companyId)));
-        }
+        if (name != null) spec = spec.and(new SupplierSpec(new SearchCriteria("name", ":", name)));
+        if (director != null) spec = spec.and(new SupplierSpec(new SearchCriteria("director", ":", director)));
+        if (phone != null) spec = spec.and(new SupplierSpec(new SearchCriteria("phone", ":", phone)));
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
 
-        return repo.findAll(spec, pageable);
+        Page<Supplier> responsePage = repo.findAll(spec, pageable);
+        List<SupplierDto> dtos = new ArrayList<>();
+        responsePage.getContent().forEach(company -> dtos.add(company.toDto()));
+
+        return new CustomPage<>(
+                dtos,
+                responsePage.isFirst(),
+                responsePage.isLast(),
+                responsePage.getNumber(),
+                responsePage.getTotalPages(),
+                responsePage.getTotalElements()
+        );
+
     }
 
     @Override
     @Transactional
     public void save(SupplierDto item) {
+        if (item.getId() != null) throw new RuntimeException("Taminotchi kompaniya yaratishda id yuborish mumkin emas");
 
-        if (item.getName() == null) {
-            throw new RuntimeException("Kompaniya nomini kiriting");
-        }
-        if (item.getDirector() == null) {
-            throw new RuntimeException("Kompaniya directori ismini kiriting");
-        }
-        if (item.getPhone() == null) {
-            throw new RuntimeException("Kompaniya telefon raqamini kiriting");
-        }
-        if (item.getFullName() == null) {
-            throw new RuntimeException("Kompaniya foydalanuvchisi ismini kiriting");
-        }
-        if (item.getUsername() == null) {
-            throw new RuntimeException("Kompaniya foydalanuvchisi uchun username kiriting");
-        }
-        if (item.getPassword() == null) {
-            throw new RuntimeException("Kompaniya foydalanuvchisi uchun parol kiriting");
-        }
+        if(item.getName() == null) throw new RuntimeException("Taminotchi kompaniya nomini kiriting");
 
-        Role role = roleRepo.findByName(ROLE_SUPPLIER_ADMIN);
-        if (role == null) {
-            throw new RuntimeException("ROLE_SUPPLIER_ADMIN mavjud emas");
-        }
+        if(item.getDirector() == null) throw new RuntimeException("Taminotchi kompaniya directori ismini kiriting");
 
-        if (userRepo.findByUsername(item.getUsername()) != null) {
-            throw new RuntimeException("Bunday username mavjud");
-        }
+        if(item.getPhone() == null) throw new RuntimeException("Taminotchi kompaniya telefon raqamini kiriting");
 
-        Supplier supplier = item.toEntity();
-        supplier.getCompanies().add(new Company(item.getCompanyId()));
+        if(item.getUserFullName() == null) throw new RuntimeException("Taminotchi kompaniya foydalanuvchisi ismini kiriting");
 
-        repo.save(supplier);
+        if(item.getUsername() == null) throw new RuntimeException("Taminotchi kompaniya foydalanuvchisi uchun username kiriting");
+
+        if(item.getPassword() == null) throw new RuntimeException("Taminotchi kompaniya foydalanuvchisi uchun parol kiriting");
+
+        if (repo.existsByName(item.getName())) throw new RuntimeException("Bunday nom bilan kompaniya yaratilgan");
+
+        if (userRepo.existsByUsername(item.getUsername())) throw new RuntimeException("Bunday username mavjud");
+
+        Supplier company = item.toEntity();
+        repo.save(company);
 
         User user = new User();
-        user.setFullName(item.getFullName());
+        user.setFullName(item.getUserFullName());
         user.setUsername(item.getUsername());
         user.setPassword(passwordEncoder.encode(item.getPassword()));
+        user.setSupplier(company);
 
-        user.setSupplier(supplier);
+        Role role = roleRepo.findByName(ROLE_COMPANY_ADMIN);
         user.setRole(role);
 
         userRepo.save(user);
@@ -168,7 +145,34 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     @Transactional
     public void update(SupplierDto item) {
-        repo.save(item.toEntity());
+        if (item.getId() == null) throw new RuntimeException("Taminotchi kompaniyani tahrirlashda id yuborish shart");
+
+        if(item.getName() == null) throw new RuntimeException("Taminotchi kompaniya nomini kiriting");
+
+        if(item.getDirector() == null) throw new RuntimeException("Taminotchi kompaniya directori ismini kiriting");
+
+        if(item.getPhone() == null) throw new RuntimeException("Taminotchi kompaniya telefon raqamini kiriting");
+
+        if(item.getUserFullName() == null) throw new RuntimeException("Taminotchi kompaniya foydalanuvchisi ismini kiriting");
+
+        if(item.getUsername() == null) throw new RuntimeException("Taminotchi kompaniya foydalanuvchisi uchun username kiriting");
+
+        Supplier dbSupplier = repo.getReferenceById(item.getId());
+        User user = userRepo.findByUsername(dbSupplier.getUsername());
+
+        if (!dbSupplier.getName().equals(item.getName()) && repo.existsByName(item.getName())) throw new RuntimeException("Bunday nom bilan kompaniya yaratilgan");
+
+        if (!dbSupplier.getUsername().equals(item.getUsername()) && userRepo.existsByUsername(item.getUsername())) throw new RuntimeException("Bunday username mavjud");
+
+        Supplier company = item.toEntity();
+        repo.save(company);
+
+        user.setFullName(item.getUserFullName());
+        user.setUsername(item.getUsername());
+
+        if (item.getPassword() != null && !item.getPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(item.getPassword()));
+        }
     }
 
     @Override
@@ -183,11 +187,11 @@ public class SupplierServiceImpl implements SupplierService {
             throw new RuntimeException("Siz bu kompaniyaga foydalanuvchi qo'sholmaysiz");
         }
 
-        Supplier supplier = new Supplier();
-        supplier.setId(currentUser.getSupplier().getId());
+        Supplier company = new Supplier();
+        company.setId(currentUser.getSupplier().getId());
 
         User user = userDto.toEntity();
-        user.setSupplier(supplier);
+        user.setSupplier(company);
 
         userRepo.save(user);
     }

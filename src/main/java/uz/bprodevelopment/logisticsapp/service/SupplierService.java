@@ -4,27 +4,30 @@ package uz.bprodevelopment.logisticsapp.service;
 import org.springframework.data.domain.Page;
 import uz.bprodevelopment.logisticsapp.base.dto.UserDto;
 import uz.bprodevelopment.logisticsapp.dto.SupplierDto;
+import uz.bprodevelopment.logisticsapp.dto.SupplierDto;
 import uz.bprodevelopment.logisticsapp.entity.Supplier;
+import uz.bprodevelopment.logisticsapp.utils.CustomPage;
 
 import java.util.List;
 
 public interface SupplierService {
 
-    Supplier getOne(Long id);
+    SupplierDto getOne(Long id);
 
-    List<Supplier> getListAll(
+    List<SupplierDto> getListAll(
             String name,
             String director,
             String phone,
             String sort
     );
 
-    Page<Supplier> getList(
+    CustomPage<SupplierDto> getList(
             Integer page,
             Integer size,
             String name,
             String director,
             String phone,
+            Boolean isBlocked,
             String sort
     );
 

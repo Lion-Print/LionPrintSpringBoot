@@ -18,11 +18,8 @@ public class SupplierSpec extends BaseSpec<Supplier> {
     @Override
     public Predicate toPredicate
             (Root<Supplier> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
-        if (criteria.getKey().equals("companyId")) {
-            Join<Company, Supplier> company = root.join("company");
-            return builder.equal(company.get("id"), criteria.getValue());
-        } else {
-            return super.toPredicate(root, query, builder);
-        }
+
+        return super.toPredicate(root, query, builder);
+
     }
 }
