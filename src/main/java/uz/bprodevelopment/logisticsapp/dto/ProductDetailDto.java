@@ -18,12 +18,11 @@ import static javax.persistence.GenerationType.IDENTITY;
 public class ProductDetailDto {
 
     private Long id;
-    private Long productId;
     private Long categoryDetailId;
+    private String categoryDetailName;
+    private Long productId;
     private String value;
 
-    private String detailNameUz;
-    private String detailNameRu;
 
 
     public ProductDetail toEntity(){

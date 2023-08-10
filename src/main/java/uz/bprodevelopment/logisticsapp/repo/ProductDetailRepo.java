@@ -11,6 +11,6 @@ public interface ProductDetailRepo extends JpaRepository<ProductDetail, Long>,
 
     void deleteByProductId(Long productId);
 
-    List<ProductDetail> findByProductId(Long productId);
+    List<ProductDetail> findAllByProductId(Long productId);
 
 }

@@ -20,7 +20,10 @@ public class CategoryDetail extends BaseAuditEntity {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String nameUz;
+
+    @Column(nullable = false)
     private String nameRu;
 
     @ManyToOne

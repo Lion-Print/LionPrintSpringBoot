@@ -6,4 +6,5 @@ import uz.bprodevelopment.logisticsapp.entity.Product;
 
 public interface ProductRepo extends JpaRepository<Product, Long>,
         JpaSpecificationExecutor<Product> {
+
 }

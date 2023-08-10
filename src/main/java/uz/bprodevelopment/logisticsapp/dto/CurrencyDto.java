@@ -30,7 +30,8 @@ public class CurrencyDto {
     private Long companyId;
     private String companyName;
 
-    private Timestamp modifiedDate;
+    private String modifiedDate;
+    private String modifiedTime;
     public Currency toEntity() {
 
         Currency currency = new Currency();

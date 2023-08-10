@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uz.bprodevelopment.logisticsapp.base.entity.BaseAuditEntity;
+import uz.bprodevelopment.logisticsapp.base.util.BaseAppUtils;
 import uz.bprodevelopment.logisticsapp.dto.ProductDto;
 
 import javax.persistence.*;
@@ -21,22 +22,19 @@ public class Product extends BaseAuditEntity {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    private String name;
-
     private Double price;
 
-    private Integer hasDelivery = 0;
+    private Boolean hasDelivery = false;
 
-    private Integer hasNds = 0;
+    private Boolean hasNds = false;
 
     @ManyToOne
     private Category category;
 
     @ManyToOne
-    private Company company;
-
-    @ManyToOne
     private Supplier supplier;
+
+    private String description;
 
     public Product(Long id) {
         this.id = id;
@@ -46,13 +44,14 @@ public class Product extends BaseAuditEntity {
 
         ProductDto productDto = new ProductDto();
         productDto.setId(id);
-        productDto.setName(name);
+        productDto.setDescription(description);
         productDto.setPrice(price);
         productDto.setHasDelivery(hasDelivery);
         productDto.setHasNds(hasNds);
         productDto.setCategoryId(category.getId());
-        productDto.setCompanyId(company.getId());
+        productDto.setCategoryName(BaseAppUtils.getCurrentLanguage().equals("uz") ? category.getNameUz() : category.getNameRu());
         productDto.setSupplierId(supplier.getId());
+        productDto.setSupplierName(supplier.getName());
 
         return productDto;
     }

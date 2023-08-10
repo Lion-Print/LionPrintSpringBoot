@@ -5,38 +5,41 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import uz.bprodevelopment.logisticsapp.entity.*;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import java.util.ArrayList;
 import java.util.List;
+
+import static javax.persistence.GenerationType.IDENTITY;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductDto {
 
-
     private Long id;
-    private String name;
     private Double price;
-    private Integer hasDelivery = 0;
-    private Integer hasNds = 0;
-
+    private Boolean hasDelivery = false;
+    private Boolean hasNds = false;
     private Long categoryId;
-    private Long companyId;
+    private String categoryName;
     private Long supplierId;
+    private String supplierName;
+    private String description;
 
-    private List<ProductDetailDto> productDetails = new ArrayList<>();
+    private List<ProductDetailDto> details = new ArrayList<>();
 
     public Product toEntity(){
 
         Product product = new Product();
-        product.setId(this.id);
-        product.setName(this.name);
-        product.setPrice(this.price);
-        product.setHasDelivery(this.hasDelivery);
-        product.setHasNds(this.hasNds);
+        product.setId(id);
+        product.setDescription(description);
+        product.setPrice(price);
+        product.setHasDelivery(hasDelivery);
+        product.setHasNds(hasNds);
 
         product.setCategory(new Category(categoryId));
-        product.setCompany(new Company(companyId));
         product.setSupplier(new Supplier(supplierId));
 
         return product;

@@ -68,8 +68,12 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                                 authorities.add(new SimpleGrantedAuthority(role));
                             }
                     );
+
+                    String locale = request.getHeader("Accept-Language");
+                    if (locale == null || locale.isEmpty()) locale = "uz";
+
                     CustomUsernamePasswordAuthenticationToken authenticationToken =
-                            new CustomUsernamePasswordAuthenticationToken(username, null, authorities, users.getId());
+                            new CustomUsernamePasswordAuthenticationToken(username, null, authorities, users.getId(), locale);
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
                     filterChain.doFilter(request, response);

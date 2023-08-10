@@ -2,10 +2,12 @@ package uz.bprodevelopment.logisticsapp.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import uz.bprodevelopment.logisticsapp.base.util.BaseAppUtils;
 import uz.bprodevelopment.logisticsapp.dto.ProductDetailDto;
 import uz.bprodevelopment.logisticsapp.dto.ProductDto;
 import uz.bprodevelopment.logisticsapp.entity.Product;
@@ -14,9 +16,11 @@ import uz.bprodevelopment.logisticsapp.repo.ProductDetailRepo;
 import uz.bprodevelopment.logisticsapp.repo.ProductRepo;
 import uz.bprodevelopment.logisticsapp.spec.ProductSpec;
 import uz.bprodevelopment.logisticsapp.spec.SearchCriteria;
+import uz.bprodevelopment.logisticsapp.utils.CustomPage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
@@ -25,28 +29,30 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepo repo;
     private final ProductDetailRepo productDetailRepo;
+    private final MessageSource messageSource;
 
     @Override
-    public Product getOne(Long id) {
-        return repo.findById(id).get();
+    public ProductDto getOne(Long id) {
+        Product item = repo.getReferenceById(id);
+        return item.toDto();
     }
 
     @Override
     public List<ProductDto> getListAll(
-            String name,
+            String description,
             Double price,
             Integer hasDelivery,
             Integer hasNds,
             Long categoryId,
-            Long companyId,
             Long supplierId,
-            String sort
+            String sort,
+            Boolean descending
     ) {
         ProductSpec spec1 = new ProductSpec(new SearchCriteria("id", ">", 0));
         Specification<Product> spec = Specification.where(spec1);
 
 
-        if (name != null) spec = spec.and(new ProductSpec(new SearchCriteria("name", ":", name)));
+        if (description != null) spec = spec.and(new ProductSpec(new SearchCriteria("description", ":", description)));
 
         if (price != null) spec = spec.and(new ProductSpec(new SearchCriteria("price", "=", price)));
 
@@ -56,44 +62,43 @@ public class ProductServiceImpl implements ProductService {
 
         if (categoryId != null) spec = spec.and(new ProductSpec(new SearchCriteria("categoryId", ":", categoryId)));
 
-        if (companyId != null) spec = spec.and(new ProductSpec(new SearchCriteria("companyId", ":", companyId)));
-
         if (supplierId != null) spec = spec.and(new ProductSpec(new SearchCriteria("supplierId", ":", supplierId)));
 
-        List<Product> products = repo.findAll(spec, Sort.by(sort).descending());
+        Sort sorting = Sort.by(descending ? Sort.Direction.DESC : Sort.Direction.ASC, sort);
+        List<Product> products = repo.findAll(spec, sorting);
+
         List<ProductDto> response = new ArrayList<>();
         for (Product product : products) {
             ProductDto productDto = product.toDto();
-            List<ProductDetail> productDetails = productDetailRepo.findByProductId(productDto.getId());
+            List<ProductDetail> productDetails = productDetailRepo.findAllByProductId(productDto.getId());
             for (ProductDetail productDetail: productDetails) {
                 ProductDetailDto productDetailDto = productDetail.toDto();
-                productDto.getProductDetails().add(productDetailDto);
+                productDto.getDetails().add(productDetailDto);
             }
             response.add(productDto);
-
         }
 
         return response;
     }
 
     @Override
-    public Page<ProductDto> getList(
+    public CustomPage<ProductDto> getList(
             Integer page,
             Integer size,
-            String name,
+            String description,
             Double price,
             Integer hasDelivery,
             Integer hasNds,
             Long categoryId,
-            Long companyId,
             Long supplierId,
-            String sort
+            String sort,
+            Boolean descending
     ) {
 
         ProductSpec spec1 = new ProductSpec(new SearchCriteria("id", ">", 0));
         Specification<Product> spec = Specification.where(spec1);
 
-        if (name != null) spec = spec.and(new ProductSpec(new SearchCriteria("name", ":", name)));
+        if (description != null) spec = spec.and(new ProductSpec(new SearchCriteria("description", ":", description)));
 
         if (price != null) spec = spec.and(new ProductSpec(new SearchCriteria("price", "=", price)));
 
@@ -103,43 +108,57 @@ public class ProductServiceImpl implements ProductService {
 
         if (categoryId != null) spec = spec.and(new ProductSpec(new SearchCriteria("categoryId", ":", categoryId)));
 
-        if (companyId != null) spec = spec.and(new ProductSpec(new SearchCriteria("companyId", ":", companyId)));
-
         if (supplierId != null) spec = spec.and(new ProductSpec(new SearchCriteria("supplierId", ":", supplierId)));
 
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
+        Sort sorting = Sort.by(descending ? Sort.Direction.DESC : Sort.Direction.ASC, sort);
+        Pageable pageable = PageRequest.of(page, size, sorting);
 
-        Page<Product> products = repo.findAll(spec, pageable);
+        Page<Product> responsePage = repo.findAll(spec, pageable);
+        List<ProductDto> dtos = new ArrayList<>();
 
-        List<ProductDto> productDtos = new ArrayList<>();
+        responsePage.getContent().forEach(item -> {
+            ProductDto dto = item.toDto();
+            List<ProductDetail> productDetails = productDetailRepo.findAllByProductId(dto.getId());
+            productDetails.forEach(productDetail -> {
+                dto.getDetails().add(productDetail.toDto());
+            });
+            dtos.add(dto);
+        });
 
-        for (Product product : products.getContent()) {
-            ProductDto productDto = product.toDto();
-            List<ProductDetail> productDetails = productDetailRepo.findByProductId(productDto.getId());
-            for (ProductDetail productDetail: productDetails) {
-                ProductDetailDto productDetailDto = productDetail.toDto();
-                productDto.getProductDetails().add(productDetailDto);
-            }
 
-            productDtos.add(productDto);
-        }
-        return new PageImpl<>(productDtos);
+        return new CustomPage<>(
+                dtos,
+                responsePage.isFirst(),
+                responsePage.isLast(),
+                responsePage.getNumber(),
+                responsePage.getTotalPages(),
+                responsePage.getTotalElements()
+        );
     }
 
     @Override
     @Transactional
     public void save(ProductDto item) {
-        if(item.getName() == null) {
-            throw new RuntimeException("Nomini kiriting");
-        }
         if(item.getPrice() == null) {
-            throw new RuntimeException("Narxini kiriting");
+            String message = messageSource.getMessage("enter_price", null, new Locale(BaseAppUtils.getCurrentLanguage()));
+            throw new RuntimeException(message);
         }
-        Product product = item.toEntity();
-        repo.save(product);
+        if(item.getCategoryId() == null) {
+            throw new RuntimeException(messageSource.getMessage("enter_category_id", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+        }
+        if(item.getSupplierId() == null) {
+            throw new RuntimeException(messageSource.getMessage("enter_supplier_id", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+        }
+        if(item.getId() != null) {
+            throw new RuntimeException(messageSource.getMessage("sending_id_is_not_acceptable", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+        }
 
-        for (ProductDetailDto detail: item.getProductDetails()) {
+        Product product = item.toEntity();
+        product = repo.save(product);
+
+        for (ProductDetailDto detail: item.getDetails()) {
             ProductDetail productDetail = detail.toEntity();
+            productDetail.setProduct(product);
             productDetailRepo.save(productDetail);
         }
     }
@@ -147,21 +166,25 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public void update(ProductDto item) {
-        if(item.getName() == null) {
-            throw new RuntimeException("Nomini kiriting");
-        }
         if(item.getPrice() == null) {
-            throw new RuntimeException("Narxini kiriting");
+            throw new RuntimeException(messageSource.getMessage("enter_price", null, new Locale(BaseAppUtils.getCurrentLanguage())));
         }
-        if (item.getId() == null) {
-            throw new RuntimeException("ID kiritilmagan");
+        if(item.getCategoryId() == null) {
+            throw new RuntimeException(messageSource.getMessage("enter_category_id", null, new Locale(BaseAppUtils.getCurrentLanguage())));
         }
+        if(item.getSupplierId() == null) {
+            throw new RuntimeException(messageSource.getMessage("enter_supplier_id", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+        }
+        if (!repo.existsById(item.getId())) {
+            throw new RuntimeException(messageSource.getMessage("enter_valid_id", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+        }
+
         Product product = item.toEntity();
         repo.save(product);
 
         productDetailRepo.deleteByProductId(item.getId());
 
-        for (ProductDetailDto detail: item.getProductDetails()) {
+        for (ProductDetailDto detail: item.getDetails()) {
             ProductDetail productDetail = detail.toEntity();
             productDetailRepo.save(productDetail);
         }

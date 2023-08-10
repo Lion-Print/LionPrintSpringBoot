@@ -42,7 +42,9 @@ public class Currency extends BaseAuditEntity {
         currencyDto.setCompanyId(company.getId());
         currencyDto.setCompanyName(company.getName());
 
-        currencyDto.setModifiedDate(getModifiedDate());
+        String date = getModifiedDate().toString();
+        currencyDto.setModifiedDate(date.substring(0, 11));
+        currencyDto.setModifiedTime(date.substring(0, 20));
 
         return currencyDto;
     }

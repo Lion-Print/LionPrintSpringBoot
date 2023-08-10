@@ -1,12 +1,15 @@
 package uz.bprodevelopment.logisticsapp.controller;
 
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.bprodevelopment.logisticsapp.dto.ProductDto;
 import uz.bprodevelopment.logisticsapp.entity.Product;
 import uz.bprodevelopment.logisticsapp.service.ProductService;
+
+import javax.servlet.http.HttpServletRequest;
 
 import static uz.bprodevelopment.logisticsapp.base.config.Urls.PRODUCT_URL;
 
@@ -21,8 +24,8 @@ public class ProductController {
     public ResponseEntity<?> getOne(
             @PathVariable(name = "id") Long id
     ) {
-        Product product = service.getOne(id);
-        return ResponseEntity.ok().body(product);
+        ProductDto item = service.getOne(id);
+        return ResponseEntity.ok().body(item);
     }
 
 
@@ -37,10 +40,11 @@ public class ProductController {
             @RequestParam(name = "categoryId", required = false) Long categoryId,
             @RequestParam(name = "companyId", required = false) Long companyId,
             @RequestParam(name = "supplierId", required = false) Long supplierId,
-            @RequestParam(name = "sort", required = false, defaultValue = "id") String sort
+            @RequestParam(name = "sort", required = false, defaultValue = "id") String sort,
+            @RequestHeader(name = "descending", required = false, defaultValue = "true") Boolean descending
     ) {
         return ResponseEntity.ok().body(
-                service.getList(page, size, name, price, hasDelivery, hasNds, categoryId, companyId, supplierId, sort)
+                service.getList(page, size, name, price, hasDelivery, hasNds, categoryId, supplierId, sort, descending)
         );
     }
 
@@ -53,9 +57,10 @@ public class ProductController {
             @RequestParam(name = "categoryId", required = false) Long categoryId,
             @RequestParam(name = "companyId", required = false) Long companyId,
             @RequestParam(name = "supplierId", required = false) Long supplierId,
-            @RequestParam(name = "sort", required = false, defaultValue = "id") String sort
+            @RequestParam(name = "sort", required = false, defaultValue = "id") String sort,
+            @RequestHeader(name = "descending", required = false, defaultValue = "true") Boolean descending
     ) {
-        return ResponseEntity.ok().body(service.getListAll(name, price, hasDelivery, hasNds, categoryId, companyId, supplierId, sort));
+        return ResponseEntity.ok().body(service.getListAll(name, price, hasDelivery, hasNds, categoryId, supplierId, sort, descending));
     }
 
 

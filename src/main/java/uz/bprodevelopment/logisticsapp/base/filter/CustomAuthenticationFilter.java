@@ -87,9 +87,12 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             }
         }
 
+        String locale = request.getHeader("Accept-Language");
+        if (locale == null || locale.isEmpty()) locale = "uz";
+
         assert optionalUser != null;
         CustomUsernamePasswordAuthenticationToken authenticationToken
-                = new CustomUsernamePasswordAuthenticationToken(username, password, optionalUser.getId());
+                = new CustomUsernamePasswordAuthenticationToken(username, password, optionalUser.getId(), locale);
         return authenticationManager.authenticate(authenticationToken);
 
     }
