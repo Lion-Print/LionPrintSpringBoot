@@ -55,8 +55,4 @@ public class Test extends BaseAuditEntity {
         this.nameUz = nameUz;
     }
 
-    public Test(Long id, String nameUz) {
-        this.id = id;
-        this.nameUz = nameUz;
-    }
 }
