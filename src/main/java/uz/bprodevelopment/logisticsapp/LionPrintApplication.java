@@ -45,10 +45,8 @@ public class LionPrintApplication {
                                 "+100",
                                 "123",
                                 null,
-                                roleAdmin.getId(),
-                                null,
-                                null,
-                                null
+                                roleAdmin.getId(), null,
+                                null, null, null, null
                         ));
             }
 

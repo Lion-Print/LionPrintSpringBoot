@@ -140,7 +140,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         response.setContentType(APPLICATION_JSON_VALUE);
         Map<String, Object> userMap = new HashMap<>();
-        userMap.put("user", dbUser);
+        userMap.put("user", dbUser.toDto());
         userMap.put("accessToken", accessToken);
         userMap.put("refreshToken", refreshToken);
 
