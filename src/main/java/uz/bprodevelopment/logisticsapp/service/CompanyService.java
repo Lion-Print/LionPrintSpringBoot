@@ -35,4 +35,6 @@ public interface CompanyService {
     void delete(Long id);
 
     void addUser(UserDto userDto);
+
+    void blockUser(Long id);
 }

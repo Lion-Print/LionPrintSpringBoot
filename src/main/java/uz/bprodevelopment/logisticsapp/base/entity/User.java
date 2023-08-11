@@ -44,6 +44,8 @@ public class User extends BaseAuditEntity {
     @OneToOne
     private Supplier supplier;
 
+    private Boolean isBlocked = false;
+
     public UserDto toDto(){
 
         UserDto userDto = new UserDto();

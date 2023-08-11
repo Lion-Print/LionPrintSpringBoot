@@ -39,4 +39,6 @@ public interface SupplierService {
 
     void addUser(UserDto userDto);
 
+    void blockUser(Long id);
+
 }

@@ -206,4 +206,21 @@ public class CompanyServiceImpl implements CompanyService {
 
         userRepo.save(user);
     }
+
+    @Override
+    @Transactional
+    public void blockUser(Long id) {
+
+        User user = userRepo.getReferenceById(id);
+        User currentUser = userRepo.findByUsername(BaseAppUtils.getCurrentUsername());
+
+        if (user.getCompany() == null
+                || currentUser.getCompany() == null
+                || currentUser.getRoles().stream().noneMatch(role -> role.getName().equals(ROLE_COMPANY_ADMIN))
+                || currentUser.getCompany().getId().intValue() != user.getCompany().getId().intValue()){
+            throw new RuntimeException(messageSource.getMessage("you_can_not_block_this_user", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+        }
+
+        user.setIsBlocked(true);
+    }
 }

@@ -18,6 +18,7 @@ import uz.bprodevelopment.logisticsapp.base.repo.RoleRepo;
 import uz.bprodevelopment.logisticsapp.base.repo.UserRepo;
 import uz.bprodevelopment.logisticsapp.base.util.BaseAppUtils;
 import uz.bprodevelopment.logisticsapp.dto.SupplierDto;
+import uz.bprodevelopment.logisticsapp.entity.Company;
 import uz.bprodevelopment.logisticsapp.entity.Supplier;
 import uz.bprodevelopment.logisticsapp.repo.SupplierRepo;
 import uz.bprodevelopment.logisticsapp.spec.SupplierSpec;
@@ -64,10 +65,10 @@ public class SupplierServiceImpl implements SupplierService {
         if (phone != null) spec = spec.and(new SupplierSpec(new SearchCriteria("phone", ":", phone)));
 
         List<Supplier> companies = repo.findAll(spec, Sort.by(sort).descending());
-        List<SupplierDto> companyDtos = new ArrayList<>();
-        companies.forEach(company -> companyDtos.add(company.toDto()));
+        List<SupplierDto> supplierDtos = new ArrayList<>();
+        companies.forEach(supplier -> supplierDtos.add(supplier.toDto()));
 
-        return companyDtos;
+        return supplierDtos;
     }
 
     @Override
@@ -92,7 +93,7 @@ public class SupplierServiceImpl implements SupplierService {
 
         Page<Supplier> responsePage = repo.findAll(spec, pageable);
         List<SupplierDto> dtos = new ArrayList<>();
-        responsePage.getContent().forEach(company -> dtos.add(company.toDto()));
+        responsePage.getContent().forEach(supplier -> dtos.add(supplier.toDto()));
 
         return new CustomPage<>(
                 dtos,
@@ -126,14 +127,14 @@ public class SupplierServiceImpl implements SupplierService {
 
         if (userRepo.existsByUsername(item.getUsername())) throw new RuntimeException(messageSource.getMessage("username_is_busy", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
-        Supplier company = item.toEntity();
-        repo.save(company);
+        Supplier supplier = item.toEntity();
+        repo.save(supplier);
 
         User user = new User();
         user.setFullName(item.getUserFullName());
         user.setUsername(item.getUsername());
         user.setPassword(passwordEncoder.encode(item.getPassword()));
-        user.setSupplier(company);
+        user.setSupplier(supplier);
 
         Role role = roleRepo.findByName(ROLE_SUPPLIER_ADMIN);
         user.getRoles().add(role);
@@ -165,8 +166,8 @@ public class SupplierServiceImpl implements SupplierService {
         if (!dbSupplier.getUsername().equals(item.getUsername()) && userRepo.existsByUsername(item.getUsername()))
             throw new RuntimeException(messageSource.getMessage("username_is_busy", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
-        Supplier company = item.toEntity();
-        repo.save(company);
+        Supplier supplier = item.toEntity();
+        repo.save(supplier);
 
         user.setFullName(item.getUserFullName());
         user.setUsername(item.getUsername());
@@ -182,18 +183,43 @@ public class SupplierServiceImpl implements SupplierService {
     }
 
     @Override
+    @Transactional
     public void addUser(UserDto userDto) {
         User currentUser = userRepo.findByUsername(BaseAppUtils.getCurrentUsername());
         if (currentUser == null || currentUser.getSupplier() == null) {
             throw new RuntimeException(messageSource.getMessage("yuo_can_not_add_user_to_this_company", null, new Locale(BaseAppUtils.getCurrentLanguage())));
         }
+        if (userRepo.existsByUsername(userDto.getUsername())) {
+            throw new RuntimeException(messageSource.getMessage("username_is_busy", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+        }
 
-        Supplier company = new Supplier();
-        company.setId(currentUser.getSupplier().getId());
+        Supplier supplier = new Supplier();
+        supplier.setId(currentUser.getSupplier().getId());
 
         User user = userDto.toEntity();
-        user.setSupplier(company);
+        user.setSupplier(supplier);
+
+        Role role = roleRepo.findByName(ROLE_SUPPLIER_MANAGER);
+        user.getRoles().add(role);
 
         userRepo.save(user);
+    }
+
+
+    @Override
+    @Transactional
+    public void blockUser(Long id) {
+
+        User user = userRepo.getReferenceById(id);
+        User currentUser = userRepo.findByUsername(BaseAppUtils.getCurrentUsername());
+
+        if (user.getSupplier() == null
+                || currentUser.getSupplier() == null
+                || currentUser.getRoles().stream().noneMatch(role -> role.getName().equals(ROLE_SUPPLIER_ADMIN))
+                || currentUser.getSupplier().getId().intValue() != user.getSupplier().getId().intValue()){
+            throw new RuntimeException(messageSource.getMessage("you_can_not_block_this_user", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+        }
+
+        user.setIsBlocked(true);
     }
 }
