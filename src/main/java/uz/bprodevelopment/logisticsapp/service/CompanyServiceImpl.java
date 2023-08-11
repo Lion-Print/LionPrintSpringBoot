@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Locale;
 
 import static uz.bprodevelopment.logisticsapp.base.config.Constants.ROLE_COMPANY_ADMIN;
+import static uz.bprodevelopment.logisticsapp.base.config.Constants.ROLE_COMPANY_MANAGER;
 
 @Service
 @RequiredArgsConstructor
@@ -124,7 +125,7 @@ public class CompanyServiceImpl implements CompanyService {
 
         if (repo.existsByName(item.getName())) throw new RuntimeException(messageSource.getMessage("supplier_is_exist_with_this_name", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
-        if (userRepo.existsByUsername(item.getUsername())) throw new RuntimeException(messageSource.getMessage("user_exist_with_this_username", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+        if (userRepo.existsByUsername(item.getUsername())) throw new RuntimeException(messageSource.getMessage("username_is_busy", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
         Company company = item.toEntity();
         repo.save(company);
@@ -163,7 +164,7 @@ public class CompanyServiceImpl implements CompanyService {
             throw new RuntimeException(messageSource.getMessage("company_is_exist_with_this_name", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
         if (!dbCompany.getUsername().equals(item.getUsername()) && userRepo.existsByUsername(item.getUsername()))
-            throw new RuntimeException(messageSource.getMessage("user_exist_with_this_username", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+            throw new RuntimeException(messageSource.getMessage("username_is_busy", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
         Company company = item.toEntity();
         repo.save(company);
@@ -184,10 +185,14 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    @Transactional
     public void addUser(UserDto userDto) {
         User currentUser = userRepo.findByUsername(BaseAppUtils.getCurrentUsername());
         if (currentUser == null || currentUser.getCompany() == null) {
             throw new RuntimeException(messageSource.getMessage("yuo_can_not_add_user_to_this_company", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+        }
+        if (userRepo.existsByUsername(userDto.getUsername())) {
+            throw new RuntimeException(messageSource.getMessage("username_is_busy", null, new Locale(BaseAppUtils.getCurrentLanguage())));
         }
 
         Company company = new Company();
@@ -195,6 +200,9 @@ public class CompanyServiceImpl implements CompanyService {
 
         User user = userDto.toEntity();
         user.setCompany(company);
+
+        Role role = roleRepo.findByName(ROLE_COMPANY_MANAGER);
+        user.getRoles().add(role);
 
         userRepo.save(user);
     }

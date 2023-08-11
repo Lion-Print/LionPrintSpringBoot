@@ -18,12 +18,8 @@ import uz.bprodevelopment.logisticsapp.base.repo.RoleRepo;
 import uz.bprodevelopment.logisticsapp.base.repo.UserRepo;
 import uz.bprodevelopment.logisticsapp.base.util.BaseAppUtils;
 import uz.bprodevelopment.logisticsapp.dto.SupplierDto;
-import uz.bprodevelopment.logisticsapp.dto.SupplierDto;
-import uz.bprodevelopment.logisticsapp.entity.Supplier;
 import uz.bprodevelopment.logisticsapp.entity.Supplier;
 import uz.bprodevelopment.logisticsapp.repo.SupplierRepo;
-import uz.bprodevelopment.logisticsapp.repo.SupplierRepo;
-import uz.bprodevelopment.logisticsapp.spec.SupplierSpec;
 import uz.bprodevelopment.logisticsapp.spec.SupplierSpec;
 import uz.bprodevelopment.logisticsapp.spec.SearchCriteria;
 import uz.bprodevelopment.logisticsapp.utils.CustomPage;
@@ -128,7 +124,7 @@ public class SupplierServiceImpl implements SupplierService {
 
         if (repo.existsByName(item.getName())) throw new RuntimeException(messageSource.getMessage("supplier_is_exist_with_this_name", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
-        if (userRepo.existsByUsername(item.getUsername())) throw new RuntimeException(messageSource.getMessage("user_exist_with_this_username", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+        if (userRepo.existsByUsername(item.getUsername())) throw new RuntimeException(messageSource.getMessage("username_is_busy", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
         Supplier company = item.toEntity();
         repo.save(company);
@@ -167,7 +163,7 @@ public class SupplierServiceImpl implements SupplierService {
             throw new RuntimeException(messageSource.getMessage("supplier_is_exist_with_this_name", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
         if (!dbSupplier.getUsername().equals(item.getUsername()) && userRepo.existsByUsername(item.getUsername()))
-            throw new RuntimeException(messageSource.getMessage("user_exist_with_this_username", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+            throw new RuntimeException(messageSource.getMessage("username_is_busy", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
         Supplier company = item.toEntity();
         repo.save(company);

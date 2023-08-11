@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -103,7 +102,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public void save(UserDto item) {
         User dbUser = repo.findByUsername(item.getUsername());
         if (dbUser != null) {
-            throw new RuntimeException(messageSource.getMessage("user_exist_with_this_username", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+            throw new RuntimeException(messageSource.getMessage("username_is_busy", null, new Locale(BaseAppUtils.getCurrentLanguage())));
         }
         User user = item.toEntity();
         user.setPassword(passwordEncoder.encode(user.getPassword()));
