@@ -27,8 +27,10 @@ public class UserDto {
     private Long roleId;
     private String roleName;
 
-    private Company company;
-    private Supplier supplier;
+    private Long companyId;
+    private String companyName;
+    private Long supplierId;
+    private String supplierName;
 
     public User toEntity(){
 

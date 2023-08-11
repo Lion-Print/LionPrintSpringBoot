@@ -49,6 +49,15 @@ public class User extends BaseAuditEntity {
         userDto.setRoleId(this.role.getId());
         userDto.setRoleName(this.role.getName());
 
+        if (company != null) {
+            userDto.setCompanyId(company.getId());
+            userDto.setCompanyName(company.getName());
+        }
+        if (supplier != null) {
+            userDto.setSupplierId(supplier.getId());
+            userDto.setSupplierName(supplier.getName());
+        }
+
         return userDto;
     }
 }
