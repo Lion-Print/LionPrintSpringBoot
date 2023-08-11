@@ -2,6 +2,7 @@ package uz.bprodevelopment.logisticsapp.base.security;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -37,6 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
     private final UserRepo userRepo;
+    private final MessageSource messageSource;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -48,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         CustomAuthenticationFilter authenticationFilter =
-                new CustomAuthenticationFilter(authenticationManagerBean(), userRepo, passwordEncoder);
+                new CustomAuthenticationFilter(authenticationManagerBean(), userRepo, passwordEncoder, messageSource);
 
         authenticationFilter.setFilterProcessesUrl(LOGIN_URL);
 

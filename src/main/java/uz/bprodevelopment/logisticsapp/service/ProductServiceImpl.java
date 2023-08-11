@@ -140,10 +140,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional
     public void save(ProductDto item) {
         if(item.getPrice() == null) {
-            String lang = BaseAppUtils.getCurrentLanguage();
-            Locale locale = new Locale(lang);
-            String message = messageSource.getMessage("enter_price", null, locale);
-            throw new RuntimeException(message);
+            throw new RuntimeException(messageSource.getMessage("enter_price", null, new Locale(BaseAppUtils.getCurrentLanguage())));
         }
         if(item.getCategoryId() == null) {
             throw new RuntimeException(messageSource.getMessage("enter_category_id", null, new Locale(BaseAppUtils.getCurrentLanguage())));
@@ -152,7 +149,7 @@ public class ProductServiceImpl implements ProductService {
             throw new RuntimeException(messageSource.getMessage("enter_supplier_id", null, new Locale(BaseAppUtils.getCurrentLanguage())));
         }
         if(item.getId() != null) {
-            throw new RuntimeException(messageSource.getMessage("sending_id_is_not_acceptable", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+            throw new RuntimeException(messageSource.getMessage("do_not_send_id", null, new Locale(BaseAppUtils.getCurrentLanguage())));
         }
 
         Product product = item.toEntity();

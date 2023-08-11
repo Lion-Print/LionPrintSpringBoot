@@ -2,6 +2,7 @@ package uz.bprodevelopment.logisticsapp.base.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import uz.bprodevelopment.logisticsapp.base.dto.UserDto;
 import uz.bprodevelopment.logisticsapp.base.entity.User;
 import uz.bprodevelopment.logisticsapp.base.repo.UserRepo;
+import uz.bprodevelopment.logisticsapp.base.util.BaseAppUtils;
 import uz.bprodevelopment.logisticsapp.spec.SearchCriteria;
 import uz.bprodevelopment.logisticsapp.spec.UserSpec;
 import uz.bprodevelopment.logisticsapp.utils.CustomPage;
@@ -24,6 +26,7 @@ import uz.bprodevelopment.logisticsapp.utils.CustomPage;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +35,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepo repo;
     private final PasswordEncoder passwordEncoder;
+    private final MessageSource messageSource;
 
     @Override
     public UserDto getOne(Long id) {
@@ -96,7 +100,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public void save(UserDto item) {
         User dbUser = repo.findByUsername(item.getUsername());
         if (item.getId() == null && dbUser != null) {
-            throw new RuntimeException("Bu username band: " + item.getUsername());
+            throw new RuntimeException(messageSource.getMessage("user_exist_with_this_username", null, new Locale(BaseAppUtils.getCurrentLanguage())));
         }
 
         User user = item.toEntity();

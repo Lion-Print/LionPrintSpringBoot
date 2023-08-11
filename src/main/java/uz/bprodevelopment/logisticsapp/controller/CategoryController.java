@@ -25,7 +25,6 @@ public class CategoryController {
         return ResponseEntity.ok().body(category);
     }
 
-
     @GetMapping(CATEGORY_URL)
     public ResponseEntity<?> getList(
             @RequestParam(name = "page") Integer page,

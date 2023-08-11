@@ -2,12 +2,14 @@ package uz.bprodevelopment.logisticsapp.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import uz.bprodevelopment.logisticsapp.base.util.BaseAppUtils;
 import uz.bprodevelopment.logisticsapp.dto.CategoryDetailDto;
 import uz.bprodevelopment.logisticsapp.entity.CategoryDetail;
 import uz.bprodevelopment.logisticsapp.repo.CategoryDetailRepo;
@@ -17,6 +19,7 @@ import uz.bprodevelopment.logisticsapp.utils.CustomPage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +27,7 @@ import java.util.List;
 public class CategoryDetailServiceImpl implements CategoryDetailService {
 
     private final CategoryDetailRepo repo;
+    private final MessageSource messageSource;
 
     @Override
     public CategoryDetailDto getOne(Long id) {
@@ -92,9 +96,9 @@ public class CategoryDetailServiceImpl implements CategoryDetailService {
 
     @Override
     public void save(CategoryDetailDto item) {
-        if (item.getNameUz() == null) throw new RuntimeException("Uzbekcha nomini kiriting");
-        if (item.getNameRu() == null) throw new RuntimeException("Ruscha nomini kiriting");
-        if (item.getCategoryId() == null) throw new RuntimeException("Kategoriya kiritilmagan");
+        if (item.getNameUz() == null) throw new RuntimeException(messageSource.getMessage("enter_name_uz", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+        if (item.getNameRu() == null) throw new RuntimeException(messageSource.getMessage("enter_name_ru", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+        if (item.getCategoryId() == null) throw new RuntimeException(messageSource.getMessage("enter_category", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
         CategoryDetail category = item.toEntity();
         repo.save(category);
@@ -102,11 +106,10 @@ public class CategoryDetailServiceImpl implements CategoryDetailService {
 
     @Override
     public void update(CategoryDetailDto item) {
-        if (item.getNameUz() == null) throw new RuntimeException("Uzbekcha nomini kiriting");
-        if (item.getNameRu() == null) throw new RuntimeException("Ruscha nomini kiriting");
-
-        if (item.getCategoryId() == null) throw new RuntimeException("Kategoriya kiritilmagan");
-        if (item.getId() == null) throw new RuntimeException("ID kiritilmagan");
+        if (item.getNameUz() == null) throw new RuntimeException(messageSource.getMessage("enter_name_uz", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+        if (item.getNameRu() == null) throw new RuntimeException(messageSource.getMessage("enter_name_ru", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+        if (item.getCategoryId() == null) throw new RuntimeException(messageSource.getMessage("enter_category", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+        if (item.getId() == null) throw new RuntimeException(messageSource.getMessage("do_not_send_id", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
         CategoryDetail categoryDetail = item.toEntity();
         repo.save(categoryDetail);

@@ -2,6 +2,7 @@ package uz.bprodevelopment.logisticsapp.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +30,7 @@ import uz.bprodevelopment.logisticsapp.utils.CustomPage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static uz.bprodevelopment.logisticsapp.base.config.Constants.*;
 
@@ -41,6 +43,7 @@ public class SupplierServiceImpl implements SupplierService {
     private final UserRepo userRepo;
     private final RoleRepo roleRepo;
     private final PasswordEncoder passwordEncoder;
+    private final MessageSource messageSource;
 
     @Override
     public SupplierDto getOne(Long id) {
@@ -109,23 +112,23 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     @Transactional
     public void save(SupplierDto item) {
-        if (item.getId() != null) throw new RuntimeException("Taminotchi kompaniya yaratishda id yuborish mumkin emas");
+        if (item.getId() != null) throw new RuntimeException(messageSource.getMessage("do_not_send_id", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
-        if(item.getName() == null) throw new RuntimeException("Taminotchi kompaniya nomini kiriting");
+        if(item.getName() == null) throw new RuntimeException(messageSource.getMessage("enter_name", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
-        if(item.getDirector() == null) throw new RuntimeException("Taminotchi kompaniya directori ismini kiriting");
+        if(item.getDirector() == null) throw new RuntimeException(messageSource.getMessage("enter_director_full_name", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
-        if(item.getPhone() == null) throw new RuntimeException("Taminotchi kompaniya telefon raqamini kiriting");
+        if(item.getPhone() == null) throw new RuntimeException(messageSource.getMessage("enter_phone", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
-        if(item.getUserFullName() == null) throw new RuntimeException("Taminotchi kompaniya foydalanuvchisi ismini kiriting");
+        if(item.getUserFullName() == null) throw new RuntimeException(messageSource.getMessage("enter_user_full_name", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
-        if(item.getUsername() == null) throw new RuntimeException("Taminotchi kompaniya foydalanuvchisi uchun username kiriting");
+        if(item.getUsername() == null) throw new RuntimeException(messageSource.getMessage("enter_username", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
-        if(item.getPassword() == null) throw new RuntimeException("Taminotchi kompaniya foydalanuvchisi uchun parol kiriting");
+        if(item.getPassword() == null) throw new RuntimeException(messageSource.getMessage("enter_password", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
-        if (repo.existsByName(item.getName())) throw new RuntimeException("Bunday nom bilan kompaniya yaratilgan");
+        if (repo.existsByName(item.getName())) throw new RuntimeException(messageSource.getMessage("supplier_is_exist_with_this_name", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
-        if (userRepo.existsByUsername(item.getUsername())) throw new RuntimeException("Bunday username mavjud");
+        if (userRepo.existsByUsername(item.getUsername())) throw new RuntimeException(messageSource.getMessage("user_exist_with_this_username", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
         Supplier company = item.toEntity();
         repo.save(company);
@@ -145,24 +148,26 @@ public class SupplierServiceImpl implements SupplierService {
     @Override
     @Transactional
     public void update(SupplierDto item) {
-        if (item.getId() == null) throw new RuntimeException("Taminotchi kompaniyani tahrirlashda id yuborish shart");
+        if (item.getId() == null) throw new RuntimeException(messageSource.getMessage("do_not_send_id", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
-        if(item.getName() == null) throw new RuntimeException("Taminotchi kompaniya nomini kiriting");
+        if(item.getName() == null) throw new RuntimeException(messageSource.getMessage("enter_name", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
-        if(item.getDirector() == null) throw new RuntimeException("Taminotchi kompaniya directori ismini kiriting");
+        if(item.getDirector() == null) throw new RuntimeException(messageSource.getMessage("enter_director_full_name", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
-        if(item.getPhone() == null) throw new RuntimeException("Taminotchi kompaniya telefon raqamini kiriting");
+        if(item.getPhone() == null) throw new RuntimeException(messageSource.getMessage("enter_phone", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
-        if(item.getUserFullName() == null) throw new RuntimeException("Taminotchi kompaniya foydalanuvchisi ismini kiriting");
+        if(item.getUserFullName() == null) throw new RuntimeException(messageSource.getMessage("enter_user_full_name", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
-        if(item.getUsername() == null) throw new RuntimeException("Taminotchi kompaniya foydalanuvchisi uchun username kiriting");
+        if(item.getUsername() == null) throw new RuntimeException(messageSource.getMessage("enter_username", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
         Supplier dbSupplier = repo.getReferenceById(item.getId());
         User user = userRepo.findByUsername(dbSupplier.getUsername());
 
-        if (!dbSupplier.getName().equals(item.getName()) && repo.existsByName(item.getName())) throw new RuntimeException("Bunday nom bilan kompaniya yaratilgan");
+        if (!dbSupplier.getName().equals(item.getName()) && repo.existsByName(item.getName()))
+            throw new RuntimeException(messageSource.getMessage("supplier_is_exist_with_this_name", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
-        if (!dbSupplier.getUsername().equals(item.getUsername()) && userRepo.existsByUsername(item.getUsername())) throw new RuntimeException("Bunday username mavjud");
+        if (!dbSupplier.getUsername().equals(item.getUsername()) && userRepo.existsByUsername(item.getUsername()))
+            throw new RuntimeException(messageSource.getMessage("user_exist_with_this_username", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
         Supplier company = item.toEntity();
         repo.save(company);
@@ -184,7 +189,7 @@ public class SupplierServiceImpl implements SupplierService {
     public void addUser(UserDto userDto) {
         User currentUser = userRepo.findByUsername(BaseAppUtils.getCurrentUsername());
         if (currentUser == null || currentUser.getSupplier() == null) {
-            throw new RuntimeException("Siz bu kompaniyaga foydalanuvchi qo'sholmaysiz");
+            throw new RuntimeException(messageSource.getMessage("yuo_can_not_add_user_to_this_company", null, new Locale(BaseAppUtils.getCurrentLanguage())));
         }
 
         Supplier company = new Supplier();

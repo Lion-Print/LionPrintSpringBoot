@@ -2,6 +2,7 @@ package uz.bprodevelopment.logisticsapp.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import uz.bprodevelopment.logisticsapp.base.util.BaseAppUtils;
 import uz.bprodevelopment.logisticsapp.dto.CurrencyDto;
 import uz.bprodevelopment.logisticsapp.entity.Currency;
 import uz.bprodevelopment.logisticsapp.repo.CurrencyRepo;
@@ -18,6 +20,7 @@ import uz.bprodevelopment.logisticsapp.utils.CustomPage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +28,7 @@ import java.util.List;
 public class CurrencyServiceImpl implements CurrencyService {
 
     private final CurrencyRepo repo;
+    private final MessageSource messageSource;
 
     @Override
     public CurrencyDto getOne(Long id) {
@@ -79,22 +83,16 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     @Override
     public void save(CurrencyDto item) {
-        if(item.getCurrencyValueInUzs() == null) {
-            throw new RuntimeException("Valuta qiymatini kiriting");
-        }
-        if(item.getCompanyId() == null) {
-            throw new RuntimeException("Kompaniya ID si kiritilmagan");
-        }
-        if(item.getCurrencyTypeId() == null) {
-            throw new RuntimeException("Valyuta turi ID si kiritilmagan");
-        }
-        if (item.getId() != null) {
-            throw new RuntimeException("ID yuborish mumkin emas");
-        }
+        if(item.getCurrencyValueInUzs() == null) throw new RuntimeException(messageSource.getMessage("enter_currency_value", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
-        if (!repo.findAllByCurrencyTypeIdAndCompanyId(item.getCurrencyTypeId(), item.getCompanyId()).isEmpty()) {
-            throw new RuntimeException("Bunday valyuta qo'shilgan");
-        }
+        if(item.getCompanyId() == null) throw new RuntimeException(messageSource.getMessage("enter_company", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+
+        if(item.getCurrencyTypeId() == null) throw new RuntimeException(messageSource.getMessage("enter_currency_type", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+
+        if (item.getId() != null) throw new RuntimeException(messageSource.getMessage("do_not_send_id", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+
+        if (!repo.findAllByCurrencyTypeIdAndCompanyId(item.getCurrencyTypeId(), item.getCompanyId()).isEmpty())
+            throw new RuntimeException(messageSource.getMessage("enter_category", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
         Currency category = item.toEntity();
         repo.save(category);
@@ -104,7 +102,7 @@ public class CurrencyServiceImpl implements CurrencyService {
     @Transactional
     public void update(CurrencyDto item) {
         if(item.getCurrencyValueInUzs() == null) {
-            throw new RuntimeException("Valuta qiymatini kiriting");
+            throw new RuntimeException(messageSource.getMessage("enter_currency_value", null, new Locale(BaseAppUtils.getCurrentLanguage())));
         }
         Currency currency = repo.getReferenceById(item.getId());
         currency.setCurrencyValueInUzs(item.getCurrencyValueInUzs());

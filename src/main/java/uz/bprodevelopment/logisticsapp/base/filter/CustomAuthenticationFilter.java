@@ -4,6 +4,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.MessageSource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -13,6 +14,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import uz.bprodevelopment.logisticsapp.base.entity.ErrorResponse;
 import uz.bprodevelopment.logisticsapp.base.entity.User;
 import uz.bprodevelopment.logisticsapp.base.repo.UserRepo;
+import uz.bprodevelopment.logisticsapp.base.util.BaseAppUtils;
 
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -32,13 +35,16 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     private final AuthenticationManager authenticationManager;
     private final UserRepo userRepo;
     private final PasswordEncoder passwordEncoder;
+    private final MessageSource messageSource;
 
     public CustomAuthenticationFilter(AuthenticationManager authenticationManager,
                                       UserRepo userRepo,
-                                      PasswordEncoder passwordEncoder) {
+                                      PasswordEncoder passwordEncoder,
+                                      MessageSource messageSource) {
         this.authenticationManager = authenticationManager;
         this.userRepo = userRepo;
         this.passwordEncoder = passwordEncoder;
+        this.messageSource = messageSource;
     }
 
     @Override
@@ -48,7 +54,12 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        log.info("Username: {} Password: {}", username, password);
+
+        User dbUser = userRepo.findByUsername(username);
+        if (dbUser.getCompany() != null && dbUser.getCompany().getIsBlocked()) {
+            throw new RuntimeException(messageSource.getMessage("company_is_blocked", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+        }
+
 
         User optionalUser = userRepo.findByUsername(username);
 
@@ -106,6 +117,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         org.springframework.security.core.userdetails.User user
                 = (org.springframework.security.core.userdetails.User) authentication.getPrincipal();
+
         Algorithm algorithm = Algorithm.HMAC256(SECURE.getBytes());
 
         String accessToken = JWT.create()

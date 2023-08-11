@@ -2,6 +2,7 @@ package uz.bprodevelopment.logisticsapp.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +26,7 @@ import uz.bprodevelopment.logisticsapp.utils.CustomPage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static uz.bprodevelopment.logisticsapp.base.config.Constants.ROLE_COMPANY_ADMIN;
 
@@ -37,6 +39,7 @@ public class CompanyServiceImpl implements CompanyService {
     private final UserRepo userRepo;
     private final RoleRepo roleRepo;
     private final PasswordEncoder passwordEncoder;
+    private final MessageSource messageSource;
 
     @Override
     public CompanyDto getOne(Long id) {
@@ -105,23 +108,23 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     @Transactional
     public void save(CompanyDto item) {
-        if (item.getId() != null) throw new RuntimeException("Kompaniya yaratishda id yuborish mumkin emas");
+        if (item.getId() != null) throw new RuntimeException(messageSource.getMessage("do_not_send_id", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
-        if(item.getName() == null) throw new RuntimeException("Kompaniya nomini kiriting");
+        if(item.getName() == null) throw new RuntimeException(messageSource.getMessage("enter_name", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
-        if(item.getDirector() == null) throw new RuntimeException("Kompaniya directori ismini kiriting");
+        if(item.getDirector() == null) throw new RuntimeException(messageSource.getMessage("enter_director_full_name", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
-        if(item.getPhone() == null) throw new RuntimeException("Kompaniya telefon raqamini kiriting");
+        if(item.getPhone() == null) throw new RuntimeException(messageSource.getMessage("enter_phone", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
-        if(item.getUserFullName() == null) throw new RuntimeException("Kompaniya foydalanuvchisi ismini kiriting");
+        if(item.getUserFullName() == null) throw new RuntimeException(messageSource.getMessage("enter_user_full_name", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
-        if(item.getUsername() == null) throw new RuntimeException("Kompaniya foydalanuvchisi uchun username kiriting");
+        if(item.getUsername() == null) throw new RuntimeException(messageSource.getMessage("enter_username", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
-        if(item.getPassword() == null) throw new RuntimeException("Kompaniya foydalanuvchisi uchun parol kiriting");
+        if(item.getPassword() == null) throw new RuntimeException(messageSource.getMessage("enter_password", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
-        if (repo.existsByName(item.getName())) throw new RuntimeException("Bunday nom bilan kompaniya yaratilgan");
+        if (repo.existsByName(item.getName())) throw new RuntimeException(messageSource.getMessage("supplier_is_exist_with_this_name", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
-        if (userRepo.existsByUsername(item.getUsername())) throw new RuntimeException("Bunday username mavjud");
+        if (userRepo.existsByUsername(item.getUsername())) throw new RuntimeException(messageSource.getMessage("user_exist_with_this_username", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
         Company company = item.toEntity();
         repo.save(company);
@@ -141,24 +144,26 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     @Transactional
     public void update(CompanyDto item) {
-        if (item.getId() == null) throw new RuntimeException("Kompaniyani tahrirlashda id yuborish shart");
+        if (item.getId() == null) throw new RuntimeException(messageSource.getMessage("do_not_send_id", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
-        if(item.getName() == null) throw new RuntimeException("Kompaniya nomini kiriting");
+        if(item.getName() == null) throw new RuntimeException(messageSource.getMessage("enter_name", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
-        if(item.getDirector() == null) throw new RuntimeException("Kompaniya directori ismini kiriting");
+        if(item.getDirector() == null) throw new RuntimeException(messageSource.getMessage("enter_director_full_name", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
-        if(item.getPhone() == null) throw new RuntimeException("Kompaniya telefon raqamini kiriting");
+        if(item.getPhone() == null) throw new RuntimeException(messageSource.getMessage("enter_phone", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
-        if(item.getUserFullName() == null) throw new RuntimeException("Kompaniya foydalanuvchisi ismini kiriting");
+        if(item.getUserFullName() == null) throw new RuntimeException(messageSource.getMessage("enter_user_full_name", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
-        if(item.getUsername() == null) throw new RuntimeException("Kompaniya foydalanuvchisi uchun username kiriting");
+        if(item.getUsername() == null) throw new RuntimeException(messageSource.getMessage("enter_username", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
         Company dbCompany = repo.getReferenceById(item.getId());
         User user = userRepo.findByUsername(dbCompany.getUsername());
 
-        if (!dbCompany.getName().equals(item.getName()) && repo.existsByName(item.getName())) throw new RuntimeException("Bunday nom bilan kompaniya yaratilgan");
+        if (!dbCompany.getName().equals(item.getName()) && repo.existsByName(item.getName()))
+            throw new RuntimeException(messageSource.getMessage("company_is_exist_with_this_name", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
-        if (!dbCompany.getUsername().equals(item.getUsername()) && userRepo.existsByUsername(item.getUsername())) throw new RuntimeException("Bunday username mavjud");
+        if (!dbCompany.getUsername().equals(item.getUsername()) && userRepo.existsByUsername(item.getUsername()))
+            throw new RuntimeException(messageSource.getMessage("user_exist_with_this_username", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
         Company company = item.toEntity();
         repo.save(company);
@@ -172,7 +177,9 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
+        userRepo.deleteAllByCompanyId(id);
         repo.deleteById(id);
     }
 
@@ -180,7 +187,7 @@ public class CompanyServiceImpl implements CompanyService {
     public void addUser(UserDto userDto) {
         User currentUser = userRepo.findByUsername(BaseAppUtils.getCurrentUsername());
         if (currentUser == null || currentUser.getCompany() == null) {
-            throw new RuntimeException("Siz bu kompaniyaga foydalanuvchi qo'sholmaysiz");
+            throw new RuntimeException(messageSource.getMessage("yuo_can_not_add_user_to_this_company", null, new Locale(BaseAppUtils.getCurrentLanguage())));
         }
 
         Company company = new Company();

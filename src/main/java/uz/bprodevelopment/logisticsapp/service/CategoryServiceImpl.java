@@ -2,12 +2,14 @@ package uz.bprodevelopment.logisticsapp.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import uz.bprodevelopment.logisticsapp.base.util.BaseAppUtils;
 import uz.bprodevelopment.logisticsapp.dto.CategoryDto;
 import uz.bprodevelopment.logisticsapp.entity.Category;
 import uz.bprodevelopment.logisticsapp.repo.CategoryRepo;
@@ -17,6 +19,7 @@ import uz.bprodevelopment.logisticsapp.utils.CustomPage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +27,7 @@ import java.util.List;
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepo repo;
+    private final MessageSource messageSource;
 
     @Override
     public CategoryDto getOne(Long id) {
@@ -88,10 +92,10 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void save(CategoryDto item) {
         if(item.getNameUz() == null) {
-            throw new RuntimeException("Uzbekcha nomini kiriting");
+            throw new RuntimeException(messageSource.getMessage("enter_name_uz", null, new Locale(BaseAppUtils.getCurrentLanguage())));
         }
         if(item.getNameRu() == null) {
-            throw new RuntimeException("Ruscha nomini kiriting");
+            throw new RuntimeException(messageSource.getMessage("enter_name_ru", null, new Locale(BaseAppUtils.getCurrentLanguage())));
         }
 
         Category category = item.toEntity();
@@ -101,13 +105,13 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void update(CategoryDto item) {
         if(item.getNameUz() == null) {
-            throw new RuntimeException("Uzbekcha nomini kiriting");
+            throw new RuntimeException(messageSource.getMessage("enter_name_uz", null, new Locale(BaseAppUtils.getCurrentLanguage())));
         }
         if(item.getNameRu() == null) {
-            throw new RuntimeException("Ruscha nomini kiriting");
+            throw new RuntimeException(messageSource.getMessage("enter_name_ru", null, new Locale(BaseAppUtils.getCurrentLanguage())));
         }
         if (item.getId() == null) {
-            throw new RuntimeException("ID kiritilmagan");
+            throw new RuntimeException(messageSource.getMessage("enter_valid_id", null, new Locale(BaseAppUtils.getCurrentLanguage())));
         }
         Category category = item.toEntity();
         repo.save(category);

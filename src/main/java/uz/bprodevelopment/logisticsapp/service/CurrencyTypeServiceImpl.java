@@ -2,12 +2,14 @@ package uz.bprodevelopment.logisticsapp.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import uz.bprodevelopment.logisticsapp.base.util.BaseAppUtils;
 import uz.bprodevelopment.logisticsapp.dto.CurrencyTypeDto;
 import uz.bprodevelopment.logisticsapp.entity.CurrencyType;
 import uz.bprodevelopment.logisticsapp.repo.CurrencyTypeRepo;
@@ -17,6 +19,7 @@ import uz.bprodevelopment.logisticsapp.utils.CustomPage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +27,7 @@ import java.util.List;
 public class CurrencyTypeServiceImpl implements CurrencyTypeService {
 
     private final CurrencyTypeRepo repo;
+    private final MessageSource messageSource;
 
     @Override
     public CurrencyTypeDto getOne(Long id) {
@@ -88,16 +92,16 @@ public class CurrencyTypeServiceImpl implements CurrencyTypeService {
     @Override
     public void save(CurrencyTypeDto item) {
         if(item.getNameUz() == null) {
-            throw new RuntimeException("Uzbekcha nomini kiriting");
+            throw new RuntimeException(messageSource.getMessage("enter_name_uz", null, new Locale(BaseAppUtils.getCurrentLanguage())));
         }
         if(item.getNameRu() == null) {
-            throw new RuntimeException("Ruscha nomini kiriting");
+            throw new RuntimeException(messageSource.getMessage("enter_name_ru", null, new Locale(BaseAppUtils.getCurrentLanguage())));
         }
         if(item.getSymbol() == null) {
-            throw new RuntimeException("Simvol kiriting");
+            throw new RuntimeException(messageSource.getMessage("enter_symbol", null, new Locale(BaseAppUtils.getCurrentLanguage())));
         }
         if (item.getId() != null) {
-            throw new RuntimeException("ID yuborish mumkin emas");
+            throw new RuntimeException(messageSource.getMessage("do_not_send_id", null, new Locale(BaseAppUtils.getCurrentLanguage())));
         }
 
         CurrencyType category = item.toEntity();
@@ -107,16 +111,16 @@ public class CurrencyTypeServiceImpl implements CurrencyTypeService {
     @Override
     public void update(CurrencyTypeDto item) {
         if(item.getNameUz() == null) {
-            throw new RuntimeException("Uzbekcha nomini kiriting");
+            throw new RuntimeException(messageSource.getMessage("enter_name_uz", null, new Locale(BaseAppUtils.getCurrentLanguage())));
         }
         if(item.getNameRu() == null) {
-            throw new RuntimeException("Ruscha nomini kiriting");
+            throw new RuntimeException(messageSource.getMessage("enter_name_ru", null, new Locale(BaseAppUtils.getCurrentLanguage())));
         }
         if(item.getSymbol() == null) {
-            throw new RuntimeException("Simvol kiriting");
+            throw new RuntimeException(messageSource.getMessage("enter_symbol", null, new Locale(BaseAppUtils.getCurrentLanguage())));
         }
         if (item.getId() == null) {
-            throw new RuntimeException("ID kiritilmagan");
+            throw new RuntimeException(messageSource.getMessage("enter_valid_id", null, new Locale(BaseAppUtils.getCurrentLanguage())));
         }
         CurrencyType currencyType = item.toEntity();
         repo.save(currencyType);
