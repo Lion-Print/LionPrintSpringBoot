@@ -14,6 +14,7 @@ import uz.bprodevelopment.logisticsapp.base.entity.Role;
 import uz.bprodevelopment.logisticsapp.base.service.RoleService;
 import uz.bprodevelopment.logisticsapp.base.service.UserService;
 
+import java.util.Arrays;
 import java.util.Locale;
 
 import static uz.bprodevelopment.logisticsapp.base.config.Constants.*;
@@ -37,6 +38,7 @@ public class LionPrintApplication {
             if (roleAdmin == null) {
                 roleAdmin = roleService.saveRole(new Role(null, ROLE_ADMIN));
             }
+
             if (userService.getOneByUsername("+100") == null) {
                 userService.save(
                         new UserDto(
@@ -45,8 +47,12 @@ public class LionPrintApplication {
                                 "+100",
                                 "123",
                                 null,
-                                roleAdmin.getId(), null,
-                                null, null, null, null
+                                roleAdmin.getId(),
+                                null,
+                                null,
+                                null,
+                                null,
+                                null
                         ));
             }
 

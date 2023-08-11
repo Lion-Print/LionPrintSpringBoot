@@ -139,8 +139,8 @@ public class SupplierServiceImpl implements SupplierService {
         user.setPassword(passwordEncoder.encode(item.getPassword()));
         user.setSupplier(company);
 
-        Role role = roleRepo.findByName(ROLE_COMPANY_ADMIN);
-        user.setRole(role);
+        Role role = roleRepo.findByName(ROLE_SUPPLIER_ADMIN);
+        user.getRoles().add(role);
 
         userRepo.save(user);
     }

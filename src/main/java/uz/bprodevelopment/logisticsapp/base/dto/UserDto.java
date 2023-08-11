@@ -12,6 +12,8 @@ import uz.bprodevelopment.logisticsapp.entity.Supplier;
 
 import javax.persistence.*;
 
+import java.util.Set;
+
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Data
@@ -24,8 +26,9 @@ public class UserDto {
     private String username;
     private String password;
     private String fcmToken;
+
     private Long roleId;
-    private String roleName;
+    private Set<Role> roles;
 
     private Long companyId;
     private String companyName;
@@ -40,7 +43,6 @@ public class UserDto {
         user.setUsername(this.username);
         user.setPassword(this.password);
         user.setFcmToken(this.fcmToken);
-        user.setRole(new Role(roleId));
 
         return user;
     }

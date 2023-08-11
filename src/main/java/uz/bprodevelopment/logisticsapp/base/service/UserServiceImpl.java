@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uz.bprodevelopment.logisticsapp.base.dto.UserDto;
+import uz.bprodevelopment.logisticsapp.base.entity.Role;
 import uz.bprodevelopment.logisticsapp.base.entity.User;
 import uz.bprodevelopment.logisticsapp.base.repo.UserRepo;
 import uz.bprodevelopment.logisticsapp.base.util.BaseAppUtils;
@@ -27,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -97,15 +99,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
+    @Transactional
     public void save(UserDto item) {
         User dbUser = repo.findByUsername(item.getUsername());
-        if (item.getId() == null && dbUser != null) {
+        if (dbUser != null) {
             throw new RuntimeException(messageSource.getMessage("user_exist_with_this_username", null, new Locale(BaseAppUtils.getCurrentLanguage())));
         }
-
         User user = item.toEntity();
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         repo.save(user);
+        user.getRoles().add(new Role(item.getRoleId()));
     }
 
     @Override
@@ -141,8 +144,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Collection<SimpleGrantedAuthority> authorities
                 = new ArrayList<>();
 
-        if (user.getRole() != null) {
-            authorities.add(new SimpleGrantedAuthority(user.getRole().getName()));
+        if (user.getRoles() != null) {
+            user.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
         }
 
         return new org.springframework.security.core.userdetails.User(

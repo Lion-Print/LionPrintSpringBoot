@@ -136,7 +136,7 @@ public class CompanyServiceImpl implements CompanyService {
         user.setCompany(company);
 
         Role role = roleRepo.findByName(ROLE_COMPANY_ADMIN);
-        user.setRole(role);
+        user.getRoles().add(role);
 
         userRepo.save(user);
     }

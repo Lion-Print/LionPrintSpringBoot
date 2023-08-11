@@ -9,6 +9,10 @@ import uz.bprodevelopment.logisticsapp.entity.Supplier;
 
 import javax.persistence.*;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Data
@@ -31,8 +35,8 @@ public class User extends BaseAuditEntity {
 
     private String fcmToken;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    private Role role;
+    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    private Set<Role> roles = new HashSet<>();
 
     @OneToOne
     private Company company;
@@ -46,8 +50,6 @@ public class User extends BaseAuditEntity {
         userDto.setId(this.id);
         userDto.setFullName(this.fullName);
         userDto.setUsername(this.username);
-        userDto.setRoleId(this.role.getId());
-        userDto.setRoleName(this.role.getName());
 
         if (company != null) {
             userDto.setCompanyId(company.getId());
@@ -58,6 +60,12 @@ public class User extends BaseAuditEntity {
             userDto.setSupplierName(supplier.getName());
         }
 
+        userDto.setRoles(roles);
+
         return userDto;
+    }
+
+    public void addRole(Long roleId) {
+        roles.add(new Role(roleId));
     }
 }
