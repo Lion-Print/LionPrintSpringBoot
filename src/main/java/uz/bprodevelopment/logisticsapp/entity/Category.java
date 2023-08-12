@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uz.bprodevelopment.logisticsapp.base.entity.BaseAuditEntity;
+import uz.bprodevelopment.logisticsapp.base.util.BaseAppUtils;
 import uz.bprodevelopment.logisticsapp.dto.CategoryDto;
 
 import javax.persistence.Entity;
@@ -31,6 +32,9 @@ public class Category extends BaseAuditEntity {
     }
 
     public CategoryDto toDto(){
-        return new CategoryDto(id, nameUz, nameRu);
+        CategoryDto categoryDto = new CategoryDto();
+        categoryDto.setId(id);
+        categoryDto.setName(BaseAppUtils.getCurrentLanguage().equals("uz") ? nameUz : nameRu);
+        return categoryDto;
     }
 }

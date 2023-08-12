@@ -13,6 +13,7 @@ public class CategoryDetailDto {
 
 
     private Long id;
+    private String name;
     private String nameUz;
     private String nameRu;
     private Long categoryId;

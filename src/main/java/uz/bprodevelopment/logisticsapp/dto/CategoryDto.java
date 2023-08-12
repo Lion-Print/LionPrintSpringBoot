@@ -12,11 +12,18 @@ public class CategoryDto {
 
 
     private Long id;
+    private String name;
     private String nameUz;
     private String nameRu;
 
     public Category toEntity(){
-        return new Category(this.id, this.nameUz, this.nameRu);
+
+        Category category = new Category();
+        category.setId(id);
+        category.setNameUz(nameUz);
+        category.setNameRu(nameRu);
+        return category;
+
     }
 
 }
