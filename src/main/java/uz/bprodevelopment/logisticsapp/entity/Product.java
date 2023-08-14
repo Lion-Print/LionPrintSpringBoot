@@ -28,6 +28,14 @@ public class Product extends BaseAuditEntity {
 
     private Boolean hasNds = false;
 
+    private Double maxAmount;
+    private Double minAmount;
+
+    private String factoryDate;
+    private String expDate;
+
+    private String country;
+
     @ManyToOne
     @JoinColumn(name="category_id", nullable=false)
     private Category category;
@@ -50,14 +58,20 @@ public class Product extends BaseAuditEntity {
 
         ProductDto productDto = new ProductDto();
         productDto.setId(id);
-        productDto.setDescription(description);
         productDto.setPrice(price);
         productDto.setHasDelivery(hasDelivery);
         productDto.setHasNds(hasNds);
+        productDto.setMaxAmount(maxAmount);
+        productDto.setMinAmount(minAmount);
+        productDto.setFactoryDate(factoryDate);
+        productDto.setExpDate(expDate);
+        productDto.setCountry(country);
+        productDto.setDescription(description);
         productDto.setCategoryId(category.getId());
         productDto.setCategoryName(BaseAppUtils.getCurrentLanguage().equals("uz") ? category.getNameUz() : category.getNameRu());
         productDto.setSupplierId(supplier.getId());
         productDto.setSupplierName(supplier.getName());
+        productDto.setSupplierPhone(supplier.getPhone());
         productDto.setCurrencyId(currency.getId());
         productDto.setCurrencyName(BaseAppUtils.getCurrentLanguage().equals("uz") ? currency.getCurrencyType().getNameUz() : currency.getCurrencyType().getNameRu());
         productDto.setCurrencySymbol(currency.getCurrencyType().getSymbol());

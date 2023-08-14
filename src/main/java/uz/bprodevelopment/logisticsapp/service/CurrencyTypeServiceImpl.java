@@ -35,6 +35,7 @@ public class CurrencyTypeServiceImpl implements CurrencyTypeService {
         return category.toDto();
     }
 
+
     @Override
     public List<CurrencyTypeDto> getListAll(
             String name,

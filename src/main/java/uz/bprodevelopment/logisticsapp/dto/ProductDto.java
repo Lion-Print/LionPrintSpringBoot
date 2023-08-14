@@ -20,18 +20,24 @@ public class ProductDto {
     private Double price;
     private Boolean hasDelivery = false;
     private Boolean hasNds = false;
+
+    private Double maxAmount;
+    private Double minAmount;
+    private String factoryDate;
+    private String expDate;
+    private String country;
+    private String description;
+
     private Long categoryId;
     private String categoryName;
     private Long supplierId;
-
-
+    private String supplierName;
+    private String supplierPhone;
     private Long currencyId;
-
     private String currencyName;
     private String currencySymbol;
     private Double currencyValue;
-    private String supplierName;
-    private String description;
+
 
     private List<ProductDetailDto> details = new ArrayList<>();
 
@@ -39,10 +45,15 @@ public class ProductDto {
 
         Product product = new Product();
         product.setId(id);
-        product.setDescription(description);
         product.setPrice(price);
         product.setHasDelivery(hasDelivery);
         product.setHasNds(hasNds);
+        product.setMaxAmount(maxAmount);
+        product.setMinAmount(minAmount);
+        product.setFactoryDate(factoryDate);
+        product.setExpDate(expDate);
+        product.setCountry(country);
+        product.setDescription(description);
 
         product.setCategory(new Category(categoryId));
         product.setSupplier(new Supplier(supplierId));

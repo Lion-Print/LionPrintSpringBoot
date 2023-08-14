@@ -10,8 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 import uz.bprodevelopment.logisticsapp.base.util.BaseAppUtils;
 import uz.bprodevelopment.logisticsapp.dto.ProductDetailDto;
 import uz.bprodevelopment.logisticsapp.dto.ProductDto;
+import uz.bprodevelopment.logisticsapp.entity.CategoryDetail;
 import uz.bprodevelopment.logisticsapp.entity.Product;
 import uz.bprodevelopment.logisticsapp.entity.ProductDetail;
+import uz.bprodevelopment.logisticsapp.repo.CategoryDetailRepo;
 import uz.bprodevelopment.logisticsapp.repo.ProductDetailRepo;
 import uz.bprodevelopment.logisticsapp.repo.ProductRepo;
 import uz.bprodevelopment.logisticsapp.spec.ProductSpec;
@@ -29,6 +31,7 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductRepo repo;
     private final ProductDetailRepo productDetailRepo;
+    private final CategoryDetailRepo categoryDetailRepo;
     private final MessageSource messageSource;
 
     @Override
@@ -150,6 +153,18 @@ public class ProductServiceImpl implements ProductService {
         }
         if(item.getId() != null) {
             throw new RuntimeException(messageSource.getMessage("do_not_send_id", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+        }
+
+        if(item.getDetails().stream().anyMatch(detail -> detail.getValue() == null || detail.getValue().isEmpty())) {
+            throw new RuntimeException(messageSource.getMessage("detail_is_not_filled", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+        }
+
+        List<CategoryDetail> categoryDetails = categoryDetailRepo.findAllByCategoryId(item.getCategoryId());
+
+        for (CategoryDetail categoryDetail: categoryDetails) {
+            if (item.getDetails().stream().noneMatch(detail -> detail.getCategoryDetailId().intValue() == categoryDetail.getId().intValue())) {
+                throw new RuntimeException(messageSource.getMessage("detail_is_not_filled", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+            }
         }
 
         Product product = item.toEntity();

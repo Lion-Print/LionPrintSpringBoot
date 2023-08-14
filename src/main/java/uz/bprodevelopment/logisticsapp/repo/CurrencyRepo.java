@@ -11,4 +11,5 @@ public interface CurrencyRepo extends JpaRepository<Currency, Long>,
 
     List<Currency> findAllByCurrencyTypeIdAndSupplierId(Long currencyTypeId, Long companyId);
 
+
 }

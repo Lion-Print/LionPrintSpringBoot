@@ -7,15 +7,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import uz.bprodevelopment.logisticsapp.base.dto.UserDto;
 import uz.bprodevelopment.logisticsapp.base.entity.Role;
 import uz.bprodevelopment.logisticsapp.base.service.RoleService;
 import uz.bprodevelopment.logisticsapp.base.service.UserService;
-
-import java.util.Arrays;
-import java.util.Locale;
+import uz.bprodevelopment.logisticsapp.dto.CurrencyDto;
+import uz.bprodevelopment.logisticsapp.dto.CurrencyTypeDto;
+import uz.bprodevelopment.logisticsapp.entity.Currency;
+import uz.bprodevelopment.logisticsapp.entity.CurrencyType;
+import uz.bprodevelopment.logisticsapp.service.CurrencyService;
+import uz.bprodevelopment.logisticsapp.service.CurrencyTypeService;
 
 import static uz.bprodevelopment.logisticsapp.base.config.Constants.*;
 
@@ -30,7 +31,9 @@ public class LionPrintApplication {
     @Bean
     CommandLineRunner run(
             UserService userService,
-            RoleService roleService
+            RoleService roleService,
+            CurrencyTypeService currencyTypeService,
+            CurrencyService currencyService
     ) {
         return args -> {
 

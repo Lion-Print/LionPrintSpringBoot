@@ -2,6 +2,7 @@ package uz.bprodevelopment.logisticsapp.service;
 
 
 import uz.bprodevelopment.logisticsapp.dto.CurrencyTypeDto;
+import uz.bprodevelopment.logisticsapp.entity.CurrencyType;
 import uz.bprodevelopment.logisticsapp.utils.CustomPage;
 
 import java.util.List;
