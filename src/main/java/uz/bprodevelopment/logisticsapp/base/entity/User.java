@@ -35,7 +35,7 @@ public class User extends BaseAuditEntity {
 
     private String fcmToken;
 
-    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private Set<Role> roles = new HashSet<>();
 
     @OneToOne
