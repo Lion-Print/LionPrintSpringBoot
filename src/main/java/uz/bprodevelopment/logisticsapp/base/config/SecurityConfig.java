@@ -1,4 +1,4 @@
-package uz.bprodevelopment.logisticsapp.base.security;
+package uz.bprodevelopment.logisticsapp.base.config;
 
 
 import lombok.RequiredArgsConstructor;

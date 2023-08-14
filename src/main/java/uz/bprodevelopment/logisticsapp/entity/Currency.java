@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import uz.bprodevelopment.logisticsapp.base.entity.BaseAuditEntity;
+import uz.bprodevelopment.logisticsapp.base.util.BaseAppUtils;
 import uz.bprodevelopment.logisticsapp.dto.CurrencyDto;
 
 import javax.persistence.*;
@@ -38,8 +39,7 @@ public class Currency extends BaseAuditEntity {
 
         CurrencyDto currencyDto = new CurrencyDto();
         currencyDto.setId(id);
-        currencyDto.setNameUz(currencyType.getNameUz());
-        currencyDto.setNameRu(currencyType.getNameRu());
+        currencyDto.setName(BaseAppUtils.getCurrentLanguage().equals("uz") ? currencyType.getNameUz() : currencyType.getNameRu());
         currencyDto.setSymbol(currencyType.getSymbol());
         currencyDto.setCurrencyValueInUzs(currencyValueInUzs);
 

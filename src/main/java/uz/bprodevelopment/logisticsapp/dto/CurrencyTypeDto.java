@@ -18,6 +18,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 public class CurrencyTypeDto {
 
     private Long id;
+    private String name;
     private String nameUz;
     private String nameRu;
     private String symbol;

@@ -21,8 +21,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 public class CurrencyDto {
 
     private Long id;
-    private String nameUz;
-    private String nameRu;
+    private String name;
     private String symbol;
 
     private Double currencyValueInUzs;

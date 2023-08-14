@@ -92,7 +92,7 @@ public class CurrencyServiceImpl implements CurrencyService {
         if (item.getId() != null) throw new RuntimeException(messageSource.getMessage("do_not_send_id", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
         if (!repo.findAllByCurrencyTypeIdAndSupplierId(item.getCurrencyTypeId(), item.getSupplierId()).isEmpty())
-            throw new RuntimeException(messageSource.getMessage("enter_category", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+            throw new RuntimeException(messageSource.getMessage("name_exist", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
         Currency category = item.toEntity();
         repo.save(category);
