@@ -28,7 +28,12 @@ public class Currency extends BaseAuditEntity {
     private CurrencyType currencyType;
 
     @ManyToOne
-    private Company company;
+    private Supplier supplier;
+
+    public Currency(Long id) {
+        this.id = id;
+    }
+
     public CurrencyDto toDto(){
 
         CurrencyDto currencyDto = new CurrencyDto();
@@ -39,8 +44,8 @@ public class Currency extends BaseAuditEntity {
         currencyDto.setCurrencyValueInUzs(currencyValueInUzs);
 
         currencyDto.setCurrencyTypeId(currencyType.getId());
-        currencyDto.setCompanyId(company.getId());
-        currencyDto.setCompanyName(company.getName());
+        currencyDto.setSupplierId(supplier.getId());
+        currencyDto.setSupplierName(supplier.getName());
 
         String date = getModifiedDate().toString();
         currencyDto.setModifiedDate(date.substring(0, 11));

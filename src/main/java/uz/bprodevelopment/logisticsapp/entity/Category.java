@@ -26,6 +26,7 @@ public class Category extends BaseAuditEntity {
     private Long id;
 
     private String nameUz;
+
     private String nameRu;
     public Category(Long id) {
         this.id = id;

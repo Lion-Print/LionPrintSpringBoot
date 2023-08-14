@@ -39,12 +39,12 @@ public class LionPrintApplication {
                 roleAdmin = roleService.saveRole(new Role(null, ROLE_ADMIN));
             }
 
-            if (userService.getOneByUsername("+100") == null) {
+            if (userService.getOneByUsername("admin") == null) {
                 userService.save(
                         new UserDto(
                                 null,
                                 "Aliyev valijon",
-                                "+100",
+                                "admin",
                                 "123",
                                 null,
                                 roleAdmin.getId(),

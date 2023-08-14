@@ -9,6 +9,6 @@ import java.util.List;
 public interface CurrencyRepo extends JpaRepository<Currency, Long>,
         JpaSpecificationExecutor<Currency> {
 
-    List<Currency> findAllByCurrencyTypeIdAndCompanyId(Long currencyTypeId, Long companyId);
+    List<Currency> findAllByCurrencyTypeIdAndSupplierId(Long currencyTypeId, Long companyId);
 
 }

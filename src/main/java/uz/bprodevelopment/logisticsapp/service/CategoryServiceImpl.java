@@ -97,13 +97,16 @@ public class CategoryServiceImpl implements CategoryService {
         if(item.getNameRu() == null) {
             throw new RuntimeException(messageSource.getMessage("enter_name_ru", null, new Locale(BaseAppUtils.getCurrentLanguage())));
         }
-
+        if (repo.existsByNameUz(item.getNameUz())) {
+            throw new RuntimeException(messageSource.getMessage("name_exist", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+        }
         Category category = item.toEntity();
         repo.save(category);
     }
 
     @Override
     public void update(CategoryDto item) {
+        Category dbCategory = repo.getReferenceById(item.getId());
         if(item.getNameUz() == null) {
             throw new RuntimeException(messageSource.getMessage("enter_name_uz", null, new Locale(BaseAppUtils.getCurrentLanguage())));
         }
@@ -112,6 +115,9 @@ public class CategoryServiceImpl implements CategoryService {
         }
         if (item.getId() == null) {
             throw new RuntimeException(messageSource.getMessage("enter_valid_id", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+        }
+        if (!dbCategory.getNameUz().equals(item.getNameUz()) && repo.existsByNameUz(item.getNameUz())) {
+            throw new RuntimeException(messageSource.getMessage("name_exist", null, new Locale(BaseAppUtils.getCurrentLanguage())));
         }
         Category category = item.toEntity();
         repo.save(category);

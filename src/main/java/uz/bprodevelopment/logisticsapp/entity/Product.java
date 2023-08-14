@@ -29,10 +29,16 @@ public class Product extends BaseAuditEntity {
     private Boolean hasNds = false;
 
     @ManyToOne
+    @JoinColumn(name="category_id", nullable=false)
     private Category category;
 
     @ManyToOne
+    @JoinColumn(name="supplier_id", nullable=false)
     private Supplier supplier;
+
+    @ManyToOne
+    @JoinColumn(name="currency_id", nullable=false)
+    private Currency currency;
 
     private String description;
 
@@ -52,6 +58,10 @@ public class Product extends BaseAuditEntity {
         productDto.setCategoryName(BaseAppUtils.getCurrentLanguage().equals("uz") ? category.getNameUz() : category.getNameRu());
         productDto.setSupplierId(supplier.getId());
         productDto.setSupplierName(supplier.getName());
+        productDto.setCurrencyId(currency.getId());
+        productDto.setCurrencyName(BaseAppUtils.getCurrentLanguage().equals("uz") ? currency.getCurrencyType().getNameUz() : currency.getCurrencyType().getNameRu());
+        productDto.setCurrencySymbol(currency.getCurrencyType().getSymbol());
+        productDto.setCurrencyValue(currency.getCurrencyValueInUzs());
 
         return productDto;
     }

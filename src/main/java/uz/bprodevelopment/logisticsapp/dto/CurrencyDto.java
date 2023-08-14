@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import uz.bprodevelopment.logisticsapp.entity.Company;
 import uz.bprodevelopment.logisticsapp.entity.Currency;
 import uz.bprodevelopment.logisticsapp.entity.CurrencyType;
+import uz.bprodevelopment.logisticsapp.entity.Supplier;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -27,8 +28,8 @@ public class CurrencyDto {
     private Double currencyValueInUzs;
 
     private Long currencyTypeId;
-    private Long companyId;
-    private String companyName;
+    private Long supplierId;
+    private String supplierName;
 
     private String modifiedDate;
     private String modifiedTime;
@@ -38,7 +39,7 @@ public class CurrencyDto {
         currency.setId(id);
         currency.setCurrencyValueInUzs(currencyValueInUzs);
         currency.setCurrencyType(new CurrencyType(currencyTypeId));
-        currency.setCompany(new Company(companyId));
+        currency.setSupplier(new Supplier(supplierId));
 
         return currency;
     }
