@@ -203,6 +203,7 @@ public class ProductServiceImpl implements ProductService {
 
         for (ProductDetailDto detail: item.getDetails()) {
             ProductDetail productDetail = detail.toEntity();
+            productDetail.setProduct(product);
             productDetailRepo.save(productDetail);
         }
     }
