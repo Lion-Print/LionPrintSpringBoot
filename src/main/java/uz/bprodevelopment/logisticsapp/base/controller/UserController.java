@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import uz.bprodevelopment.logisticsapp.base.dto.UserDto;
 import uz.bprodevelopment.logisticsapp.base.entity.ErrorResponse;
 import uz.bprodevelopment.logisticsapp.base.entity.Role;
+import uz.bprodevelopment.logisticsapp.base.entity.Success;
 import uz.bprodevelopment.logisticsapp.base.entity.User;
 import uz.bprodevelopment.logisticsapp.base.filter.CustomUsernamePasswordAuthenticationToken;
 import uz.bprodevelopment.logisticsapp.base.service.UserService;
@@ -66,19 +67,19 @@ public class UserController {
     @PostMapping(USER_URL)
     public ResponseEntity<?> save(@RequestBody UserDto item) {
         service.save(item);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(Success.getInstance());
     }
 
     @PutMapping(USER_URL)
     public ResponseEntity<?> update(@RequestBody UserDto item) {
         service.update(item);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(Success.getInstance());
     }
 
     @DeleteMapping(USER_URL + "/{id}")
     public ResponseEntity<?> delete(@PathVariable(name = "id") Long id) {
         service.delete(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(Success.getInstance());
     }
 
     @GetMapping(REFRESH_TOKEN_URL)

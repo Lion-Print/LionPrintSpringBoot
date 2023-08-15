@@ -5,6 +5,7 @@ import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import uz.bprodevelopment.logisticsapp.base.entity.Success;
 import uz.bprodevelopment.logisticsapp.dto.ProductDto;
 import uz.bprodevelopment.logisticsapp.entity.Product;
 import uz.bprodevelopment.logisticsapp.service.ProductService;
@@ -69,7 +70,7 @@ public class ProductController {
             @RequestBody ProductDto item
     ) {
         service.save(item);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(Success.getInstance());
     }
 
     @PutMapping(PRODUCT_URL)
@@ -77,7 +78,7 @@ public class ProductController {
             @RequestBody ProductDto item
     ) {
         service.update(item);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(Success.getInstance());
     }
 
     @DeleteMapping(PRODUCT_URL + "/{id}")
@@ -85,7 +86,7 @@ public class ProductController {
             @PathVariable(name = "id") Long id
     ) {
         service.delete(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(Success.getInstance());
     }
 
 }

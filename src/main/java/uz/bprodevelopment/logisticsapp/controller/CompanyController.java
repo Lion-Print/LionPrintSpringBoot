@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.bprodevelopment.logisticsapp.base.dto.UserDto;
+import uz.bprodevelopment.logisticsapp.base.entity.Success;
 import uz.bprodevelopment.logisticsapp.dto.CompanyDto;
 import uz.bprodevelopment.logisticsapp.service.CompanyService;
 
@@ -64,7 +65,7 @@ public class CompanyController {
             @RequestBody CompanyDto item
     ) {
         service.save(item);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(Success.getInstance());
     }
 
     @PutMapping(COMPANY_URL)
@@ -72,7 +73,7 @@ public class CompanyController {
             @RequestBody CompanyDto item
     ) {
         service.update(item);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(Success.getInstance());
     }
 
     @DeleteMapping(COMPANY_URL + "/{id}")
@@ -80,7 +81,7 @@ public class CompanyController {
             @PathVariable(name = "id") Long id
     ) {
         service.delete(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(Success.getInstance());
     }
 
     @PostMapping(COMPANY_URL + "/add-user")
@@ -88,7 +89,7 @@ public class CompanyController {
             @RequestBody UserDto item
     ) {
         service.addUser(item);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(Success.getInstance());
     }
 
 

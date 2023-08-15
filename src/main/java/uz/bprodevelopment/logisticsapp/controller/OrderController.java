@@ -5,74 +5,70 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.bprodevelopment.logisticsapp.base.entity.Success;
-import uz.bprodevelopment.logisticsapp.dto.CategoryDetailDto;
-import uz.bprodevelopment.logisticsapp.entity.CategoryDetail;
-import uz.bprodevelopment.logisticsapp.service.CategoryDetailService;
+import uz.bprodevelopment.logisticsapp.dto.OrderDto;
+import uz.bprodevelopment.logisticsapp.service.OrderService;
 
-import static uz.bprodevelopment.logisticsapp.base.config.Urls.CATEGORY_DETAIL_URL;
+import static uz.bprodevelopment.logisticsapp.base.config.Urls.ORDER_URL;
 
 
 @RestController
 @RequiredArgsConstructor
-public class CategoryDetailController {
+public class OrderController {
 
-    private final CategoryDetailService service;
+    private final OrderService service;
 
-    @GetMapping(CATEGORY_DETAIL_URL + "/{id}")
+    @GetMapping(ORDER_URL + "/{id}")
     public ResponseEntity<?> getOne(
             @PathVariable(name = "id") Long id
     ) {
-        CategoryDetailDto item = service.getOne(id);
-        return ResponseEntity.ok().body(item);
+        OrderDto category = service.getOne(id);
+        return ResponseEntity.ok().body(category);
     }
 
-
-    @GetMapping(CATEGORY_DETAIL_URL)
+    @GetMapping(ORDER_URL)
     public ResponseEntity<?> getList(
             @RequestParam(name = "page") Integer page,
             @RequestParam(name = "size") Integer size,
-            @RequestParam(name = "name", required = false) String name,
-            @RequestParam(name = "categoryId", required = false) Long categoryId,
+            @RequestParam(name = "productId", required = false) Long productId,
             @RequestParam(name = "sort", required = false, defaultValue = "id") String sort
     ) {
         return ResponseEntity.ok().body(
                 service.getList(
-                        page, size, name, categoryId, sort
+                        page, size, productId, sort
                 )
         );
     }
 
-    @GetMapping(CATEGORY_DETAIL_URL + "/all")
+    @GetMapping(ORDER_URL + "/all")
     public ResponseEntity<?> getListAll(
-            @RequestParam(name = "name", required = false) String name,
-            @RequestParam(name = "categoryId", required = false) Long categoryId,
+            @RequestParam(name = "productId", required = false) Long productId,
             @RequestParam(name = "sort", required = false, defaultValue = "id") String sort
     ) {
         return ResponseEntity.ok().body(
                 service.getListAll(
-                        name, categoryId, sort
+                        productId, sort
                 )
         );
     }
 
 
-    @PostMapping(CATEGORY_DETAIL_URL)
+    @PostMapping(ORDER_URL)
     public ResponseEntity<?> save(
-            @RequestBody CategoryDetailDto item
+            @RequestBody OrderDto item
     ) {
         service.save(item);
         return ResponseEntity.ok().body(Success.getInstance());
     }
 
-    @PutMapping(CATEGORY_DETAIL_URL)
+    @PutMapping(ORDER_URL)
     public ResponseEntity<?> update(
-            @RequestBody CategoryDetailDto item
+            @RequestBody OrderDto item
     ) {
         service.update(item);
         return ResponseEntity.ok().body(Success.getInstance());
     }
 
-    @DeleteMapping(CATEGORY_DETAIL_URL + "/{id}")
+    @DeleteMapping(ORDER_URL + "/{id}")
     public ResponseEntity<?> delete(
             @PathVariable(name = "id") Long id
     ) {

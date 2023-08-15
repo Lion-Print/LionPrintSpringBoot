@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.bprodevelopment.logisticsapp.base.dto.UserDto;
+import uz.bprodevelopment.logisticsapp.base.entity.Success;
 import uz.bprodevelopment.logisticsapp.dto.SupplierDto;
 import uz.bprodevelopment.logisticsapp.dto.SupplierDto;
 import uz.bprodevelopment.logisticsapp.entity.Supplier;
@@ -67,7 +68,7 @@ public class SupplierController {
             @RequestBody SupplierDto item
     ) {
         service.save(item);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(Success.getInstance());
     }
 
     @PutMapping(SUPPLIER_URL)
@@ -75,7 +76,7 @@ public class SupplierController {
             @RequestBody SupplierDto item
     ) {
         service.update(item);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(Success.getInstance());
     }
 
     @DeleteMapping(SUPPLIER_URL + "/{id}")
@@ -83,7 +84,7 @@ public class SupplierController {
             @PathVariable(name = "id") Long id
     ) {
         service.delete(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(Success.getInstance());
     }
 
     @PostMapping(SUPPLIER_URL + "/add-user")
@@ -91,7 +92,7 @@ public class SupplierController {
             @RequestBody UserDto item
     ) {
         service.addUser(item);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(Success.getInstance());
     }
 
 

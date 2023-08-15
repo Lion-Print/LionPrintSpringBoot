@@ -3,7 +3,6 @@ package uz.bprodevelopment.logisticsapp.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Cascade;
 import uz.bprodevelopment.logisticsapp.base.entity.BaseAuditEntity;
 import uz.bprodevelopment.logisticsapp.base.util.BaseAppUtils;
 import uz.bprodevelopment.logisticsapp.dto.ProductDetailDto;
@@ -24,11 +23,9 @@ public class ProductDetail extends BaseAuditEntity {
     private Long id;
 
     @ManyToOne
-    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private Product product;
 
     @ManyToOne
-    @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private CategoryDetail categoryDetail;
 
     private String value;

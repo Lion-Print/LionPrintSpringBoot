@@ -4,6 +4,7 @@ package uz.bprodevelopment.logisticsapp.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import uz.bprodevelopment.logisticsapp.base.entity.Success;
 import uz.bprodevelopment.logisticsapp.dto.CategoryDto;
 import uz.bprodevelopment.logisticsapp.entity.Category;
 import uz.bprodevelopment.logisticsapp.service.CategoryService;
@@ -57,7 +58,7 @@ public class CategoryController {
             @RequestBody CategoryDto item
     ) {
         service.save(item);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(Success.getInstance());
     }
 
     @PutMapping(CATEGORY_URL)
@@ -65,7 +66,7 @@ public class CategoryController {
             @RequestBody CategoryDto item
     ) {
         service.update(item);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(Success.getInstance());
     }
 
     @DeleteMapping(CATEGORY_URL + "/{id}")
@@ -73,7 +74,7 @@ public class CategoryController {
             @PathVariable(name = "id") Long id
     ) {
         service.delete(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(Success.getInstance());
     }
 
 }

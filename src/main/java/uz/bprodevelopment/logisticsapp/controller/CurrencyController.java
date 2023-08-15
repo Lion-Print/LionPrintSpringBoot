@@ -4,6 +4,7 @@ package uz.bprodevelopment.logisticsapp.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import uz.bprodevelopment.logisticsapp.base.entity.Success;
 import uz.bprodevelopment.logisticsapp.dto.CurrencyDto;
 import uz.bprodevelopment.logisticsapp.service.CurrencyService;
 
@@ -57,7 +58,7 @@ public class CurrencyController {
             @RequestBody CurrencyDto item
     ) {
         service.save(item);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(Success.getInstance());
     }
 
     @PutMapping(CURRENCY_URL)
@@ -65,7 +66,7 @@ public class CurrencyController {
             @RequestBody CurrencyDto item
     ) {
         service.update(item);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(Success.getInstance());
     }
 
     @DeleteMapping(CURRENCY_URL + "/{id}")
@@ -73,7 +74,7 @@ public class CurrencyController {
             @PathVariable(name = "id") Long id
     ) {
         service.delete(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(Success.getInstance());
     }
 
 }
