@@ -16,7 +16,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 @EqualsAndHashCode(callSuper = false)
 @Data
 @Entity
-@Table(name = "categories")
+@Table(name = "orders")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Order extends BaseAuditEntity {
@@ -28,15 +28,31 @@ public class Order extends BaseAuditEntity {
     @OneToOne
     private Product product;
 
+    @Column(nullable = false)
     private Double amount;
 
+    @OneToOne
+    private Company company;
+
+    @OneToOne
+    private Supplier supplier;
 
     public OrderDto toDto(){
 
         OrderDto orderDto = new OrderDto();
         orderDto.setId(id);
+
         orderDto.setAmount(amount);
+
         orderDto.setProduct(product.toDto());
+
+        orderDto.setSupplierId(supplier.getId());
+        orderDto.setSupplierName(supplier.getName());
+        orderDto.setSupplierName(supplier.getPhone());
+
+        orderDto.setCompanyId(company.getId());
+        orderDto.setCompanyName(company.getName());
+        orderDto.setCompanyName(company.getPhone());
 
         return orderDto;
     }

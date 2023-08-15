@@ -2,20 +2,21 @@ package uz.bprodevelopment.logisticsapp.service;
 
 
 import uz.bprodevelopment.logisticsapp.dto.OrderDto;
+import uz.bprodevelopment.logisticsapp.entity.Order;
 import uz.bprodevelopment.logisticsapp.utils.CustomPage;
 
 import java.util.List;
 
 public interface OrderService {
 
-    OrderDto getOne(Long id);
+    Order getOne(Long id);
 
-    List<OrderDto> getListAll(
+    List<Order> getListAll(
             Long productId,
             String sort
     );
 
-    CustomPage<OrderDto> getList(
+    CustomPage<Order> getList(
             Integer page,
             Integer size,
             Long productId,

@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.bprodevelopment.logisticsapp.base.entity.Success;
 import uz.bprodevelopment.logisticsapp.dto.OrderDto;
+import uz.bprodevelopment.logisticsapp.entity.Order;
 import uz.bprodevelopment.logisticsapp.service.OrderService;
 
 import static uz.bprodevelopment.logisticsapp.base.config.Urls.ORDER_URL;
@@ -21,8 +22,8 @@ public class OrderController {
     public ResponseEntity<?> getOne(
             @PathVariable(name = "id") Long id
     ) {
-        OrderDto category = service.getOne(id);
-        return ResponseEntity.ok().body(category);
+        Order order = service.getOne(id);
+        return ResponseEntity.ok().body(order);
     }
 
     @GetMapping(ORDER_URL)

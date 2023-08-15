@@ -10,8 +10,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import uz.bprodevelopment.logisticsapp.dto.OrderDto;
+import uz.bprodevelopment.logisticsapp.dto.ProductDetailDto;
 import uz.bprodevelopment.logisticsapp.entity.Order;
+import uz.bprodevelopment.logisticsapp.entity.ProductDetail;
 import uz.bprodevelopment.logisticsapp.repo.OrderRepo;
+import uz.bprodevelopment.logisticsapp.repo.ProductDetailRepo;
 import uz.bprodevelopment.logisticsapp.spec.OrderSpec;
 import uz.bprodevelopment.logisticsapp.spec.SearchCriteria;
 import uz.bprodevelopment.logisticsapp.utils.CustomPage;
@@ -25,16 +28,15 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepo repo;
-    private final MessageSource messageSource;
+    private final ProductDetailRepo productDetailRepo;
 
     @Override
-    public OrderDto getOne(Long id) {
-        Order category = repo.findById(id).get();
-        return category.toDto();
+    public Order getOne(Long id) {
+        return repo.findById(id).get();
     }
 
     @Override
-    public List<OrderDto> getListAll(
+    public List<Order> getListAll(
             Long productId,
             String sort
     ) {
@@ -43,15 +45,11 @@ public class OrderServiceImpl implements OrderService {
 
         if (productId != null) spec = spec.and(new OrderSpec(new SearchCriteria("productId", "=", productId)));
 
-        List<Order> categories = repo.findAll(spec, Sort.by(sort).descending());
-        List<OrderDto> categoryDtos = new ArrayList<>();
-        categories.forEach(category -> categoryDtos.add(category.toDto()));
-
-        return categoryDtos;
+        return repo.findAll(spec, Sort.by(sort).descending());
     }
 
     @Override
-    public CustomPage<OrderDto> getList(
+    public CustomPage<Order> getList(
             Integer page,
             Integer size,
             Long productId,
@@ -65,12 +63,9 @@ public class OrderServiceImpl implements OrderService {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
         Page<Order> responsePage = repo.findAll(spec, pageable);
-        List<OrderDto> dtos = new ArrayList<>();
-        responsePage.getContent().forEach(category -> dtos.add(category.toDto()));
-
 
         return new CustomPage<>(
-                dtos,
+                responsePage.getContent(),
                 responsePage.isFirst(),
                 responsePage.isLast(),
                 responsePage.getNumber(),
