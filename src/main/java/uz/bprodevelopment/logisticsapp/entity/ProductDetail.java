@@ -23,10 +23,16 @@ public class ProductDetail extends BaseAuditEntity {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.DETACH
+    })
     private Product product;
 
-    @ManyToOne
+    @ManyToOne(cascade = {
+            CascadeType.PERSIST,
+            CascadeType.DETACH
+    })
     private CategoryDetail categoryDetail;
 
     private String value;

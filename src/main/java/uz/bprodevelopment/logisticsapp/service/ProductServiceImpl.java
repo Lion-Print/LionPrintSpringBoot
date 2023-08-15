@@ -37,7 +37,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductDto getOne(Long id) {
         Product item = repo.getReferenceById(id);
-        return item.toDto();
+        ProductDto productDto = item.toDto();
+        List<ProductDetail> productDetails = productDetailRepo.findAllByProductId(id);
+        productDetails.forEach(productDetail -> productDto.getDetails().add(productDetail.toDto()));
+        return productDto;
     }
 
     @Override
