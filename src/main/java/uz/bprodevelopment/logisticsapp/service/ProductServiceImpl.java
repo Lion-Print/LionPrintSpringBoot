@@ -196,7 +196,7 @@ public class ProductServiceImpl implements ProductService {
         Product product = item.toEntity();
         repo.save(product);
 
-        productDetailRepo.deleteByProductId(item.getId());
+        productDetailRepo.deleteAllByProductId(item.getId());
 
         for (ProductDetailDto detail: item.getDetails()) {
             ProductDetail productDetail = detail.toEntity();
@@ -205,8 +205,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
-        productDetailRepo.deleteByProductId(id);
+        productDetailRepo.deleteAllByProductId(id);
         repo.deleteById(id);
     }
 

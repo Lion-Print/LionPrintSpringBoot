@@ -9,7 +9,7 @@ import java.util.List;
 public interface ProductDetailRepo extends JpaRepository<ProductDetail, Long>,
         JpaSpecificationExecutor<ProductDetail> {
 
-    void deleteByProductId(Long productId);
+    void deleteAllByProductId(Long productId);
 
     List<ProductDetail> findAllByProductId(Long productId);
 
