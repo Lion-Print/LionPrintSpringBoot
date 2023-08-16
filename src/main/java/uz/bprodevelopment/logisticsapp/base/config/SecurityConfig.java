@@ -86,8 +86,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests().antMatchers(
                 SUPPLIER_URL + "/**",
-                CATEGORY_URL + "/**",
-                CATEGORY_DETAIL_URL + "/**"
+                CATEGORY_URL,
+                CATEGORY_DETAIL_URL
         ).hasAnyAuthority(
                 ROLE_COMPANY_ADMIN,
                 ROLE_COMPANY_MANAGER
