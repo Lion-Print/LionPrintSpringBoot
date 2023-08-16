@@ -65,8 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers(
                 USER_URL
         ).hasAnyAuthority(
-                ROLE_ADMIN,
-                ROLE_MANAGER
+                ROLE_ADMIN
         );
 
         http.authorizeRequests()

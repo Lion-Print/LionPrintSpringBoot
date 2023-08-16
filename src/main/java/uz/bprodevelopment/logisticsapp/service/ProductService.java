@@ -14,6 +14,7 @@ public interface ProductService {
     ProductDto getOne(Long id);
 
     List<ProductDto> getListAll(
+            String name,
             String description,
             Double price,
             Integer hasDelivery,
@@ -27,6 +28,7 @@ public interface ProductService {
     CustomPage<ProductDto> getList(
             Integer page,
             Integer size,
+            String name,
             String description,
             Double price,
             Integer hasDelivery,

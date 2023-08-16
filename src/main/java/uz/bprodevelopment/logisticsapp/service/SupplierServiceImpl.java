@@ -199,7 +199,7 @@ public class SupplierServiceImpl implements SupplierService {
         User user = userDto.toEntity();
         user.setSupplier(supplier);
 
-        Role role = roleRepo.findByName(ROLE_SUPPLIER_MANAGER);
+        Role role = roleRepo.findByName(ROLE_SUPPLIER_ADMIN);
         user.getRoles().add(role);
 
         userRepo.save(user);

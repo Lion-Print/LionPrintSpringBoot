@@ -11,11 +11,13 @@ import uz.bprodevelopment.logisticsapp.base.util.BaseAppUtils;
 import uz.bprodevelopment.logisticsapp.dto.ProductDetailDto;
 import uz.bprodevelopment.logisticsapp.dto.ProductDto;
 import uz.bprodevelopment.logisticsapp.entity.CategoryDetail;
+import uz.bprodevelopment.logisticsapp.entity.CurrencyType;
 import uz.bprodevelopment.logisticsapp.entity.Product;
 import uz.bprodevelopment.logisticsapp.entity.ProductDetail;
 import uz.bprodevelopment.logisticsapp.repo.CategoryDetailRepo;
 import uz.bprodevelopment.logisticsapp.repo.ProductDetailRepo;
 import uz.bprodevelopment.logisticsapp.repo.ProductRepo;
+import uz.bprodevelopment.logisticsapp.spec.CurrencyTypeSpec;
 import uz.bprodevelopment.logisticsapp.spec.ProductSpec;
 import uz.bprodevelopment.logisticsapp.spec.SearchCriteria;
 import uz.bprodevelopment.logisticsapp.utils.CustomPage;
@@ -45,6 +47,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductDto> getListAll(
+            String name,
             String description,
             Double price,
             Integer hasDelivery,
@@ -57,6 +60,11 @@ public class ProductServiceImpl implements ProductService {
         ProductSpec spec1 = new ProductSpec(new SearchCriteria("id", ">", 0));
         Specification<Product> spec = Specification.where(spec1);
 
+        if (name != null) {
+            Specification<Product> spec2 = Specification.where(new ProductSpec(new SearchCriteria("nameUz", ":", name)));
+            spec2 = spec2.or(new ProductSpec(new SearchCriteria("nameRu", ":", name)));
+            spec = spec.and(spec2);
+        }
 
         if (description != null) spec = spec.and(new ProductSpec(new SearchCriteria("description", ":", description)));
 
@@ -71,6 +79,8 @@ public class ProductServiceImpl implements ProductService {
         if (supplierId != null) spec = spec.and(new ProductSpec(new SearchCriteria("supplierId", ":", supplierId)));
 
         Sort sorting = Sort.by(descending ? Sort.Direction.DESC : Sort.Direction.ASC, sort);
+        if (name != null) sorting = Sort.by(Sort.Direction.ASC, "price");
+
         List<Product> products = repo.findAll(spec, sorting);
 
         List<ProductDto> response = new ArrayList<>();
@@ -91,6 +101,7 @@ public class ProductServiceImpl implements ProductService {
     public CustomPage<ProductDto> getList(
             Integer page,
             Integer size,
+            String name,
             String description,
             Double price,
             Integer hasDelivery,
@@ -103,6 +114,12 @@ public class ProductServiceImpl implements ProductService {
 
         ProductSpec spec1 = new ProductSpec(new SearchCriteria("id", ">", 0));
         Specification<Product> spec = Specification.where(spec1);
+
+        if (name != null) {
+            Specification<Product> spec2 = Specification.where(new ProductSpec(new SearchCriteria("nameUz", ":", name)));
+            spec2 = spec2.or(new ProductSpec(new SearchCriteria("nameRu", ":", name)));
+            spec = spec.and(spec2);
+        }
 
         if (description != null) spec = spec.and(new ProductSpec(new SearchCriteria("description", ":", description)));
 
@@ -117,6 +134,8 @@ public class ProductServiceImpl implements ProductService {
         if (supplierId != null) spec = spec.and(new ProductSpec(new SearchCriteria("supplierId", ":", supplierId)));
 
         Sort sorting = Sort.by(descending ? Sort.Direction.DESC : Sort.Direction.ASC, sort);
+        if (name != null) sorting = Sort.by(Sort.Direction.ASC, "price");
+
         Pageable pageable = PageRequest.of(page, size, sorting);
 
         Page<Product> responsePage = repo.findAll(spec, pageable);

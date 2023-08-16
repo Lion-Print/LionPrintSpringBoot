@@ -59,12 +59,6 @@ public class LionPrintApplication {
                         ));
             }
 
-
-            Role roleManager = roleService.getRole(ROLE_MANAGER);
-            if (roleManager == null) {
-                roleService.saveRole(new Role(null, ROLE_MANAGER));
-            }
-
             Role roleCompanyAdmin = roleService.getRole(ROLE_COMPANY_ADMIN);
             if (roleCompanyAdmin == null) {
                 roleService.saveRole(new Role(null, ROLE_COMPANY_ADMIN));
@@ -78,11 +72,6 @@ public class LionPrintApplication {
             Role roleSupplierAdmin = roleService.getRole(ROLE_SUPPLIER_ADMIN);
             if (roleSupplierAdmin == null) {
                 roleService.saveRole(new Role(null, ROLE_SUPPLIER_ADMIN));
-            }
-
-            Role roleSupplierManager = roleService.getRole(ROLE_SUPPLIER_MANAGER);
-            if (roleSupplierManager == null) {
-                roleService.saveRole(new Role(null, ROLE_SUPPLIER_MANAGER));
             }
 
         };
