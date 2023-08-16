@@ -90,7 +90,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 CATEGORY_DETAIL_URL
         ).hasAnyAuthority(
                 ROLE_COMPANY_ADMIN,
-                ROLE_COMPANY_MANAGER
+                ROLE_COMPANY_MANAGER,
+                ROLE_SUPPLIER_ADMIN
         );
 
         http.authorizeRequests().antMatchers(
