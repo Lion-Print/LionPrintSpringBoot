@@ -224,10 +224,15 @@ public class SupplierServiceImpl implements SupplierService {
         userRepo.save(user);
     }
 
+    @Override
+    public void deleteUser(Long id) {
+        userRepo.deleteById(id);
+    }
+
 
     @Override
     @Transactional
-    public void blockUser(Long id) {
+    public void blockUser(Long id, Boolean isBlock) {
 
         User user = userRepo.getReferenceById(id);
         User currentUser = userRepo.findByUsername(BaseAppUtils.getCurrentUsername());
@@ -239,6 +244,6 @@ public class SupplierServiceImpl implements SupplierService {
             throw new RuntimeException(messageSource.getMessage("you_can_not_block_this_user", null, new Locale(BaseAppUtils.getCurrentLanguage())));
         }
 
-        user.setIsBlocked(true);
+        user.setIsBlocked(isBlock);
     }
 }

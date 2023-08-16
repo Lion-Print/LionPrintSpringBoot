@@ -95,6 +95,23 @@ public class SupplierController {
         return ResponseEntity.ok().body(Success.getInstance());
     }
 
+    @PostMapping(SUPPLIER_URL + "/delete-user/{id}")
+    public ResponseEntity<?> deleteUser(
+            @PathVariable(name = "id") Long id
+    ) {
+        service.deleteUser(id);
+        return ResponseEntity.ok().body(Success.getInstance());
+    }
+
+    @PostMapping(SUPPLIER_URL + "/block-user/{id}")
+    public ResponseEntity<?> blockUser(
+            @PathVariable(name = "id") Long id,
+            @RequestParam(name = "isBlock", defaultValue = "true") Boolean isBlock
+    ) {
+        service.blockUser(id, isBlock);
+        return ResponseEntity.ok().body(Success.getInstance());
+    }
+
 
 }
 

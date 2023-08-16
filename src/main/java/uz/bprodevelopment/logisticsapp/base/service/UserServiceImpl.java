@@ -48,6 +48,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public List<UserDto> getListAll(
             String username,
             String fullName,
+            Long companyId,
+            Long supplierId,
             String sort
     ) {
         UserSpec spec1 = new UserSpec(new SearchCriteria("id", ">", 0));
@@ -57,6 +59,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             spec = spec.and(new UserSpec(new SearchCriteria("fullName", ":", fullName)));
         if (username != null)
             spec = spec.and(new UserSpec(new SearchCriteria("username", ":", username)));
+        if (companyId != null)
+            spec = spec.and(new UserSpec(new SearchCriteria("companyId", ":", companyId)));
+        if (supplierId != null)
+            spec = spec.and(new UserSpec(new SearchCriteria("supplierId", ":", supplierId)));
 
         List<User> users = repo.findAll(spec, Sort.by(sort).descending());
         List<UserDto> userDtos = new ArrayList<>();
@@ -71,6 +77,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             Integer size,
             String username,
             String fullName,
+            Long companyId,
+            Long supplierId,
             String sort
     ) {
         UserSpec spec1 = new UserSpec(new SearchCriteria("id", ">", 0));
@@ -80,6 +88,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             spec = spec.and(new UserSpec(new SearchCriteria("fullName", ":", fullName)));
         if (username != null)
             spec = spec.and(new UserSpec(new SearchCriteria("username", ":", username)));
+        if (companyId != null)
+            spec = spec.and(new UserSpec(new SearchCriteria("companyId", ":", companyId)));
+        if (supplierId != null)
+            spec = spec.and(new UserSpec(new SearchCriteria("supplierId", ":", supplierId)));
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
         Page<User> responsePage = repo.findAll(spec, pageable);

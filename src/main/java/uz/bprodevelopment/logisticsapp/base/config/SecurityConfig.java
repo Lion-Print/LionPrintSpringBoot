@@ -62,43 +62,44 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 FILES_URL + "/**"
         ).permitAll();
 
-        http.authorizeRequests().antMatchers(
-                USER_URL + "/**",
-                CURRENCY_TYPE_URL,
-                COMPANY_URL
-        ).hasAnyAuthority(
-                ROLE_ADMIN
-        );
+        http.authorizeRequests()
+                .antMatchers(CURRENCY_TYPE_URL, COMPANY_URL)
+                .hasAnyAuthority(ROLE_ADMIN);
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.POST, USER_URL)
+                .hasAnyAuthority(ROLE_ADMIN);
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.PUT, USER_URL)
+                .hasAnyAuthority(ROLE_ADMIN);
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.DELETE, USER_URL)
+                .hasAnyAuthority(ROLE_ADMIN);
 
 
         http.authorizeRequests()
-                .antMatchers(HttpMethod.POST, CATEGORY_URL + "/**", CATEGORY_DETAIL_URL + "/**", SUPPLIER_URL + "/**")
+                .antMatchers(HttpMethod.POST, CATEGORY_URL, CATEGORY_DETAIL_URL, SUPPLIER_URL,
+                        COMPANY_URL + "add-user", COMPANY_URL + "delete-user/**", COMPANY_URL + "block-user/**")
                 .hasAnyAuthority(ROLE_COMPANY_ADMIN, ROLE_COMPANY_MANAGER);
 
         http.authorizeRequests()
-                .antMatchers(HttpMethod.PUT, CATEGORY_URL + "/**", CATEGORY_DETAIL_URL + "/**", SUPPLIER_URL + "/**")
+                .antMatchers(HttpMethod.PUT, CATEGORY_URL, CATEGORY_DETAIL_URL, SUPPLIER_URL)
                 .hasAnyAuthority(ROLE_COMPANY_ADMIN, ROLE_COMPANY_MANAGER);
 
         http.authorizeRequests()
-                .antMatchers(HttpMethod.DELETE, CATEGORY_URL + "/**", CATEGORY_DETAIL_URL + "/**", SUPPLIER_URL + "/**")
+                .antMatchers(HttpMethod.DELETE, CATEGORY_URL + "/**", CATEGORY_DETAIL_URL + "/**")
                 .hasAnyAuthority(ROLE_COMPANY_ADMIN, ROLE_COMPANY_MANAGER);
 
+        http.authorizeRequests()
+                .antMatchers(SUPPLIER_URL, CATEGORY_URL, CATEGORY_DETAIL_URL)
+                .hasAnyAuthority(ROLE_COMPANY_ADMIN, ROLE_COMPANY_MANAGER, ROLE_SUPPLIER_ADMIN);
 
-        http.authorizeRequests().antMatchers(
-                SUPPLIER_URL + "/**",
-                CATEGORY_URL,
-                CATEGORY_DETAIL_URL
-        ).hasAnyAuthority(
-                ROLE_COMPANY_ADMIN,
-                ROLE_COMPANY_MANAGER,
-                ROLE_SUPPLIER_ADMIN
-        );
+        http.authorizeRequests()
+                .antMatchers(CURRENCY_URL)
+                .hasAnyAuthority(ROLE_SUPPLIER_ADMIN);
 
-        http.authorizeRequests().antMatchers(
-                CURRENCY_URL
-        ).hasAnyAuthority(
-                ROLE_SUPPLIER_ADMIN
-        );
+        http.authorizeRequests()
+                .antMatchers(SUPPLIER_URL + "/add-user", SUPPLIER_URL + "/delete-user/**", SUPPLIER_URL + "/block-user/**")
+                .hasAnyAuthority(ROLE_SUPPLIER_ADMIN);
 
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(authenticationFilter);

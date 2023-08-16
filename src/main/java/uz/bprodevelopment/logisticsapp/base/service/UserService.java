@@ -2,6 +2,7 @@ package uz.bprodevelopment.logisticsapp.base.service;
 
 
 import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.RequestParam;
 import uz.bprodevelopment.logisticsapp.base.dto.UserDto;
 import uz.bprodevelopment.logisticsapp.base.entity.User;
 import uz.bprodevelopment.logisticsapp.utils.CustomPage;
@@ -15,6 +16,8 @@ public interface UserService {
     List<UserDto> getListAll(
             String username,
             String fullName,
+            Long companyId,
+            Long supplierId,
             String sort
     );
 
@@ -23,6 +26,8 @@ public interface UserService {
             Integer size,
             String username,
             String fullName,
+            Long companyId,
+            Long supplierId,
             String sort
     );
 

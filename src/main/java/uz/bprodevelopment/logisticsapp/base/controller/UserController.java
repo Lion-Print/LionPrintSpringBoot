@@ -54,13 +54,25 @@ public class UserController {
 
 
     @GetMapping(USER_URL)
-    public ResponseEntity<?> getList(@RequestParam(name = "page") Integer page, @RequestParam(name = "size") Integer size, @RequestParam(name = "username", required = false) String username, @RequestParam(name = "fullName", required = false) String fullName, @RequestParam(name = "sort", required = false, defaultValue = "id") String sort) {
-        return ResponseEntity.ok().body(service.getList(page, size, username, fullName, sort));
+    public ResponseEntity<?> getList(
+            @RequestParam(name = "page") Integer page,
+            @RequestParam(name = "size") Integer size,
+            @RequestParam(name = "username", required = false) String username,
+            @RequestParam(name = "fullName", required = false) String fullName,
+            @RequestParam(name = "companyId", required = false) Long companyId,
+            @RequestParam(name = "supplierId", required = false) Long supplierId,
+            @RequestParam(name = "sort", required = false, defaultValue = "id") String sort) {
+        return ResponseEntity.ok().body(service.getList(page, size, username, fullName, companyId, supplierId, sort));
     }
 
     @GetMapping(USER_URL + "/all")
-    public ResponseEntity<?> getListAll(@RequestParam(name = "username", required = false) String username, @RequestParam(name = "fullName", required = false) String fullName, @RequestParam(name = "sort", required = false, defaultValue = "id") String sort) {
-        return ResponseEntity.ok().body(service.getListAll(username, fullName, sort));
+    public ResponseEntity<?> getListAll(
+            @RequestParam(name = "username", required = false) String username,
+            @RequestParam(name = "fullName", required = false) String fullName,
+            @RequestParam(name = "companyId", required = false) Long companyId,
+            @RequestParam(name = "supplierId", required = false) Long supplierId,
+            @RequestParam(name = "sort", required = false, defaultValue = "id") String sort) {
+        return ResponseEntity.ok().body(service.getListAll(username, fullName, companyId, supplierId, sort));
     }
 
 

@@ -11,6 +11,7 @@ import uz.bprodevelopment.logisticsapp.dto.CompanyDto;
 import uz.bprodevelopment.logisticsapp.service.CompanyService;
 
 import static uz.bprodevelopment.logisticsapp.base.config.Urls.COMPANY_URL;
+import static uz.bprodevelopment.logisticsapp.base.config.Urls.COMPANY_URL;
 
 
 @RestController
@@ -92,6 +93,22 @@ public class CompanyController {
         return ResponseEntity.ok().body(Success.getInstance());
     }
 
+    @PostMapping(COMPANY_URL + "/delete-user/{id}")
+    public ResponseEntity<?> deleteUser(
+            @PathVariable(name = "id") Long id
+    ) {
+        service.deleteUser(id);
+        return ResponseEntity.ok().body(Success.getInstance());
+    }
+
+    @PostMapping(COMPANY_URL + "/block-user/{id}")
+    public ResponseEntity<?> blockUser(
+            @PathVariable(name = "id") Long id,
+            @RequestParam(name = "isBlock", defaultValue = "true") Boolean isBlock
+    ) {
+        service.blockUser(id, isBlock);
+        return ResponseEntity.ok().body(Success.getInstance());
+    }
 
 }
 
