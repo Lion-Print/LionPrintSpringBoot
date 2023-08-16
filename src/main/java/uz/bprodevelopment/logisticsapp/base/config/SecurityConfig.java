@@ -63,18 +63,41 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         ).permitAll();
 
         http.authorizeRequests().antMatchers(
-                USER_URL
+                USER_URL + "/**",
+                CURRENCY_TYPE_URL,
+                COMPANY_URL
         ).hasAnyAuthority(
                 ROLE_ADMIN
         );
 
-        http.authorizeRequests()
-                .antMatchers(HttpMethod.DELETE, REGION_URL + "/**")
-                .hasAnyAuthority(ROLE_ADMIN);
 
         http.authorizeRequests()
-                .antMatchers( USER_URL + "/payment/**")
-                .hasAnyAuthority(ROLE_ADMIN);
+                .antMatchers(HttpMethod.POST, CATEGORY_URL + "/**", CATEGORY_DETAIL_URL + "/**", SUPPLIER_URL + "/**")
+                .hasAnyAuthority(ROLE_COMPANY_ADMIN, ROLE_COMPANY_MANAGER);
+
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.PUT, CATEGORY_URL + "/**", CATEGORY_DETAIL_URL + "/**", SUPPLIER_URL + "/**")
+                .hasAnyAuthority(ROLE_COMPANY_ADMIN, ROLE_COMPANY_MANAGER);
+
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.DELETE, CATEGORY_URL + "/**", CATEGORY_DETAIL_URL + "/**", SUPPLIER_URL + "/**")
+                .hasAnyAuthority(ROLE_COMPANY_ADMIN, ROLE_COMPANY_MANAGER);
+
+
+        http.authorizeRequests().antMatchers(
+                SUPPLIER_URL + "/**",
+                CATEGORY_URL + "/**",
+                CATEGORY_DETAIL_URL + "/**"
+        ).hasAnyAuthority(
+                ROLE_COMPANY_ADMIN,
+                ROLE_COMPANY_MANAGER
+        );
+
+        http.authorizeRequests().antMatchers(
+                CURRENCY_URL
+        ).hasAnyAuthority(
+                ROLE_SUPPLIER_ADMIN
+        );
 
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(authenticationFilter);

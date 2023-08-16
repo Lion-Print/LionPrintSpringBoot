@@ -9,7 +9,6 @@ public class Urls {
 
     public static final String LOGIN_URL = BASE_URL + "login";
     public static final String REFRESH_TOKEN_URL = BASE_URL + "refresh-token";
-    public static final String ACCOUNT_URL = BASE_URL + "account";
     public static final String USER_URL = BASE_URL + "user";
 
     public static final String COMPANY_URL = BASE_URL + "company";
@@ -21,7 +20,6 @@ public class Urls {
     public static final String CATEGORY_DETAIL_URL = BASE_URL + "category-detail";
 
     public static final String PRODUCT_URL = BASE_URL + "product";
-    public static final String PRODUCT_DETAIL_URL = BASE_URL + "product-detail";
 
     public static final String ORDER_URL = BASE_URL + "order";
 

@@ -10,6 +10,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import uz.bprodevelopment.logisticsapp.base.util.BaseAppUtils;
+import uz.bprodevelopment.logisticsapp.dto.CategoryDto;
 import uz.bprodevelopment.logisticsapp.dto.CurrencyTypeDto;
 import uz.bprodevelopment.logisticsapp.entity.CurrencyType;
 import uz.bprodevelopment.logisticsapp.repo.CurrencyTypeRepo;
@@ -33,6 +34,12 @@ public class CurrencyTypeServiceImpl implements CurrencyTypeService {
     public CurrencyTypeDto getOne(Long id) {
         CurrencyType category = repo.findById(id).get();
         return category.toDto();
+    }
+
+    @Override
+    public CurrencyType getOneBySymbol(String symbol) {
+        CurrencyType currencyType = repo.findBySymbol(symbol);
+        return currencyType;
     }
 
 

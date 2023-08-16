@@ -11,6 +11,8 @@ public interface CurrencyTypeService {
 
     CurrencyTypeDto getOne(Long id);
 
+    CurrencyType getOneBySymbol(String symbol);
+
     List<CurrencyTypeDto> getListAll(
             String name,
             String sort

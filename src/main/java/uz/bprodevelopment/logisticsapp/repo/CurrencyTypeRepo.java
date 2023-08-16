@@ -11,4 +11,6 @@ import java.util.function.Function;
 public interface CurrencyTypeRepo extends JpaRepository<CurrencyType, Long>,
         JpaSpecificationExecutor<CurrencyType> {
 
+    CurrencyType findBySymbol(String symbol);
+
 }

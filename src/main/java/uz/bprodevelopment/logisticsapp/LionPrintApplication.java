@@ -15,6 +15,7 @@ import uz.bprodevelopment.logisticsapp.dto.CurrencyDto;
 import uz.bprodevelopment.logisticsapp.dto.CurrencyTypeDto;
 import uz.bprodevelopment.logisticsapp.entity.Currency;
 import uz.bprodevelopment.logisticsapp.entity.CurrencyType;
+import uz.bprodevelopment.logisticsapp.repo.CurrencyTypeRepo;
 import uz.bprodevelopment.logisticsapp.service.CurrencyService;
 import uz.bprodevelopment.logisticsapp.service.CurrencyTypeService;
 
@@ -32,8 +33,7 @@ public class LionPrintApplication {
     CommandLineRunner run(
             UserService userService,
             RoleService roleService,
-            CurrencyTypeService currencyTypeService,
-            CurrencyService currencyService
+            CurrencyTypeRepo currencyTypeRepo
     ) {
         return args -> {
 
@@ -73,6 +73,16 @@ public class LionPrintApplication {
             if (roleSupplierAdmin == null) {
                 roleService.saveRole(new Role(null, ROLE_SUPPLIER_ADMIN));
             }
+
+            CurrencyType currencyType = currencyTypeRepo.findBySymbol("UZS");
+            if (currencyType == null) {
+                currencyType = new CurrencyType();
+                currencyType.setNameUz("so'm");
+                currencyType.setNameRu("сум");
+                currencyType.setSymbol("UZS");
+                currencyTypeRepo.save(currencyType);
+            }
+
 
         };
     }

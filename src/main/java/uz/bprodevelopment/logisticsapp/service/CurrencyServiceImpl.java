@@ -13,7 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import uz.bprodevelopment.logisticsapp.base.util.BaseAppUtils;
 import uz.bprodevelopment.logisticsapp.dto.CurrencyDto;
 import uz.bprodevelopment.logisticsapp.entity.Currency;
+import uz.bprodevelopment.logisticsapp.entity.CurrencyType;
 import uz.bprodevelopment.logisticsapp.repo.CurrencyRepo;
+import uz.bprodevelopment.logisticsapp.repo.CurrencyTypeRepo;
 import uz.bprodevelopment.logisticsapp.spec.CurrencySpec;
 import uz.bprodevelopment.logisticsapp.spec.SearchCriteria;
 import uz.bprodevelopment.logisticsapp.utils.CustomPage;
@@ -28,6 +30,7 @@ import java.util.Locale;
 public class CurrencyServiceImpl implements CurrencyService {
 
     private final CurrencyRepo repo;
+    private final CurrencyTypeRepo currencyTypeRepo;
     private final MessageSource messageSource;
 
     @Override
@@ -103,6 +106,10 @@ public class CurrencyServiceImpl implements CurrencyService {
     public void update(CurrencyDto item) {
         if(item.getCurrencyValueInUzs() == null) {
             throw new RuntimeException(messageSource.getMessage("enter_currency_value", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+        }
+        CurrencyType currencyType = currencyTypeRepo.getReferenceById(item.getCurrencyTypeId());
+        if (currencyType.getSymbol().equals("UZS")) {
+            throw new RuntimeException(messageSource.getMessage("edit_not_permitted_for_sum", null, new Locale(BaseAppUtils.getCurrentLanguage())));
         }
         Currency currency = repo.getReferenceById(item.getId());
         currency.setCurrencyValueInUzs(item.getCurrencyValueInUzs());

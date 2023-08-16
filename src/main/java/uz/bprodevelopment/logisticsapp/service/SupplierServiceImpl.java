@@ -17,9 +17,15 @@ import uz.bprodevelopment.logisticsapp.base.entity.User;
 import uz.bprodevelopment.logisticsapp.base.repo.RoleRepo;
 import uz.bprodevelopment.logisticsapp.base.repo.UserRepo;
 import uz.bprodevelopment.logisticsapp.base.util.BaseAppUtils;
+import uz.bprodevelopment.logisticsapp.dto.CurrencyDto;
+import uz.bprodevelopment.logisticsapp.dto.CurrencyTypeDto;
 import uz.bprodevelopment.logisticsapp.dto.SupplierDto;
 import uz.bprodevelopment.logisticsapp.entity.Company;
+import uz.bprodevelopment.logisticsapp.entity.Currency;
+import uz.bprodevelopment.logisticsapp.entity.CurrencyType;
 import uz.bprodevelopment.logisticsapp.entity.Supplier;
+import uz.bprodevelopment.logisticsapp.repo.CurrencyRepo;
+import uz.bprodevelopment.logisticsapp.repo.CurrencyTypeRepo;
 import uz.bprodevelopment.logisticsapp.repo.SupplierRepo;
 import uz.bprodevelopment.logisticsapp.spec.SupplierSpec;
 import uz.bprodevelopment.logisticsapp.spec.SearchCriteria;
@@ -39,6 +45,8 @@ public class SupplierServiceImpl implements SupplierService {
     private final SupplierRepo repo;
     private final UserRepo userRepo;
     private final RoleRepo roleRepo;
+    private final CurrencyTypeRepo currencyTypeRepo;
+    private final CurrencyRepo currencyRepo;
     private final PasswordEncoder passwordEncoder;
     private final MessageSource messageSource;
 
@@ -175,6 +183,17 @@ public class SupplierServiceImpl implements SupplierService {
         if (item.getPassword() != null && !item.getPassword().isEmpty()) {
             user.setPassword(passwordEncoder.encode(item.getPassword()));
         }
+
+
+        CurrencyType currencyType = currencyTypeRepo.findBySymbol("UZS");
+
+        Currency currency = new Currency();
+
+        currency.setSupplier(supplier);
+        currency.setCurrencyType(currencyType);
+        currency.setCurrencyValueInUzs(1.0);
+
+        currencyRepo.save(currency);
     }
 
     @Override
