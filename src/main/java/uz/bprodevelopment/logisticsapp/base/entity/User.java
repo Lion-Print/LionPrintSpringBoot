@@ -2,6 +2,7 @@ package uz.bprodevelopment.logisticsapp.base.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import uz.bprodevelopment.logisticsapp.base.dto.UserDto;
 import uz.bprodevelopment.logisticsapp.entity.Company;
@@ -15,6 +16,7 @@ import java.util.Set;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @Table(name = "users")

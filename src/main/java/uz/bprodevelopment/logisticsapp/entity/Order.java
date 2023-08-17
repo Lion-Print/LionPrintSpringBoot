@@ -13,7 +13,7 @@ import javax.persistence.*;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
 @Table(name = "orders")
