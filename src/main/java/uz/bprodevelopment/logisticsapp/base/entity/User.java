@@ -52,6 +52,7 @@ public class User extends BaseAuditEntity {
         userDto.setId(this.id);
         userDto.setFullName(this.fullName);
         userDto.setUsername(this.username);
+        userDto.setIsBlocked(this.isBlocked);
 
         if (company != null) {
             userDto.setCompanyId(company.getId());

@@ -56,7 +56,13 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         String password = request.getParameter("password");
 
         User dbUser = userRepo.findByUsername(username);
+        if (dbUser.getIsBlocked()) {
+            throw new RuntimeException(messageSource.getMessage("user_is_blocked", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+        }
         if (dbUser.getCompany() != null && dbUser.getCompany().getIsBlocked()) {
+            throw new RuntimeException(messageSource.getMessage("company_is_blocked", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+        }
+        if (dbUser.getSupplier() != null && dbUser.getSupplier().getIsBlocked()) {
             throw new RuntimeException(messageSource.getMessage("company_is_blocked", null, new Locale(BaseAppUtils.getCurrentLanguage())));
         }
 

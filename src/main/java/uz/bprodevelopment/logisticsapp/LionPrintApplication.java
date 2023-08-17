@@ -50,8 +50,10 @@ public class LionPrintApplication {
                                 "admin",
                                 "123",
                                 null,
+                                false,
                                 roleAdmin.getId(),
                                 null,
+
                                 null,
                                 null,
                                 null,
