@@ -41,13 +41,13 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     @Override
     public List<CurrencyDto> getListAll(
-            Long companyId,
+            Long supplierId,
             String sort
     ) {
         CurrencySpec spec1 = new CurrencySpec(new SearchCriteria("id", ">", 0));
         Specification<Currency> spec = Specification.where(spec1);
 
-        if (companyId != null) spec = spec.and(new CurrencySpec(new SearchCriteria("companyId", ":", companyId)));
+        if (supplierId != null) spec = spec.and(new CurrencySpec(new SearchCriteria("supplierId", ":", supplierId)));
 
         List<Currency> items = repo.findAll(spec, Sort.by(sort).descending());
         List<CurrencyDto> itemDtos = new ArrayList<>();
@@ -60,14 +60,14 @@ public class CurrencyServiceImpl implements CurrencyService {
     public CustomPage<CurrencyDto> getList(
             Integer page,
             Integer size,
-            Long companyId,
+            Long supplierId,
             String sort
     ) {
 
         CurrencySpec spec1 = new CurrencySpec(new SearchCriteria("id", ">", 0));
         Specification<Currency> spec = Specification.where(spec1);
 
-        if (companyId != null) spec = spec.and(new CurrencySpec(new SearchCriteria("companyId", ":", companyId)));
+        if (supplierId != null) spec = spec.and(new CurrencySpec(new SearchCriteria("supplierId", ":", supplierId)));
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
         Page<Currency> responsePage = repo.findAll(spec, pageable);

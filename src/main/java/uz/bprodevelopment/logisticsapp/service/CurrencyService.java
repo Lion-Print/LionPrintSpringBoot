@@ -12,14 +12,14 @@ public interface CurrencyService {
     CurrencyDto getOne(Long id);
 
     List<CurrencyDto> getListAll(
-            Long companyId,
+            Long supplierId,
             String sort
     );
 
     CustomPage<CurrencyDto> getList(
             Integer page,
             Integer size,
-            Long companyId,
+            Long supplierId,
             String sort
     );
 

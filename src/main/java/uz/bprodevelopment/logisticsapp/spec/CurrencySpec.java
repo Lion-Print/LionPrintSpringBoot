@@ -3,6 +3,7 @@ package uz.bprodevelopment.logisticsapp.spec;
 
 import uz.bprodevelopment.logisticsapp.entity.Company;
 import uz.bprodevelopment.logisticsapp.entity.Currency;
+import uz.bprodevelopment.logisticsapp.entity.Supplier;
 
 import javax.persistence.criteria.*;
 
@@ -18,9 +19,9 @@ public class CurrencySpec extends BaseSpec<Currency> {
     public Predicate toPredicate
             (Root<Currency> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
 
-        if (criteria.getKey().equals("companyId")){
-            Join<Company, Currency> company = root.join("company");
-            return builder.equal(company.get("id"), criteria.getValue());
+        if (criteria.getKey().equals("supplierId")){
+            Join<Supplier, Currency> supplier = root.join("supplier");
+            return builder.equal(supplier.get("id"), criteria.getValue());
         } else {
             return super.toPredicate(root, query, builder);
         }

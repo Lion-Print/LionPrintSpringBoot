@@ -30,24 +30,24 @@ public class CurrencyController {
     public ResponseEntity<?> getList(
             @RequestParam(name = "page") Integer page,
             @RequestParam(name = "size") Integer size,
-            @RequestParam(name = "companyId", required = false) Long companyId,
+            @RequestParam(name = "supplierId", required = false) Long supplierId,
             @RequestParam(name = "sort", required = false, defaultValue = "id") String sort
     ) {
         return ResponseEntity.ok().body(
                 service.getList(
-                        page, size, companyId, sort
+                        page, size, supplierId, sort
                 )
         );
     }
 
     @GetMapping(CURRENCY_URL + "/all")
     public ResponseEntity<?> getListAll(
-            @RequestParam(name = "companyId", required = false) Long companyId,
+            @RequestParam(name = "supplierId", required = false) Long supplierId,
             @RequestParam(name = "sort", required = false, defaultValue = "id") String sort
     ) {
         return ResponseEntity.ok().body(
                 service.getListAll(
-                        companyId, sort
+                        supplierId, sort
                 )
         );
     }
