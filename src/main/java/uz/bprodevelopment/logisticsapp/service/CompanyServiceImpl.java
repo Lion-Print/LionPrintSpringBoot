@@ -180,8 +180,12 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     @Transactional
     public void delete(Long id) {
-        userRepo.deleteAllByCompanyId(id);
-        repo.deleteById(id);
+        try {
+            userRepo.deleteAllByCompanyId(id);
+            repo.deleteById(id);
+        } catch (Exception e) {
+            throw new RuntimeException(messageSource.getMessage("this_company_is_not_delete", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+        }
     }
 
     @Override

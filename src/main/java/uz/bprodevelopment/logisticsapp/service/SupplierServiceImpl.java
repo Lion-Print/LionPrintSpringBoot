@@ -17,10 +17,7 @@ import uz.bprodevelopment.logisticsapp.base.entity.User;
 import uz.bprodevelopment.logisticsapp.base.repo.RoleRepo;
 import uz.bprodevelopment.logisticsapp.base.repo.UserRepo;
 import uz.bprodevelopment.logisticsapp.base.util.BaseAppUtils;
-import uz.bprodevelopment.logisticsapp.dto.CurrencyDto;
-import uz.bprodevelopment.logisticsapp.dto.CurrencyTypeDto;
 import uz.bprodevelopment.logisticsapp.dto.SupplierDto;
-import uz.bprodevelopment.logisticsapp.entity.Company;
 import uz.bprodevelopment.logisticsapp.entity.Currency;
 import uz.bprodevelopment.logisticsapp.entity.CurrencyType;
 import uz.bprodevelopment.logisticsapp.entity.Supplier;
@@ -198,7 +195,12 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Override
     public void delete(Long id) {
-        repo.deleteById(id);
+        try {
+            userRepo.deleteAllBySupplierId(id);
+            repo.deleteById(id);
+        } catch (Exception e) {
+            throw new RuntimeException(messageSource.getMessage("this_company_is_not_delete", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+        }
     }
 
     @Override
