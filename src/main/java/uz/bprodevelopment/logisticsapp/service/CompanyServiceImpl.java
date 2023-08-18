@@ -204,6 +204,7 @@ public class CompanyServiceImpl implements CompanyService {
 
         User user = userDto.toEntity();
         user.setCompany(company);
+        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
         Role role = roleRepo.findByName(ROLE_COMPANY_MANAGER);
         user.getRoles().add(role);
