@@ -41,7 +41,21 @@ public class ProductServiceImpl implements ProductService {
         Product item = repo.getReferenceById(id);
         ProductDto productDto = item.toDto();
         List<ProductDetail> productDetails = productDetailRepo.findAllByProductId(id);
+
         productDetails.forEach(productDetail -> productDto.getDetails().add(productDetail.toDto()));
+
+        List<CategoryDetail> categoryDetails = categoryDetailRepo.findAllByCategoryId(item.getCategory().getId());
+
+        categoryDetails.forEach(categoryDetail -> {
+            if (productDto.getDetails().stream().noneMatch(productDetailDto -> productDetailDto.getCategoryDetailId().intValue() == categoryDetail.getId().intValue())) {
+                ProductDetail productDetail = new ProductDetail();
+                productDetail.setCategoryDetail(categoryDetail);
+                productDetail.setProduct(item);
+                productDetail.setValue("");
+                productDto.getDetails().add(productDetail.toDto());
+            }
+        });
+
         return productDto;
     }
 

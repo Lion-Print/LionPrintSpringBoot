@@ -4,34 +4,27 @@ package uz.bprodevelopment.logisticsapp.base.controller;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTDecodeException;
-import com.auth0.jwt.exceptions.SignatureVerificationException;
-import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import uz.bprodevelopment.logisticsapp.base.dto.UserDto;
 import uz.bprodevelopment.logisticsapp.base.entity.ErrorResponse;
 import uz.bprodevelopment.logisticsapp.base.entity.Role;
 import uz.bprodevelopment.logisticsapp.base.entity.Success;
 import uz.bprodevelopment.logisticsapp.base.entity.User;
-import uz.bprodevelopment.logisticsapp.base.filter.CustomUsernamePasswordAuthenticationToken;
 import uz.bprodevelopment.logisticsapp.base.service.UserService;
-import uz.bprodevelopment.logisticsapp.base.util.BaseAppUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-import static java.util.Arrays.stream;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uz.bprodevelopment.logisticsapp.base.config.Constants.SECURE;
@@ -44,7 +37,6 @@ import static uz.bprodevelopment.logisticsapp.base.config.Urls.USER_URL;
 public class UserController {
 
     private final UserService service;
-    private final MessageSource messageSource;
 
     @GetMapping(USER_URL + "/{id}")
     public ResponseEntity<?> getOne(@PathVariable(name = "id") Long id) {
