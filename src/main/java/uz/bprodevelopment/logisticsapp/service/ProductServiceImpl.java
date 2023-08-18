@@ -229,6 +229,10 @@ public class ProductServiceImpl implements ProductService {
             throw new RuntimeException(messageSource.getMessage("enter_valid_id", null, new Locale(BaseAppUtils.getCurrentLanguage())));
         }
 
+        if(item.getDetails().stream().anyMatch(detail -> detail.getValue() == null || detail.getValue().isEmpty())) {
+            throw new RuntimeException(messageSource.getMessage("detail_is_not_filled", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+        }
+
         Product product = item.toEntity();
         repo.save(product);
 
