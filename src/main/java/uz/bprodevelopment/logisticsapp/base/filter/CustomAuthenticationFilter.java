@@ -57,15 +57,14 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         User dbUser = userRepo.findByUsername(username);
         if (dbUser.getIsBlocked()) {
-            throw new RuntimeException(messageSource.getMessage("user_is_blocked", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+            response(request, response, 410, "Foydanaluvchi bloklangan", "Foydanaluvchi bloklangan");
         }
         if (dbUser.getCompany() != null && dbUser.getCompany().getIsBlocked()) {
-            throw new RuntimeException(messageSource.getMessage("company_is_blocked", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+            response(request, response, 410, "Foydanaluvchi bloklangan", "Foydanaluvchi bloklangan");
         }
         if (dbUser.getSupplier() != null && dbUser.getSupplier().getIsBlocked()) {
-            throw new RuntimeException(messageSource.getMessage("company_is_blocked", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+            response(request, response, 410, "Foydanaluvchi bloklangan", "Foydanaluvchi bloklangan");
         }
-
 
         User optionalUser = userRepo.findByUsername(username);
 
@@ -73,34 +72,12 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             log.info("Error logging in: username is not exist");
             response.setStatus(409);
             response.setContentType(APPLICATION_JSON_VALUE);
-            try {
-                new ObjectMapper()
-                        .writeValue(response.getOutputStream(),
-                                ErrorResponse.getInstance().buildMap(
-                                        409,
-                                        "Error logging in: username is not exist",
-                                        "Username mavjud emas",
-                                        request.getServletPath()
-                                ));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            response(request, response, 410, "login xato kiritildi", "login xato kiritildi");
         } else {
             if (!passwordEncoder.matches(password, optionalUser.getPassword())) {
                 response.setStatus(410);
                 response.setContentType(APPLICATION_JSON_VALUE);
-                try {
-                    new ObjectMapper()
-                            .writeValue(response.getOutputStream(),
-                                    ErrorResponse.getInstance().buildMap(
-                                            410,
-                                            "Error logging in: Password is incorrect",
-                                            "Parol xato kiritildi",
-                                            request.getServletPath()
-                                    ));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                response(request, response, 410, "Parol xato kiritildi", "Parol xato kiritildi");
             }
         }
 
@@ -151,6 +128,21 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         userMap.put("refreshToken", refreshToken);
 
         new ObjectMapper().writeValue(response.getOutputStream(), userMap);
+    }
+
+    private void response(HttpServletRequest request, HttpServletResponse response, Integer status, String error, String message) {
+        try {
+            new ObjectMapper()
+                    .writeValue(response.getOutputStream(),
+                            ErrorResponse.getInstance().buildMap(
+                                    status,
+                                    error,
+                                    message,
+                                    request.getServletPath()
+                            ));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
