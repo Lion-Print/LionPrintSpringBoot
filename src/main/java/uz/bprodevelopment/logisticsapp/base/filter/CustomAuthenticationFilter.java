@@ -64,26 +64,21 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             response.setStatus(409);
             response.setContentType(APPLICATION_JSON_VALUE);
             response(request, response, 410, "login xato kiritildi", messageSource.getMessage("login_is_incorrect", null, new Locale(language)));
-            throw new RuntimeException();
         } else {
             if (!passwordEncoder.matches(password, optionalUser.getPassword())) {
                 response.setStatus(410);
                 response.setContentType(APPLICATION_JSON_VALUE);
                 response(request, response, 410, "parol xato kiritildi", messageSource.getMessage("password_is_incorrect", null, new Locale(language)));
-                throw new RuntimeException();
             }
 
             if (optionalUser.getIsBlocked()) {
                 response(request, response, 410, "Foydanaluvchi bloklangan", messageSource.getMessage("user_is_blocked", null, new Locale(language)));
-                throw new RuntimeException();
             }
             if (optionalUser.getCompany() != null && optionalUser.getCompany().getIsBlocked()) {
                 response(request, response, 410, "Foydanaluvchi bloklangan", messageSource.getMessage("user_is_blocked", null, new Locale(language)));
-                throw new RuntimeException();
             }
             if (optionalUser.getSupplier() != null && optionalUser.getSupplier().getIsBlocked()) {
                 response(request, response, 410, "Foydanaluvchi bloklangan", messageSource.getMessage("user_is_blocked", null, new Locale(language)));
-                throw new RuntimeException();
             }
         }
 
