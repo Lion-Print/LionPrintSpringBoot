@@ -54,16 +54,21 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+        String language = request.getHeader("Accept-Language");
+        if (language == null || language.isEmpty()) language = "uz";
 
         User dbUser = userRepo.findByUsername(username);
         if (dbUser.getIsBlocked()) {
-            response(request, response, 410, "Foydanaluvchi bloklangan", "Foydanaluvchi bloklangan");
+            response(request, response, 410, "Foydanaluvchi bloklangan", messageSource.getMessage("user_is_blocked", null, new Locale(language)));
+            throw new RuntimeException();
         }
         if (dbUser.getCompany() != null && dbUser.getCompany().getIsBlocked()) {
-            response(request, response, 410, "Foydanaluvchi bloklangan", "Foydanaluvchi bloklangan");
+            response(request, response, 410, "Foydanaluvchi bloklangan", messageSource.getMessage("user_is_blocked", null, new Locale(language)));
+            throw new RuntimeException();
         }
         if (dbUser.getSupplier() != null && dbUser.getSupplier().getIsBlocked()) {
-            response(request, response, 410, "Foydanaluvchi bloklangan", "Foydanaluvchi bloklangan");
+            response(request, response, 410, "Foydanaluvchi bloklangan", messageSource.getMessage("user_is_blocked", null, new Locale(language)));
+            throw new RuntimeException();
         }
 
         User optionalUser = userRepo.findByUsername(username);
@@ -72,21 +77,19 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             log.info("Error logging in: username is not exist");
             response.setStatus(409);
             response.setContentType(APPLICATION_JSON_VALUE);
-            response(request, response, 410, "login xato kiritildi", "login xato kiritildi");
+            response(request, response, 410, "login xato kiritildi", messageSource.getMessage("login_is_incorrect", null, new Locale(language)));
+            throw new RuntimeException();
         } else {
             if (!passwordEncoder.matches(password, optionalUser.getPassword())) {
                 response.setStatus(410);
                 response.setContentType(APPLICATION_JSON_VALUE);
-                response(request, response, 410, "Parol xato kiritildi", "Parol xato kiritildi");
+                response(request, response, 410, "login xato kiritildi", messageSource.getMessage("password_is_incorrect", null, new Locale(language)));
+                throw new RuntimeException();
             }
         }
 
-        String locale = request.getHeader("Accept-Language");
-        if (locale == null || locale.isEmpty()) locale = "uz";
-
-        assert optionalUser != null;
         CustomUsernamePasswordAuthenticationToken authenticationToken
-                = new CustomUsernamePasswordAuthenticationToken(username, password, optionalUser.getId(), locale);
+                = new CustomUsernamePasswordAuthenticationToken(username, password, optionalUser.getId(), language);
         return authenticationManager.authenticate(authenticationToken);
 
     }
