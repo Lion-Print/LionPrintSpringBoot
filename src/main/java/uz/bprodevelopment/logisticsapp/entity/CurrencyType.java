@@ -40,7 +40,7 @@ public class CurrencyType extends BaseAuditEntity {
         currencyTypeDto.setId(id);
         currencyTypeDto.setName(BaseAppUtils.getCurrentLanguage().equals("uz") ? nameUz : nameRu);
         currencyTypeDto.setNameUz(nameUz);
-        currencyTypeDto.setNameUz(nameRu);
+        currencyTypeDto.setNameRu(nameRu);
         currencyTypeDto.setSymbol(symbol);
 
         return currencyTypeDto;

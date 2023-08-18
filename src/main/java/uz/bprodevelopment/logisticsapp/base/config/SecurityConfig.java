@@ -57,6 +57,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.cors().configurationSource(corsConfigurationSource());
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+
         http.authorizeRequests().antMatchers(
                 LOGIN_URL,
                 FILES_URL + "/**"
