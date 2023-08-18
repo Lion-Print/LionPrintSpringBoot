@@ -57,20 +57,6 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         String language = request.getHeader("Accept-Language");
         if (language == null || language.isEmpty()) language = "uz";
 
-        User dbUser = userRepo.findByUsername(username);
-        if (dbUser.getIsBlocked()) {
-            response(request, response, 410, "Foydanaluvchi bloklangan", messageSource.getMessage("user_is_blocked", null, new Locale(language)));
-            throw new RuntimeException();
-        }
-        if (dbUser.getCompany() != null && dbUser.getCompany().getIsBlocked()) {
-            response(request, response, 410, "Foydanaluvchi bloklangan", messageSource.getMessage("user_is_blocked", null, new Locale(language)));
-            throw new RuntimeException();
-        }
-        if (dbUser.getSupplier() != null && dbUser.getSupplier().getIsBlocked()) {
-            response(request, response, 410, "Foydanaluvchi bloklangan", messageSource.getMessage("user_is_blocked", null, new Locale(language)));
-            throw new RuntimeException();
-        }
-
         User optionalUser = userRepo.findByUsername(username);
 
         if (optionalUser == null) {
@@ -83,7 +69,20 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             if (!passwordEncoder.matches(password, optionalUser.getPassword())) {
                 response.setStatus(410);
                 response.setContentType(APPLICATION_JSON_VALUE);
-                response(request, response, 410, "login xato kiritildi", messageSource.getMessage("password_is_incorrect", null, new Locale(language)));
+                response(request, response, 410, "parol xato kiritildi", messageSource.getMessage("password_is_incorrect", null, new Locale(language)));
+                throw new RuntimeException();
+            }
+
+            if (optionalUser.getIsBlocked()) {
+                response(request, response, 410, "Foydanaluvchi bloklangan", messageSource.getMessage("user_is_blocked", null, new Locale(language)));
+                throw new RuntimeException();
+            }
+            if (optionalUser.getCompany() != null && optionalUser.getCompany().getIsBlocked()) {
+                response(request, response, 410, "Foydanaluvchi bloklangan", messageSource.getMessage("user_is_blocked", null, new Locale(language)));
+                throw new RuntimeException();
+            }
+            if (optionalUser.getSupplier() != null && optionalUser.getSupplier().getIsBlocked()) {
+                response(request, response, 410, "Foydanaluvchi bloklangan", messageSource.getMessage("user_is_blocked", null, new Locale(language)));
                 throw new RuntimeException();
             }
         }
