@@ -20,6 +20,7 @@ public class ProductDto {
     private Double price;
     private Boolean hasDelivery = false;
     private Boolean hasNds = false;
+    private Boolean isLowestPrice = false;
 
     private Double maxAmount;
     private Double minAmount;
@@ -48,6 +49,7 @@ public class ProductDto {
         product.setPrice(price);
         product.setHasDelivery(hasDelivery);
         product.setHasNds(hasNds);
+        product.setIsLowestPrice(isLowestPrice);
         product.setMaxAmount(maxAmount);
         product.setMinAmount(minAmount);
         product.setFactoryDate(factoryDate);

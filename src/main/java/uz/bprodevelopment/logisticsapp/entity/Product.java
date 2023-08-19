@@ -30,6 +30,8 @@ public class Product extends BaseAuditEntity {
 
     private Boolean hasNds = false;
 
+    private Boolean isLowestPrice = false;
+
     private Double maxAmount;
     private Double minAmount;
 
@@ -66,6 +68,7 @@ public class Product extends BaseAuditEntity {
         productDto.setPrice(price);
         productDto.setHasDelivery(hasDelivery);
         productDto.setHasNds(hasNds);
+        productDto.setIsLowestPrice(isLowestPrice);
         productDto.setMaxAmount(maxAmount);
         productDto.setMinAmount(minAmount);
         productDto.setFactoryDate(factoryDate);
