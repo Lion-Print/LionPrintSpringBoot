@@ -14,7 +14,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import uz.bprodevelopment.logisticsapp.base.entity.ErrorResponse;
 import uz.bprodevelopment.logisticsapp.base.entity.User;
 import uz.bprodevelopment.logisticsapp.base.repo.UserRepo;
-import uz.bprodevelopment.logisticsapp.base.util.BaseAppUtils;
 
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
@@ -61,24 +60,30 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
         if (optionalUser == null) {
             log.info("Error logging in: username is not exist");
-            response.setStatus(409);
+            response.setStatus(410);
             response.setContentType(APPLICATION_JSON_VALUE);
-            response(request, response, 410, "login xato kiritildi", messageSource.getMessage("login_is_incorrect", null, new Locale(language)));
+            response(request, response, "login xato kiritildi", messageSource.getMessage("login_is_incorrect", null, new Locale(language)));
         } else {
             if (!passwordEncoder.matches(password, optionalUser.getPassword())) {
                 response.setStatus(410);
                 response.setContentType(APPLICATION_JSON_VALUE);
-                response(request, response, 410, "parol xato kiritildi", messageSource.getMessage("password_is_incorrect", null, new Locale(language)));
+                response(request, response, "parol xato kiritildi", messageSource.getMessage("password_is_incorrect", null, new Locale(language)));
             }
 
             if (optionalUser.getIsBlocked()) {
-                response(request, response, 410, "Foydanaluvchi bloklangan", messageSource.getMessage("user_is_blocked", null, new Locale(language)));
+                response.setStatus(410);
+                response.setContentType(APPLICATION_JSON_VALUE);
+                response(request, response, "Foydanaluvchi bloklangan", messageSource.getMessage("user_is_blocked", null, new Locale(language)));
             }
             if (optionalUser.getCompany() != null && optionalUser.getCompany().getIsBlocked()) {
-                response(request, response, 410, "Foydanaluvchi bloklangan", messageSource.getMessage("user_is_blocked", null, new Locale(language)));
+                response.setStatus(410);
+                response.setContentType(APPLICATION_JSON_VALUE);
+                response(request, response, "Foydanaluvchi bloklangan", messageSource.getMessage("user_is_blocked", null, new Locale(language)));
             }
             if (optionalUser.getSupplier() != null && optionalUser.getSupplier().getIsBlocked()) {
-                response(request, response, 410, "Foydanaluvchi bloklangan", messageSource.getMessage("user_is_blocked", null, new Locale(language)));
+                response.setStatus(410);
+                response.setContentType(APPLICATION_JSON_VALUE);
+                response(request, response, "Foydanaluvchi bloklangan", messageSource.getMessage("user_is_blocked", null, new Locale(language)));
             }
         }
 
@@ -128,12 +133,12 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         new ObjectMapper().writeValue(response.getOutputStream(), userMap);
     }
 
-    private void response(HttpServletRequest request, HttpServletResponse response, Integer status, String error, String message) {
+    private void response(HttpServletRequest request, HttpServletResponse response, String error, String message) {
         try {
             new ObjectMapper()
                     .writeValue(response.getOutputStream(),
                             ErrorResponse.getInstance().buildMap(
-                                    status,
+                                    410,
                                     error,
                                     message,
                                     request.getServletPath()

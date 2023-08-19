@@ -224,6 +224,10 @@ public class CompanyServiceImpl implements CompanyService {
         User user = userRepo.getReferenceById(id);
         User currentUser = userRepo.findByUsername(BaseAppUtils.getCurrentUsername());
 
+
+        if (id.intValue() == currentUser.getId().intValue()){
+            throw new RuntimeException(messageSource.getMessage("you_can_not_block_yourself", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+        }
         if (user.getCompany() == null
                 || currentUser.getCompany() == null
                 || currentUser.getRoles().stream().noneMatch(role -> role.getName().equals(ROLE_COMPANY_ADMIN))
