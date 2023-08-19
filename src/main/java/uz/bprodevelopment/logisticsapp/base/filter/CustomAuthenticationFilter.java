@@ -82,6 +82,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
             }
         }
 
+        assert optionalUser != null;
         CustomUsernamePasswordAuthenticationToken authenticationToken
                 = new CustomUsernamePasswordAuthenticationToken(username, password, optionalUser.getId(), language);
         return authenticationManager.authenticate(authenticationToken);

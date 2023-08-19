@@ -24,6 +24,7 @@ public class ProductDto {
 
     private Double maxAmount;
     private Double minAmount;
+    private String manufacturer;
     private String factoryDate;
     private String expDate;
     private String country;
@@ -52,6 +53,7 @@ public class ProductDto {
         product.setIsLowestPrice(isLowestPrice);
         product.setMaxAmount(maxAmount);
         product.setMinAmount(minAmount);
+        product.setManufacturer(manufacturer);
         product.setFactoryDate(factoryDate);
         product.setExpDate(expDate);
         product.setCountry(country);

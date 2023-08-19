@@ -35,6 +35,7 @@ public class Product extends BaseAuditEntity {
     private Double maxAmount;
     private Double minAmount;
 
+    private String manufacturer;
     private String factoryDate;
     private String expDate;
 
@@ -71,6 +72,7 @@ public class Product extends BaseAuditEntity {
         productDto.setIsLowestPrice(isLowestPrice);
         productDto.setMaxAmount(maxAmount);
         productDto.setMinAmount(minAmount);
+        productDto.setManufacturer(manufacturer);
         productDto.setFactoryDate(factoryDate);
         productDto.setExpDate(expDate);
         productDto.setCountry(country);
