@@ -132,6 +132,10 @@ public class ProductServiceImpl implements ProductService {
         if (name != null) {
             Specification<Product> spec2 = Specification.where(new ProductSpec(new SearchCriteria("nameUz", ":", name)));
             spec2 = spec2.or(new ProductSpec(new SearchCriteria("nameRu", ":", name)));
+            spec2 = spec2.or(new ProductSpec(new SearchCriteria("description", ":", name)));
+            spec2 = spec2.or(new ProductSpec(new SearchCriteria("country", ":", name)));
+            spec2 = spec2.or(new ProductSpec(new SearchCriteria("supplierName", ":", name)));
+            spec2 = spec2.or(new ProductSpec(new SearchCriteria("productDetailValue", ":", name)));
             spec = spec.and(spec2);
         }
 

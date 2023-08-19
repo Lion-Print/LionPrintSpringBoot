@@ -1,10 +1,8 @@
 package uz.bprodevelopment.logisticsapp.spec;
 
 
-import uz.bprodevelopment.logisticsapp.entity.Category;
+import uz.bprodevelopment.logisticsapp.entity.*;
 import uz.bprodevelopment.logisticsapp.entity.Order;
-import uz.bprodevelopment.logisticsapp.entity.Product;
-import uz.bprodevelopment.logisticsapp.entity.Supplier;
 
 import javax.persistence.criteria.*;
 
@@ -31,7 +29,17 @@ public class ProductSpec extends BaseSpec<Product> {
         } else if (criteria.getKey().equals("supplierId")) {
             Join<Supplier, Product> supplier = root.join("supplier");
             return builder.equal(supplier.get("id"), criteria.getValue());
+        } else if (criteria.getKey().equals("supplierName")) {
+            Join<Supplier, Product> supplier = root.join("supplier");
+            return builder.like(builder.lower(supplier.get("name")),
+                    "%" + criteria.getValue() + "%");
         }
+        //else if (criteria.getKey().equals("productDetailValue")) {
+//            Join<ProductDetail, Product> productDetail = root.join("supplier");
+//            productDetail.get
+//            return builder.like(builder.lower(productDetail.get("name")),
+//                    "%" + criteria.getValue() + "%");
+//        }
 
         return super.toPredicate(root, query, builder);
     }
