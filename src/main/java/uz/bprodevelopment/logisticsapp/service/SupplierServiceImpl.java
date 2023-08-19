@@ -145,6 +145,17 @@ public class SupplierServiceImpl implements SupplierService {
         user.getRoles().add(role);
 
         userRepo.save(user);
+
+
+        CurrencyType currencyType = currencyTypeRepo.findBySymbol("UZS");
+
+        Currency currency = new Currency();
+
+        currency.setSupplier(supplier);
+        currency.setCurrencyType(currencyType);
+        currency.setCurrencyValueInUzs(1.0);
+
+        currencyRepo.save(currency);
     }
 
     @Override
@@ -181,16 +192,6 @@ public class SupplierServiceImpl implements SupplierService {
             user.setPassword(passwordEncoder.encode(item.getPassword()));
         }
 
-
-        CurrencyType currencyType = currencyTypeRepo.findBySymbol("UZS");
-
-        Currency currency = new Currency();
-
-        currency.setSupplier(supplier);
-        currency.setCurrencyType(currencyType);
-        currency.setCurrencyValueInUzs(1.0);
-
-        currencyRepo.save(currency);
     }
 
     @Override

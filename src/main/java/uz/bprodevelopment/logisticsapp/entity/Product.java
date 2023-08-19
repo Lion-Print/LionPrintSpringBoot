@@ -9,6 +9,8 @@ import uz.bprodevelopment.logisticsapp.dto.ProductDto;
 
 import javax.persistence.*;
 
+import java.util.List;
+
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Data
@@ -49,6 +51,9 @@ public class Product extends BaseAuditEntity {
     private Currency currency;
 
     private String description;
+
+    @OneToMany(mappedBy = "product")
+    private List<ProductDetail> productDetails;
 
     public Product(Long id) {
         this.id = id;

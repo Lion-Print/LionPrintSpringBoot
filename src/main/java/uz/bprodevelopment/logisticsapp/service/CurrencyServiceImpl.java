@@ -117,6 +117,10 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     @Override
     public void delete(Long id) {
+        Currency currency = repo.getReferenceById(id);
+        if (currency.getCurrencyType().getSymbol().equals("UZS")) {
+            throw new RuntimeException(messageSource.getMessage("currency_uzs_is_not_deletable", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+        }
         repo.deleteById(id);
     }
 

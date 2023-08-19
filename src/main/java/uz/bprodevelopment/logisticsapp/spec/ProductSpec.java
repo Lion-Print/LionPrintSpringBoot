@@ -34,12 +34,11 @@ public class ProductSpec extends BaseSpec<Product> {
             return builder.like(builder.lower(supplier.get("name")),
                     "%" + criteria.getValue() + "%");
         }
-        //else if (criteria.getKey().equals("productDetailValue")) {
-//            Join<ProductDetail, Product> productDetail = root.join("supplier");
-//            productDetail.get
-//            return builder.like(builder.lower(productDetail.get("name")),
-//                    "%" + criteria.getValue() + "%");
-//        }
+        else if (criteria.getKey().equals("productDetailValue")) {
+            Join<ProductDetail, Product> productDetail = root.join("productDetails");
+            return builder.like(builder.lower(productDetail.get("value")),
+                    "%" + criteria.getValue() + "%");
+        }
 
         return super.toPredicate(root, query, builder);
     }
