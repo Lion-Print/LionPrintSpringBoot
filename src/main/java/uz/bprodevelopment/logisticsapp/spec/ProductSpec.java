@@ -18,26 +18,33 @@ public class ProductSpec extends BaseSpec<Product> {
     public Predicate toPredicate
             (Root<Product> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
 
-        if (criteria.getKey().equals("nameUz")) {
-            Join<Category, Product> category = root.join("category");
-            return builder.like(builder.lower(category.get("nameUz")),
-                    "%" + criteria.getValue().toString().toLowerCase() + "%");
-        } else if (criteria.getKey().equals("nameRu")) {
-            Join<Category, Product> category = root.join("category");
-            return builder.like(builder.lower(category.get("nameRu")),
-                    "%" + criteria.getValue().toString().toLowerCase() + "%");
-        } else if (criteria.getKey().equals("supplierId")) {
-            Join<Supplier, Product> supplier = root.join("supplier");
-            return builder.equal(supplier.get("id"), criteria.getValue());
-        } else if (criteria.getKey().equals("supplierName")) {
-            Join<Supplier, Product> supplier = root.join("supplier");
-            return builder.like(builder.lower(supplier.get("name")),
-                    "%" + criteria.getValue() + "%");
-        }
-        else if (criteria.getKey().equals("productDetailValue")) {
-            Join<ProductDetail, Product> productDetail = root.join("productDetails");
-            return builder.like(builder.lower(productDetail.get("value")),
-                    "%" + criteria.getValue() + "%");
+        switch (criteria.getKey()) {
+            case "nameUz": {
+                Join<Category, Product> category = root.join("category");
+                return builder.like(builder.lower(category.get("nameUz")),
+                        "%" + criteria.getValue().toString().toLowerCase() + "%");
+            }
+            case "nameRu": {
+                Join<Category, Product> category = root.join("category");
+                return builder.like(builder.lower(category.get("nameRu")),
+                        "%" + criteria.getValue().toString().toLowerCase() + "%");
+            }
+            case "supplierId": {
+                Join<Supplier, Product> supplier = root.join("supplier");
+                return builder.equal(supplier.get("id"), criteria.getValue());
+            }
+            case "supplierName": {
+                Join<Supplier, Product> supplier = root.join("supplier");
+                return builder.like(builder.lower(supplier.get("name")),
+                        "%" + criteria.getValue() + "%");
+            }
+            case "productDetailValue":
+                //Join<ProductDetail, Product> productDetail = root.join("productDetails");
+                // At first my code was like above and this cause i got duplicate values
+                // So I change my code fetch like below and duplicates gone.
+                Join<ProductDetail, Product> productDetail = (Join) root.fetch("productDetails");
+                return builder.like(builder.lower(productDetail.get("value")),
+                        "%" + criteria.getValue() + "%");
         }
 
         return super.toPredicate(root, query, builder);
