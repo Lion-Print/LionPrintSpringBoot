@@ -97,7 +97,14 @@ public class CurrencyServiceImpl implements CurrencyService {
         if (!repo.findAllByCurrencyTypeIdAndSupplierId(item.getCurrencyTypeId(), item.getSupplierId()).isEmpty())
             throw new RuntimeException(messageSource.getMessage("name_exist", null, new Locale(BaseAppUtils.getCurrentLanguage())));
 
+        CurrencyType currencyType = currencyTypeRepo.getReferenceById(item.getCurrencyTypeId());
+
+        if (currencyType.getSymbol().equals("UZS")) {
+            item.setCurrencyValueInUzs(1.0);
+        }
+
         Currency category = item.toEntity();
+
         repo.save(category);
     }
 
