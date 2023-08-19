@@ -36,6 +36,8 @@ public class Category extends BaseAuditEntity {
         CategoryDto categoryDto = new CategoryDto();
         categoryDto.setId(id);
         categoryDto.setName(BaseAppUtils.getCurrentLanguage().equals("uz") ? nameUz : nameRu);
+        categoryDto.setNameUz(nameUz);
+        categoryDto.setNameRu(nameRu);
         return categoryDto;
     }
 }
