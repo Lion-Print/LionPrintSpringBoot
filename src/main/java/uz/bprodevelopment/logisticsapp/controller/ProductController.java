@@ -46,7 +46,7 @@ public class ProductController {
             @RequestHeader(name = "descending", required = false, defaultValue = "true") Boolean descending
     ) {
         return ResponseEntity.ok().body(
-                service.getList(page, size, name, description, price, hasDelivery, hasNds, categoryId, supplierId, sort, descending)
+                service.getList(page, size, name, description, price, hasDelivery, hasNds, isLowestPrice, categoryId, supplierId, sort, descending)
         );
     }
 
@@ -64,7 +64,7 @@ public class ProductController {
             @RequestHeader(name = "descending", required = false, defaultValue = "true") Boolean descending
     ) {
         return ResponseEntity.ok().body(
-                service.getListAll(name, description, price, hasDelivery, hasNds, categoryId, supplierId, sort, descending));
+                service.getListAll(name, description, price, hasDelivery, hasNds, isLowestPrice, categoryId, supplierId, sort, descending));
     }
 
 
