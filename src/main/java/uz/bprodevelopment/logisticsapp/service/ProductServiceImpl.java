@@ -66,6 +66,7 @@ public class ProductServiceImpl implements ProductService {
             Double price,
             Boolean hasDelivery,
             Boolean hasNds,
+            Boolean isLowestPrice,
             Long categoryId,
             Long supplierId,
             String sort,
@@ -87,6 +88,8 @@ public class ProductServiceImpl implements ProductService {
         if (hasDelivery != null) spec = spec.and(new ProductSpec(new SearchCriteria("hasDelivery", "=", hasDelivery)));
 
         if (hasNds != null) spec = spec.and(new ProductSpec(new SearchCriteria("hasNds", "=", hasNds)));
+
+        if (isLowestPrice != null) spec = spec.and(new ProductSpec(new SearchCriteria("isLowestPrice", "=", isLowestPrice)));
 
         if (categoryId != null) spec = spec.and(new ProductSpec(new SearchCriteria("categoryId", ":", categoryId)));
 
@@ -120,6 +123,7 @@ public class ProductServiceImpl implements ProductService {
             Double price,
             Boolean hasDelivery,
             Boolean hasNds,
+            Boolean isLowestPrice,
             Long categoryId,
             Long supplierId,
             String sort,
@@ -146,6 +150,8 @@ public class ProductServiceImpl implements ProductService {
         if (hasDelivery != null) spec = spec.and(new ProductSpec(new SearchCriteria("hasDelivery", "=", hasDelivery)));
 
         if (hasNds != null) spec = spec.and(new ProductSpec(new SearchCriteria("hasNds", "=", hasNds)));
+
+        if (isLowestPrice != null) spec = spec.and(new ProductSpec(new SearchCriteria("isLowestPrice", "=", isLowestPrice)));
 
         if (categoryId != null) spec = spec.and(new ProductSpec(new SearchCriteria("categoryId", ":", categoryId)));
 
