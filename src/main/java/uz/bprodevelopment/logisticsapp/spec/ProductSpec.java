@@ -41,7 +41,7 @@ public class ProductSpec extends BaseSpec<Product> {
             }
             case "productDetailValue":
                 //Join<ProductDetail, Product> productDetail = root.join("productDetails");
-                // At first my code was like above and this cause i got duplicate values
+                //I got duplicate values cause of my code was like above
                 // So I change my code fetch like below and duplicates gone.
                 Join productDetail = (Join) root.fetch("productDetails");
                 return builder.like(builder.lower(productDetail.get("value")),
