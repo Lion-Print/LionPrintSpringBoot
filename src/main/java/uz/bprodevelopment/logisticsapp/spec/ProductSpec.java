@@ -14,6 +14,7 @@ public class ProductSpec extends BaseSpec<Product> {
         this.criteria = criteria;
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public Predicate toPredicate
             (Root<Product> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
@@ -42,7 +43,7 @@ public class ProductSpec extends BaseSpec<Product> {
                 //Join<ProductDetail, Product> productDetail = root.join("productDetails");
                 // At first my code was like above and this cause i got duplicate values
                 // So I change my code fetch like below and duplicates gone.
-                Join<ProductDetail, Product> productDetail = (Join) root.fetch("productDetails");
+                Join productDetail = (Join) root.fetch("productDetails");
                 return builder.like(builder.lower(productDetail.get("value")),
                         "%" + criteria.getValue() + "%");
         }
