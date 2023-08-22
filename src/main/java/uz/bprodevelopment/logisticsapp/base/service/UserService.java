@@ -37,6 +37,8 @@ public interface UserService {
 
     void delete(Long id);
 
+    void changePassword(String oldPassword, String newPassword);
+
     User getOneByUsername(String username);
 
 }

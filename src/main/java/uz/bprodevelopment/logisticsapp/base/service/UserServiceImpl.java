@@ -1,5 +1,6 @@
 package uz.bprodevelopment.logisticsapp.base.service;
 
+import com.auth0.jwt.JWT;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.MessageSource;
@@ -24,10 +25,10 @@ import uz.bprodevelopment.logisticsapp.spec.SearchCriteria;
 import uz.bprodevelopment.logisticsapp.spec.UserSpec;
 import uz.bprodevelopment.logisticsapp.utils.CustomPage;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Service
 @RequiredArgsConstructor
@@ -134,6 +135,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public void delete(Long id) {
         repo.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public void changePassword(String oldPassword, String newPassword) {
+
+        User user = repo.getReferenceById(BaseAppUtils.getUserId());
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+            throw new RuntimeException(messageSource.getMessage("current_password_incorrect", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
     }
 
     @Override

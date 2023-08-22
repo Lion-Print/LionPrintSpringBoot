@@ -28,8 +28,7 @@ import java.util.stream.Collectors;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uz.bprodevelopment.logisticsapp.base.config.Constants.SECURE;
-import static uz.bprodevelopment.logisticsapp.base.config.Urls.REFRESH_TOKEN_URL;
-import static uz.bprodevelopment.logisticsapp.base.config.Urls.USER_URL;
+import static uz.bprodevelopment.logisticsapp.base.config.Urls.*;
 
 
 @RestController
@@ -83,6 +82,14 @@ public class UserController {
     @DeleteMapping(USER_URL + "/{id}")
     public ResponseEntity<?> delete(@PathVariable(name = "id") Long id) {
         service.delete(id);
+        return ResponseEntity.ok().body(Success.getInstance());
+    }
+
+    @PostMapping(CHANGE_PASSWORD_URL)
+    public ResponseEntity<?> changePassword(
+            @RequestParam("oldPassword") String oldPassword,
+            @RequestParam("newPassword") String newPassword)  {
+        service.changePassword(oldPassword, newPassword);
         return ResponseEntity.ok().body(Success.getInstance());
     }
 

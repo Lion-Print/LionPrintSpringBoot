@@ -11,6 +11,8 @@ public class Urls {
     public static final String REFRESH_TOKEN_URL = BASE_URL + "refresh-token";
     public static final String USER_URL = BASE_URL + "user";
 
+    public static final String CHANGE_PASSWORD_URL = BASE_URL + "change-password";
+
     public static final String COMPANY_URL = BASE_URL + "company";
     public static final String SUPPLIER_URL = BASE_URL + "supplier";
 
