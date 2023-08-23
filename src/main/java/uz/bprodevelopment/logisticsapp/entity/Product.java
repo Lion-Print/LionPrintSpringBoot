@@ -1,5 +1,6 @@
 package uz.bprodevelopment.logisticsapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -55,7 +56,9 @@ public class Product extends BaseAuditEntity {
 
     private String description;
 
-    @OneToMany(mappedBy = "product")
+
+    @JsonIgnoreProperties("product")
+    @OneToMany(mappedBy = "product",  cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductDetail> productDetails;
 
     public Product(Long id) {

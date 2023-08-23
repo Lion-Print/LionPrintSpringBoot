@@ -25,7 +25,7 @@ public class Order extends BaseAuditEntity {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private Product product;
 
     @Column(nullable = false)
@@ -44,7 +44,7 @@ public class Order extends BaseAuditEntity {
 
         orderDto.setAmount(amount);
 
-        orderDto.setProduct(product.toDto());
+        //orderDto.setProduct(product.toDto());
 
         orderDto.setSupplierId(supplier.getId());
         orderDto.setSupplierName(supplier.getName());

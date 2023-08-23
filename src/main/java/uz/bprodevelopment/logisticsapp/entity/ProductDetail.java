@@ -1,5 +1,6 @@
 package uz.bprodevelopment.logisticsapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,8 @@ public class ProductDetail extends BaseAuditEntity {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
+    @JsonIgnoreProperties("productDetails")
+    @JoinColumn(name = "product_id")
     @ManyToOne
     private Product product;
 
