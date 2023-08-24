@@ -83,31 +83,29 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
                     if (exception instanceof TokenExpiredException
                             || exception instanceof SignatureVerificationException
                             || exception instanceof JWTDecodeException) {
-                        log.info("Error logging in: {}", exception.toString());
+                        log.info("Authorization does not exist");
                         response.setStatus(401);
                         response.setContentType(APPLICATION_JSON_VALUE);
                         new ObjectMapper()
                                 .writeValue(response.getOutputStream(),
                                         ErrorResponse.getInstance().buildMap(
                                                 401,
-                                                exception.getMessage(),
-                                                "Ma'lumotlarni qayta ishlashda xatolik yuz berdi",
+                                                "Authorization does not exist",
+                                                "Iltimos qaytadan dasturga username va parolni terib kiring",
                                                 request.getServletPath()
-                                        )
-                                );
+                                        ));
                     } else {
-                        log.info("Error logging in: {}", exception.toString());
-                        response.setStatus(500);
+                        log.info("Authorization does not exist");
+                        response.setStatus(401);
                         response.setContentType(APPLICATION_JSON_VALUE);
                         new ObjectMapper()
                                 .writeValue(response.getOutputStream(),
                                         ErrorResponse.getInstance().buildMap(
-                                                500,
-                                                exception.getMessage(),
-                                                exception.getCause().getMessage(),
+                                                505,
+                                                exception.getCause().toString(),
+                                                exception.getLocalizedMessage(),
                                                 request.getServletPath()
-                                        )
-                                );
+                                        ));
                     }
 
                 }

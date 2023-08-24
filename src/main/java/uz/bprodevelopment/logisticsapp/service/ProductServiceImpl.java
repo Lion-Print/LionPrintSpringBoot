@@ -158,7 +158,7 @@ public class ProductServiceImpl implements ProductService {
         if (supplierId != null) spec = spec.and(new ProductSpec(new SearchCriteria("supplierId", ":", supplierId)));
 
         Sort sorting = Sort.by(descending ? Sort.Direction.DESC : Sort.Direction.ASC, sort);
-        if (name != null) sorting = Sort.by(Sort.Direction.ASC, "price");
+        if (name != null) sorting = Sort.by(Sort.Direction.ASC, "priceInUzs");
 
         Pageable pageable = PageRequest.of(page, size, sorting);
 

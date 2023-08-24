@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Formula;
 import uz.bprodevelopment.logisticsapp.base.entity.BaseAuditEntity;
 import uz.bprodevelopment.logisticsapp.base.util.BaseAppUtils;
 import uz.bprodevelopment.logisticsapp.dto.ProductDto;
@@ -15,7 +16,7 @@ import java.util.List;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Data
-@Entity
+@Entity(name = "product")
 @Table(name = "products")
 @NoArgsConstructor
 @AllArgsConstructor
@@ -41,6 +42,9 @@ public class Product extends BaseAuditEntity {
     private String expDate;
 
     private String country;
+
+    @Formula("price * (select cur.currency_value_in_uzs from currencies cur where cur.id=currency_id)")
+    private Double priceInUzs;
 
     @ManyToOne
     @JoinColumn(name="category_id", nullable=false)
