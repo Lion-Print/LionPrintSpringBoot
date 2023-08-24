@@ -42,7 +42,7 @@ public class ProductSpec extends BaseSpec<Product> {
             case "productDetailValue":
                 //Join productDetail = (Join) root.fetch("productDetails");
                 Join<ProductDetail, Product> productDetail = root.join("productDetails");
-                //query.distinct(true);
+                query.distinct(true);
                 return builder.like(builder.lower(productDetail.get("value")),
                         "%" + criteria.getValue() + "%");
         }
