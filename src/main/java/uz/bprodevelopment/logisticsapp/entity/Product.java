@@ -54,7 +54,7 @@ public class Product extends BaseAuditEntity {
     @JoinColumn(name="supplier_id", nullable=false)
     private Supplier supplier;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="currency_id", nullable=false)
     private Currency currency;
 

@@ -40,10 +40,9 @@ public class ProductSpec extends BaseSpec<Product> {
                         "%" + criteria.getValue() + "%");
             }
             case "productDetailValue":
-                //Join<ProductDetail, Product> productDetail = root.join("productDetails");
-                //I got duplicate values cause of my code was like above
-                // So I change my code fetch like below and duplicates gone.
-                Join productDetail = (Join) root.fetch("productDetails");
+                //Join productDetail = (Join) root.fetch("productDetails");
+                Join<ProductDetail, Product> productDetail = root.join("productDetails");
+                //query.distinct(true);
                 return builder.like(builder.lower(productDetail.get("value")),
                         "%" + criteria.getValue() + "%");
         }

@@ -25,10 +25,10 @@ public class Currency extends BaseAuditEntity {
 
     private Double currencyValueInUzs;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private CurrencyType currencyType;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Supplier supplier;
 
     public Currency(Long id) {
