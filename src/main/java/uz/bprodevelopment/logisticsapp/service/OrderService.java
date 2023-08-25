@@ -11,15 +11,10 @@ public interface OrderService {
 
     OrderDto getOne(Long id);
 
-    List<OrderDto> getListAll(
-            Long productId,
-            String sort
-    );
-
     CustomPage<OrderDto> getList(
             Integer page,
             Integer size,
-            Long productId,
+            String name,
             String sort
     );
 

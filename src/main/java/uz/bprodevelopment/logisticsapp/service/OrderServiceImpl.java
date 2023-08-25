@@ -2,7 +2,6 @@ package uz.bprodevelopment.logisticsapp.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,11 +13,8 @@ import uz.bprodevelopment.logisticsapp.base.entity.User;
 import uz.bprodevelopment.logisticsapp.base.repo.UserRepo;
 import uz.bprodevelopment.logisticsapp.base.util.BaseAppUtils;
 import uz.bprodevelopment.logisticsapp.dto.OrderDto;
-import uz.bprodevelopment.logisticsapp.dto.ProductDetailDto;
 import uz.bprodevelopment.logisticsapp.entity.Order;
-import uz.bprodevelopment.logisticsapp.entity.ProductDetail;
 import uz.bprodevelopment.logisticsapp.repo.OrderRepo;
-import uz.bprodevelopment.logisticsapp.repo.ProductDetailRepo;
 import uz.bprodevelopment.logisticsapp.spec.OrderSpec;
 import uz.bprodevelopment.logisticsapp.spec.SearchCriteria;
 import uz.bprodevelopment.logisticsapp.utils.CustomPage;
@@ -41,36 +37,32 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderDto> getListAll(
-            Long productId,
-            String sort
-    ) {
-        OrderSpec spec1 = new OrderSpec(new SearchCriteria("id", ">", 0));
-        Specification<Order> spec = Specification.where(spec1);
-
-        if (productId != null) spec = spec.and(new OrderSpec(new SearchCriteria("productId", "=", productId)));
-
-        List<Order> orders = repo.findAll(spec, Sort.by(sort).descending());
-        List<OrderDto> orderDtos = new ArrayList<>();
-
-        orders.forEach(order -> orderDtos.add(order.toDto()));
-
-
-        return orderDtos;
-    }
-
-    @Override
     public CustomPage<OrderDto> getList(
             Integer page,
             Integer size,
-            Long productId,
+            String name,
             String sort
     ) {
 
         OrderSpec spec1 = new OrderSpec(new SearchCriteria("id", ">", 0));
         Specification<Order> spec = Specification.where(spec1);
 
-        if (productId != null) spec = spec.and(new OrderSpec(new SearchCriteria("productId", "=", productId)));
+        if (name != null) {
+            Specification<Order> spec2 = Specification.where(new OrderSpec(new SearchCriteria("nameUz", ":", name)));
+            spec2 = spec2.or(new OrderSpec(new SearchCriteria("nameRu", ":", name)));
+            spec = spec.and(spec2);
+        }
+
+
+        User user = userRepo.getReferenceById(BaseAppUtils.getUserId());
+
+        if (user.getCompany() != null) {
+            spec = spec.and(new OrderSpec(new SearchCriteria("companyId", "=", user.getCompany().getId())));
+        }
+
+        if (user.getSupplier() != null) {
+            spec = spec.and(new OrderSpec(new SearchCriteria("supplierId", "=", user.getSupplier().getId())));
+        }
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
 
@@ -160,6 +152,9 @@ public class OrderServiceImpl implements OrderService {
             if (status == 2 || status == 3) {
                 throw new RuntimeException("You can't mark as received or on the way. Only suppliers can mark like this");
             }
+        }
+        if (status > 4 || status < -1) {
+            throw new RuntimeException("Status can be between [-1...4]");
         }
         order.setStatus(status);
     }

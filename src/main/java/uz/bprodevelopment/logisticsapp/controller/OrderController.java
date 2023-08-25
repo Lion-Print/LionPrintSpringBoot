@@ -30,24 +30,12 @@ public class OrderController {
     public ResponseEntity<?> getList(
             @RequestParam(name = "page") Integer page,
             @RequestParam(name = "size") Integer size,
-            @RequestParam(name = "productId", required = false) Long productId,
+            @RequestParam(name = "name", required = false) String name,
             @RequestParam(name = "sort", required = false, defaultValue = "id") String sort
     ) {
         return ResponseEntity.ok().body(
                 service.getList(
-                        page, size, productId, sort
-                )
-        );
-    }
-
-    @GetMapping(ORDER_URL + "/all")
-    public ResponseEntity<?> getListAll(
-            @RequestParam(name = "productId", required = false) Long productId,
-            @RequestParam(name = "sort", required = false, defaultValue = "id") String sort
-    ) {
-        return ResponseEntity.ok().body(
-                service.getListAll(
-                        productId, sort
+                        page, size, name, sort
                 )
         );
     }
