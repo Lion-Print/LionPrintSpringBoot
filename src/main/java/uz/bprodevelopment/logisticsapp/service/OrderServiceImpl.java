@@ -132,7 +132,7 @@ public class OrderServiceImpl implements OrderService {
             if (status == -1 && order.getStatus() > 3) {
                 throw new RuntimeException("This order delivered. You can't cancel it");
             }
-            if (!order.getStatus().equals(status - 1)) {
+            if (status != -1 && !order.getStatus().equals(status - 1)) {
                 throw new RuntimeException("You can increase status only 1");
             }
             if (status == 4) {
@@ -146,7 +146,7 @@ public class OrderServiceImpl implements OrderService {
             if (status == -1 && order.getStatus() > 2) {
                 throw new RuntimeException("This order delivered or on the way. You can't cancel it");
             }
-            if (!order.getStatus().equals(status - 1)) {
+            if (status != -1 && !order.getStatus().equals(status - 1)) {
                 throw new RuntimeException("You can increase status only 1");
             }
             if (status == 2 || status == 3) {
