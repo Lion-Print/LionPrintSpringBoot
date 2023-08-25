@@ -2,8 +2,6 @@ package uz.bprodevelopment.logisticsapp.spec;
 
 
 import uz.bprodevelopment.logisticsapp.entity.*;
-import uz.bprodevelopment.logisticsapp.entity.Order;
-
 import javax.persistence.criteria.*;
 
 public class ProductSpec extends BaseSpec<Product> {
