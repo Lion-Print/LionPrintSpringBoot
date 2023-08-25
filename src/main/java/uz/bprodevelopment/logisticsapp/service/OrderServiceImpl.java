@@ -31,12 +31,13 @@ public class OrderServiceImpl implements OrderService {
     private final ProductDetailRepo productDetailRepo;
 
     @Override
-    public Order getOne(Long id) {
-        return repo.findById(id).get();
+    public OrderDto getOne(Long id) {
+        Order order = repo.getReferenceById(id);
+        return order.toDto();
     }
 
     @Override
-    public List<Order> getListAll(
+    public List<OrderDto> getListAll(
             Long productId,
             String sort
     ) {
@@ -45,11 +46,17 @@ public class OrderServiceImpl implements OrderService {
 
         if (productId != null) spec = spec.and(new OrderSpec(new SearchCriteria("productId", "=", productId)));
 
-        return repo.findAll(spec, Sort.by(sort).descending());
+        List<Order> orders = repo.findAll(spec, Sort.by(sort).descending());
+        List<OrderDto> orderDtos = new ArrayList<>();
+
+        orders.forEach(order -> orderDtos.add(order.toDto()));
+
+
+        return orderDtos;
     }
 
     @Override
-    public CustomPage<Order> getList(
+    public CustomPage<OrderDto> getList(
             Integer page,
             Integer size,
             Long productId,
@@ -62,15 +69,19 @@ public class OrderServiceImpl implements OrderService {
         if (productId != null) spec = spec.and(new OrderSpec(new SearchCriteria("productId", "=", productId)));
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(sort).descending());
-        Page<Order> responsePage = repo.findAll(spec, pageable);
+
+        Page<Order> orderPage = repo.findAll(spec, pageable);
+        List<OrderDto> orderDtos = new ArrayList<>();
+
+        orderPage.getContent().forEach(order -> orderDtos.add(order.toDto()));
 
         return new CustomPage<>(
-                responsePage.getContent(),
-                responsePage.isFirst(),
-                responsePage.isLast(),
-                responsePage.getNumber(),
-                responsePage.getTotalPages(),
-                responsePage.getTotalElements()
+                orderDtos,
+                orderPage.isFirst(),
+                orderPage.isLast(),
+                orderPage.getNumber(),
+                orderPage.getTotalPages(),
+                orderPage.getTotalElements()
         );
     }
 

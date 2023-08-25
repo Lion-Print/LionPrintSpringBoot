@@ -7,7 +7,6 @@ import uz.bprodevelopment.logisticsapp.entity.Order;
 import javax.persistence.criteria.*;
 
 public class ProductSpec extends BaseSpec<Product> {
-
     private final SearchCriteria criteria;
     public ProductSpec(SearchCriteria criteria) {
         super(criteria);

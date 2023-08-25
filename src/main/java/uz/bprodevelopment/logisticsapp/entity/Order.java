@@ -42,17 +42,17 @@ public class Order extends BaseAuditEntity {
         OrderDto orderDto = new OrderDto();
         orderDto.setId(id);
 
+        orderDto.setProductId(product.getId());
         orderDto.setAmount(amount);
-
-        //orderDto.setProduct(product.toDto());
-
-        orderDto.setSupplierId(supplier.getId());
-        orderDto.setSupplierName(supplier.getName());
-        orderDto.setSupplierName(supplier.getPhone());
 
         orderDto.setCompanyId(company.getId());
         orderDto.setCompanyName(company.getName());
-        orderDto.setCompanyName(company.getPhone());
+        orderDto.setCompanyPhone(company.getPhone());
+
+        orderDto.setSupplierId(supplier.getId());
+        orderDto.setSupplierName(supplier.getName());
+        orderDto.setSupplierPhone(supplier.getPhone());
+        orderDto.setProductDto(product.toDto());
 
         return orderDto;
     }

@@ -22,7 +22,7 @@ public class OrderController {
     public ResponseEntity<?> getOne(
             @PathVariable(name = "id") Long id
     ) {
-        Order order = service.getOne(id);
+        OrderDto order = service.getOne(id);
         return ResponseEntity.ok().body(order);
     }
 

@@ -9,14 +9,14 @@ import java.util.List;
 
 public interface OrderService {
 
-    Order getOne(Long id);
+    OrderDto getOne(Long id);
 
-    List<Order> getListAll(
+    List<OrderDto> getListAll(
             Long productId,
             String sort
     );
 
-    CustomPage<Order> getList(
+    CustomPage<OrderDto> getList(
             Integer page,
             Integer size,
             Long productId,
