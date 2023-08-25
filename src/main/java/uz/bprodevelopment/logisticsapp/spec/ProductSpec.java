@@ -14,7 +14,6 @@ public class ProductSpec extends BaseSpec<Product> {
         this.criteria = criteria;
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public Predicate toPredicate
             (Root<Product> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
