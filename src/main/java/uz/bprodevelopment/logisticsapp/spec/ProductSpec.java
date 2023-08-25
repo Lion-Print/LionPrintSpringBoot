@@ -18,6 +18,11 @@ public class ProductSpec extends BaseSpec<Product> {
     public Predicate toPredicate
             (Root<Product> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
 
+        if (criteria.getKey().equals("id")) {
+            query.distinct(true);
+            return builder.greaterThan(
+                    root.get(criteria.getKey()), criteria.getValue().toString());
+        }
         switch (criteria.getKey()) {
             case "nameUz": {
                 Join<Category, Product> category = root.join("category");
@@ -39,9 +44,7 @@ public class ProductSpec extends BaseSpec<Product> {
                         "%" + criteria.getValue() + "%");
             }
             case "productDetailValue":
-                //Join productDetail = (Join) root.fetch("productDetails");
                 Join<ProductDetail, Product> productDetail = root.join("productDetails");
-                query.distinct(true);
                 return builder.like(builder.lower(productDetail.get("value")),
                         "%" + criteria.getValue() + "%");
         }
