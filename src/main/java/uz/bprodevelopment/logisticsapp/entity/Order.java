@@ -31,6 +31,8 @@ public class Order extends BaseAuditEntity {
     @Column(nullable = false)
     private Double amount;
 
+    private Integer status; // 1-new, 2-received, 3-on the way, 4-delivered
+
     @OneToOne
     private Company company;
 
@@ -44,6 +46,7 @@ public class Order extends BaseAuditEntity {
 
         orderDto.setProductId(product.getId());
         orderDto.setAmount(amount);
+        orderDto.setStatus(status);
 
         orderDto.setCompanyId(company.getId());
         orderDto.setCompanyName(company.getName());

@@ -29,4 +29,5 @@ public interface OrderService {
 
     void delete(Long id);
 
+    void changeStatus(Long id, Integer status);
 }

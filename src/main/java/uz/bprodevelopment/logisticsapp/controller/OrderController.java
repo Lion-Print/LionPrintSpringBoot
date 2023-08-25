@@ -77,5 +77,14 @@ public class OrderController {
         return ResponseEntity.ok().body(Success.getInstance());
     }
 
+    @PostMapping(ORDER_URL + "/{id}")
+    public ResponseEntity<?> changeStatus(
+            @PathVariable(name = "id") Long id,
+            @RequestParam(name = "status") Integer status
+    ) {
+        service.changeStatus(id, status);
+        return ResponseEntity.ok().body(Success.getInstance());
+    }
+
 }
 

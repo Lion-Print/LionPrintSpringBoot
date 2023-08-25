@@ -9,6 +9,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import uz.bprodevelopment.logisticsapp.base.entity.User;
+import uz.bprodevelopment.logisticsapp.base.repo.UserRepo;
+import uz.bprodevelopment.logisticsapp.base.util.BaseAppUtils;
 import uz.bprodevelopment.logisticsapp.dto.OrderDto;
 import uz.bprodevelopment.logisticsapp.dto.ProductDetailDto;
 import uz.bprodevelopment.logisticsapp.entity.Order;
@@ -28,7 +32,7 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepo repo;
-    private final ProductDetailRepo productDetailRepo;
+    private final UserRepo userRepo;
 
     @Override
     public OrderDto getOne(Long id) {
@@ -93,7 +97,7 @@ public class OrderServiceImpl implements OrderService {
         if (item.getAmount() == null) {
             throw new RuntimeException("amount is null");
         }
-
+        item.setStatus(1);
         Order category = item.toEntity();
         repo.save(category);
 
@@ -102,6 +106,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void update(OrderDto item) {
         Order dbOrder = repo.getReferenceById(item.getId());
+        if (dbOrder.getStatus() > 1 || !dbOrder.getStatus().equals(item.getStatus())) {
+            throw new RuntimeException("You can't update order which is status > 1");
+        }
         if(item.getProductId() == null) {
             throw new RuntimeException("productId is null");
         }
@@ -114,7 +121,47 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void delete(Long id) {
+        Order dbOrder = repo.getReferenceById(id);
+        if (dbOrder.getStatus() > 1) {
+            throw new RuntimeException("You can't delete order which is status > 1");
+        }
         repo.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public void changeStatus(Long id, Integer status) {
+        Order order = repo.getReferenceById(id);
+        User currentUser = userRepo.getReferenceById(BaseAppUtils.getUserId());
+        if (currentUser.getSupplier() != null) {
+            if (!order.getSupplier().getId().equals(currentUser.getSupplier().getId())) {
+                throw new RuntimeException("You are other supplier");
+            }
+            if (status == -1 && order.getStatus() > 3) {
+                throw new RuntimeException("This order delivered. You can't cancel it");
+            }
+            if (!order.getStatus().equals(status - 1)) {
+                throw new RuntimeException("You can increase status only 1");
+            }
+            if (status == 4) {
+                throw new RuntimeException("You can't mark as delivered order. Only companies can mark as delivered");
+            }
+        }
+        if (currentUser.getCompany() != null) {
+            if (!order.getCompany().getId().equals(currentUser.getCompany().getId())) {
+                throw new RuntimeException("You are other company");
+            }
+            if (status == -1 && order.getStatus() > 2) {
+                throw new RuntimeException("This order delivered or on the way. You can't cancel it");
+            }
+            if (!order.getStatus().equals(status - 1)) {
+                throw new RuntimeException("You can increase status only 1");
+            }
+            if (status == 2 || status == 3) {
+                throw new RuntimeException("You can't mark as received or on the way. Only suppliers can mark like this");
+            }
+        }
+        order.setStatus(status);
     }
 
 }

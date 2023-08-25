@@ -16,6 +16,7 @@ public class OrderDto {
     private Long id;
     private Long productId;
     private Double amount;
+    private Integer status; // 1-new, 2-received, 3-on the way, 4-delivered
     private Long companyId;
     private String companyName;
     private String companyPhone;
@@ -34,6 +35,7 @@ public class OrderDto {
         order.setCompany(new Company(companyId));
         order.setSupplier(new Supplier(supplierId));
         order.setAmount(amount);
+        order.setStatus(status);
         return order;
 
     }
