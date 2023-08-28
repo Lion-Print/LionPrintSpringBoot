@@ -9,6 +9,8 @@ import uz.bprodevelopment.logisticsapp.dto.OrderDto;
 import uz.bprodevelopment.logisticsapp.entity.Order;
 import uz.bprodevelopment.logisticsapp.service.OrderService;
 
+import java.util.List;
+
 import static uz.bprodevelopment.logisticsapp.base.config.Urls.ORDER_URL;
 
 
@@ -43,7 +45,7 @@ public class OrderController {
 
     @PostMapping(ORDER_URL)
     public ResponseEntity<?> save(
-            @RequestBody OrderDto item
+            @RequestBody List<OrderDto> item
     ) {
         service.save(item);
         return ResponseEntity.ok().body(Success.getInstance());

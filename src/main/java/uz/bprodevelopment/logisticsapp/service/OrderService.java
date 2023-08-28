@@ -18,7 +18,7 @@ public interface OrderService {
             String sort
     );
 
-    void save(OrderDto item);
+    void save(List<OrderDto> item);
 
     void update(OrderDto item);
 

@@ -14,7 +14,9 @@ import uz.bprodevelopment.logisticsapp.base.repo.UserRepo;
 import uz.bprodevelopment.logisticsapp.base.util.BaseAppUtils;
 import uz.bprodevelopment.logisticsapp.dto.OrderDto;
 import uz.bprodevelopment.logisticsapp.entity.Order;
+import uz.bprodevelopment.logisticsapp.entity.OrderStack;
 import uz.bprodevelopment.logisticsapp.repo.OrderRepo;
+import uz.bprodevelopment.logisticsapp.repo.OrderStackRepo;
 import uz.bprodevelopment.logisticsapp.spec.OrderSpec;
 import uz.bprodevelopment.logisticsapp.spec.SearchCriteria;
 import uz.bprodevelopment.logisticsapp.utils.CustomPage;
@@ -29,6 +31,7 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepo repo;
     private final UserRepo userRepo;
+    private final OrderStackRepo orderStackRepo;
 
     @Override
     public OrderDto getOne(Long id) {
@@ -82,17 +85,25 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void save(OrderDto item) {
-        if(item.getProductId() == null) {
+    @Transactional
+    public void save(List<OrderDto> item) {
+        if(item.stream().anyMatch(order -> order.getProductId() == null)) {
             throw new RuntimeException("productId is null");
         }
-        if (item.getAmount() == null) {
+        if(item.stream().anyMatch(order -> order.getAmount() == null)) {
             throw new RuntimeException("amount is null");
         }
-        item.setStatus(1);
-        Order category = item.toEntity();
-        repo.save(category);
+        List<Order> orders = new ArrayList<>();
 
+        OrderStack orderStack = new OrderStack();
+        orderStackRepo.save(orderStack);
+
+        item.forEach(order -> {
+            Order newOrder = order.toEntity();
+            newOrder.setOrderStack(orderStack);
+            orders.add(newOrder);
+        });
+        repo.saveAll(orders);
     }
 
     @Override

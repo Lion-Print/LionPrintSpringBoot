@@ -4,15 +4,16 @@ import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import uz.bprodevelopment.logisticsapp.base.entity.User;
 import uz.bprodevelopment.logisticsapp.base.filter.CustomUsernamePasswordAuthenticationToken;
 
 import java.util.Optional;
 
-public class AuditorAwareImpl implements AuditorAware<Long> {
+public class AuditorAwareImpl implements AuditorAware<User> {
 
     @SuppressWarnings("NullableProblems")
     @Override
-    public Optional<Long> getCurrentAuditor() {
+    public Optional<User> getCurrentAuditor() {
         CustomUsernamePasswordAuthenticationToken authentication = null;
         if (!( SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)){
             authentication = (CustomUsernamePasswordAuthenticationToken)
@@ -22,6 +23,6 @@ public class AuditorAwareImpl implements AuditorAware<Long> {
         if(authentication != null) {
             userId = authentication.getUserId();
         }
-        return Optional.ofNullable(userId);
+        return Optional.of(new User(userId));
     }
 }

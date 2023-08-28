@@ -1,5 +1,7 @@
 package uz.bprodevelopment.logisticsapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -31,13 +33,17 @@ public class Order extends BaseAuditEntity {
     @Column(nullable = false)
     private Double amount;
 
-    private Integer status; // 1-new, 2-received, 3-on the way, 4-delivered
+    private Integer status = 1; // 1-new, 2-received, 3-on the way, 4-delivered
 
     @OneToOne
     private Company company;
 
     @OneToOne
     private Supplier supplier;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    private OrderStack orderStack;
 
     public OrderDto toDto(){
 

@@ -16,7 +16,7 @@ public class OrderDto {
     private Long id;
     private Long productId;
     private Double amount;
-    private Integer status; // 1-new, 2-received, 3-on the way, 4-delivered
+    private Integer status = 1; // 1-new, 2-received, 3-on the way, 4-delivered
     private Long companyId;
     private String companyName;
     private String companyPhone;

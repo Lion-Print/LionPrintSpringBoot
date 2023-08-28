@@ -24,6 +24,7 @@ public class Urls {
     public static final String PRODUCT_URL = BASE_URL + "product";
 
     public static final String ORDER_URL = BASE_URL + "order";
+    public static final String ORDER_STACK_URL = BASE_URL + "order-stack";
 
 
 }

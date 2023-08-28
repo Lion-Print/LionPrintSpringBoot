@@ -48,6 +48,10 @@ public class User extends BaseAuditEntity {
 
     private Boolean isBlocked = false;
 
+    public User(Long id) {
+        this.id = id;
+    }
+
     public UserDto toDto(){
 
         UserDto userDto = new UserDto();
