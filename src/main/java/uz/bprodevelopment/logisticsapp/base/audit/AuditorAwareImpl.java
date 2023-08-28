@@ -15,13 +15,15 @@ public class AuditorAwareImpl implements AuditorAware<User> {
     @Override
     public Optional<User> getCurrentAuditor() {
         CustomUsernamePasswordAuthenticationToken authentication = null;
-        if (!( SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)){
+        if (!(SecurityContextHolder.getContext().getAuthentication() instanceof AnonymousAuthenticationToken)) {
             authentication = (CustomUsernamePasswordAuthenticationToken)
                     SecurityContextHolder.getContext().getAuthentication();
         }
-        Long userId = null;
-        if(authentication != null) {
+        Long userId;
+        if (authentication != null) {
             userId = authentication.getUserId();
+        } else {
+            return Optional.empty();
         }
         return Optional.of(new User(userId));
     }
