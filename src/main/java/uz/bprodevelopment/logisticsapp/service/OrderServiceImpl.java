@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uz.bprodevelopment.logisticsapp.base.entity.User;
@@ -87,6 +88,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public void save(List<OrderDto> item) {
+        if (item.isEmpty()) {
+            throw new RuntimeException();
+        }
         if(item.stream().anyMatch(order -> order.getProductId() == null)) {
             throw new RuntimeException("productId is null");
         }

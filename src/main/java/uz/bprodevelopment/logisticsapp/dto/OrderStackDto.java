@@ -19,6 +19,7 @@ public class OrderStackDto {
     private Long id;
     private String createdBy;
     private Timestamp createdDate;
+    private Integer orderCount;
 
     private List<OrderDto> orders = new ArrayList<>();
     public OrderStack toEntity(){
