@@ -48,6 +48,7 @@ public class LionPrintApplication {
                                 null,
                                 "Aliyev valijon",
                                 "admin",
+                                null,
                                 "123",
                                 null,
                                 false,

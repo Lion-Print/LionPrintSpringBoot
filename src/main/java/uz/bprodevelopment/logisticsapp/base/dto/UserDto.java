@@ -24,6 +24,7 @@ public class UserDto {
     private Long id;
     private String fullName;
     private String username;
+    private String phone;
     private String password;
     private String fcmToken;
     private Boolean isBlocked = false;
@@ -42,6 +43,7 @@ public class UserDto {
         user.setId(this.id);
         user.setFullName(this.fullName);
         user.setUsername(this.username);
+        user.setPhone(this.phone);
         user.setPassword(this.password);
         user.setFcmToken(this.fcmToken);
 

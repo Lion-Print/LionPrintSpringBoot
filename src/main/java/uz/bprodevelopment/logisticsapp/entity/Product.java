@@ -62,7 +62,7 @@ public class Product extends BaseAuditEntity {
 
 
     @JsonIgnoreProperties("product")
-    @OneToMany(mappedBy = "product",  cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "product")
     private List<ProductDetail> productDetails;
 
     public Product(Long id) {

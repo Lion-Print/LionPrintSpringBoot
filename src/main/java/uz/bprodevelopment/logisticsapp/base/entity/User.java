@@ -33,6 +33,8 @@ public class User extends BaseAuditEntity {
     @Column(unique = true)
     private String username;
 
+    private String phone;
+
     private String password;
 
     private String fcmToken;
@@ -58,6 +60,7 @@ public class User extends BaseAuditEntity {
         userDto.setId(this.id);
         userDto.setFullName(this.fullName);
         userDto.setUsername(this.username);
+        userDto.setPhone(this.phone);
         userDto.setIsBlocked(this.isBlocked);
 
         if (company != null) {
