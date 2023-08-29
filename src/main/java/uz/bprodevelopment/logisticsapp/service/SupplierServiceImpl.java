@@ -137,6 +137,7 @@ public class SupplierServiceImpl implements SupplierService {
 
         User user = new User();
         user.setFullName(item.getUserFullName());
+        user.setPhone(item.getUserPhone());
         user.setUsername(item.getUsername());
         user.setPassword(passwordEncoder.encode(item.getPassword()));
         user.setSupplier(supplier);
@@ -186,6 +187,7 @@ public class SupplierServiceImpl implements SupplierService {
         repo.save(supplier);
 
         user.setFullName(item.getUserFullName());
+        user.setPhone(item.getUserPhone());
         user.setUsername(item.getUsername());
 
         if (item.getPassword() != null && !item.getPassword().isEmpty()) {

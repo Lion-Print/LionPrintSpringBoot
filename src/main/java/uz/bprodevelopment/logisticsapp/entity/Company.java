@@ -34,6 +34,7 @@ public class Company extends BaseAuditEntity {
     private Boolean isBlocked = false;
 
     private String userFullName;
+    private String userPhone;
 
     @Column(unique = true, nullable = false)
     private String username;
@@ -50,6 +51,7 @@ public class Company extends BaseAuditEntity {
         companyDto.setPhone(phone);
         companyDto.setIsBlocked(isBlocked);
         companyDto.setUserFullName(userFullName);
+        companyDto.setUserPhone(userPhone);
         companyDto.setUsername(username);
 
         return companyDto;

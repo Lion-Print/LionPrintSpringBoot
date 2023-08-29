@@ -32,6 +32,7 @@ public class OrderStack extends BaseAuditEntity {
         OrderStackDto orderStackDto = new OrderStackDto();
         orderStackDto.setId(id);
         orderStackDto.setCreatedBy(getCreatedBy().getFullName());
+        orderStackDto.setPhone(getCreatedBy().getPhone());
         orderStackDto.setCreatedDate(getCreatedDate());
         orderStackDto.setOrderCount(orderCount);
 

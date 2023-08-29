@@ -17,6 +17,7 @@ public class SupplierDto {
     private Boolean isBlocked = false;
 
     private String userFullName;
+    private String userPhone;
     private String username;
     private String password;
 
@@ -29,6 +30,7 @@ public class SupplierDto {
         supplier.setPhone(this.phone);
         supplier.setIsBlocked(this.isBlocked);
         supplier.setUserFullName(this.userFullName);
+        supplier.setUserPhone(this.userPhone);
         supplier.setUsername(this.username);
 
         return supplier;

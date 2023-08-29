@@ -18,6 +18,7 @@ public class OrderStackDto {
 
     private Long id;
     private String createdBy;
+    private String phone;
     private Timestamp createdDate;
     private Integer orderCount;
 

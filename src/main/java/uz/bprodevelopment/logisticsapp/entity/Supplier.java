@@ -32,6 +32,8 @@ public class Supplier extends BaseAuditEntity {
 
     private String userFullName;
 
+    private String userPhone;
+
     @Column(unique = true, nullable = false)
     private String username;
     public Supplier(Long id) {
@@ -47,6 +49,7 @@ public class Supplier extends BaseAuditEntity {
         supplierDto.setPhone(phone);
         supplierDto.setIsBlocked(isBlocked);
         supplierDto.setUserFullName(userFullName);
+        supplierDto.setUserPhone(userPhone);
         supplierDto.setUsername(username);
 
         return supplierDto;

@@ -132,6 +132,7 @@ public class CompanyServiceImpl implements CompanyService {
 
         User user = new User();
         user.setFullName(item.getUserFullName());
+        user.setPhone(item.getUserPhone());
         user.setUsername(item.getUsername());
         user.setPassword(passwordEncoder.encode(item.getPassword()));
         user.setCompany(company);
@@ -170,6 +171,7 @@ public class CompanyServiceImpl implements CompanyService {
         repo.save(company);
 
         user.setFullName(item.getUserFullName());
+        user.setPhone(item.getUserPhone());
         user.setUsername(item.getUsername());
 
         if (item.getPassword() != null && !item.getPassword().isEmpty()) {

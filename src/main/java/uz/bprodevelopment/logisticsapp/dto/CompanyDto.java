@@ -25,6 +25,7 @@ public class CompanyDto {
     private Boolean isBlocked = false;
 
     private String userFullName;
+    private String userPhone;
     private String username;
     private String password;
 
@@ -37,6 +38,7 @@ public class CompanyDto {
         company.setPhone(this.phone);
         company.setIsBlocked(this.isBlocked);
         company.setUserFullName(this.userFullName);
+        company.setUserPhone(this.userPhone);
         company.setUsername(this.username);
 
         return company;
