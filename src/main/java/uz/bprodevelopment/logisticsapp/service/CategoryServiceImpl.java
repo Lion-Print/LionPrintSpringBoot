@@ -125,7 +125,11 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void delete(Long id) {
-        repo.deleteById(id);
+        try {
+            repo.deleteById(id);
+        } catch (Exception e) {
+            throw new RuntimeException(messageSource.getMessage("this_company_is_not_delete", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+        }
     }
 
 }
