@@ -232,7 +232,11 @@ public class SupplierServiceImpl implements SupplierService {
 
     @Override
     public void deleteUser(Long id) {
-        userRepo.deleteById(id);
+        try {
+            userRepo.deleteById(id);
+        } catch (Exception e) {
+            throw new RuntimeException(messageSource.getMessage("this_company_is_not_delete", null, new Locale(BaseAppUtils.getCurrentLanguage())));
+        }
     }
 
 
